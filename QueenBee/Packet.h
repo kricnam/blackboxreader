@@ -118,6 +118,9 @@ public:
 	int GetSize() {return data.size();}
 	void SetCmdPacket(CmdWord cmd);
 	void ReceiveFrameFrom(RS232Port & port);
+	int GetDriverCode(void);
+	string GetLicenseID(void);
+	struct Packet::AccidentData*  GetAccidentData(int& num);
 	void Dump();
 protected:
 	enum PacketState

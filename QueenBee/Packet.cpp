@@ -30,6 +30,45 @@ void Packet::SetCmdPacket(CmdWord cmd)
 	data+=XOR();
 }
 
+int Packet::GetDriverCode(void)
+{
+	struct PacketHead *Head = (struct PacketHead *)GetData();
+	if (Head->cCmdWord == GET_DriverID_LicenceID)
+	{
+		struct DriverInfo* info = (struct DriverInfo*)(Head+1);
+		return ((info->DriverCode[0]<<16)&0xFF0000)|
+				((info->DriverCode[1]<<8)&0xFF00)|
+				info->DriverCode[2];
+	}
+	return -1;
+}
+
+string Packet::GetLicenseID(void)
+{
+	struct PacketHead *Head = (struct PacketHead *)GetData();
+
+	if (Head->cCmdWord == GET_DriverID_LicenceID)
+	{
+		struct DriverInfo* info = (struct DriverInfo*)(Head+1);
+		string id(info->LicenceNumber,18);
+		return id;
+	}
+	return "";
+}
+
+struct Packet::AccidentData* Packet::GetAccidentData(int& num)
+{
+	struct PacketHead *Head = (struct PacketHead *)GetData();
+	num = 0;
+	if (Head->cCmdWord == GET_Accident_Data)
+	{
+		int n = (Head->Len[0]<< 8)&0xFF00 | Head->Len[1];
+		num = n / sizeof(struct AccidentData);
+		return (struct AccidentData*)(Head+1);
+	}
+	return NULL;
+}
+
 unsigned char Packet::XOR()
 {
 	string::iterator it;
