@@ -16,7 +16,11 @@ int main(int argc, char** argv)
 	Packet packet;
 	Protocol protocol;
 	port.Open(argv[1]);
-	protocol.GetDriverIDLicenceID(port);
+	protocol.ReadDriverIDLicenceID(port,packet);
+	protocol.ReadRealTime(port,packet);
+	protocol.Read2DayMileage(port,packet);
+	printf("acc\n");
+	protocol.ReadAccident_Data(port,packet);
 /*
 	char a[250];
 

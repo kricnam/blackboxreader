@@ -6,6 +6,7 @@
  */
 
 #include "Protocol.h"
+#include "stdio.h"
 
 Protocol::Protocol()
 {
@@ -18,29 +19,89 @@ Protocol::~Protocol()
 	// TODO Auto-generated destructor stub
 }
 
-
-int Protocol::GetDriverIDLicenceID(RS232Port &port)
+int Protocol::Read(Packet::CmdWord cmd,int wait_ms,RS232Port & port,Packet& packet)
 {
-	Packet packet;
-	packet.SetCmdPacket(Packet::GET_DriverID_LicenceID);
+	packet.SetCmdPacket(cmd);
 	int n = packet.GetSize();
 	const char* c=packet.GetData();
-	//for(int i=0;i<n;i++)
-	//{
-	//	port.Write(c+i,1);
-		//usleep(200);
-	//}
-	if (n == port.Write(packet.GetData(),n))
+	if (n == port.Write(c,n))
 	{
-		sleep(1);
+		usleep(wait_ms*1000);
 		packet.ReceiveFrameFrom(port);
 		packet.Dump();
+		return packet.GetSize();
 	}
+	return -1;
+}
+
+int Protocol::ReadDriverIDLicenceID(RS232Port &port,Packet& packet)
+{
+	Read(Packet::GET_DriverID_LicenceID,1000,port,packet);
+	printf("code:%d\nlicense:%s\n",packet.GetDriverCode(),packet.GetLicenseID().c_str());
 	return 0;
 }
 
+int Protocol::ReadRealTime(RS232Port & port,Packet& packet)
+{
+	return Read(Packet::GET_RealTime,1000,port,packet);
+}
 
-
+int Protocol::Read360HourMileage(RS232Port & port,Packet& packet)
+{
+	return Read(Packet::GET_360Hour_Mileage,1000,port,packet);
+}
+int Protocol::ReadVehicleFeature(RS232Port & port,Packet& packet)
+{
+	return Read(Packet::GET_Vehicle_Feature,1000,port,packet);
+}
+int Protocol::Read360HourSpeed(RS232Port & port,Packet& packet)
+{
+	return Read(Packet::GET_360Hour_Speed,1000,port,packet);
+}
+int Protocol::ReadVehicleVIN_Number_Class(RS232Port & port,Packet& packet)
+{
+	return Read(Packet::GET_Vehicle_VIN_Number_Class,1000,port,packet);
+}
+int Protocol::ReadAccident_Data(RS232Port & port,Packet& packet)
+{
+	int n=Read(Packet::GET_Accident_Data,1000,port,packet);
+	if (n>0)
+	{
+		int n;
+		struct Packet::AccidentData *Data = packet.GetAccidentData(n);
+		if (Data)
+		{
+			printf("%d%d-%d%d-%d%d %d%d:%d%d:%d%d %d %02hhX\n",
+					(Data[0].bcdYear&0xF0)>>4,
+					(Data[0].bcdYear&0x0F),
+					(Data[0].bcdMonth&0xF0)>>4,
+					(Data[0].bcdMonth&0x0F),
+					(Data[0].bcdDay&0xF0)>>4,
+					(Data[0].bcdDay&0x0F),
+					(Data[0].bcdHour&0xF0)>>4,
+					(Data[0].bcdHour&0xF),
+					(Data[0].bcdMinute&0xF0)>>4,
+					(Data[0].bcdMinute&0xF),
+					(Data[0].bcdSecond&0xf0)>>4,
+					(Data[0].bcdSecond&0xf),
+					Data[0].Speed,
+					Data[0].SwitchState
+					);
+		}
+	}
+}
+int Protocol::Read2DayMileage(RS232Port & port,Packet& packet)
+{
+	return Read(Packet::GET_2Day_Mileage,1000,port,packet);
+}
+int Protocol::Read2DaySpeed(RS232Port & port,Packet& packet)
+{
+	return Read(Packet::GET_2Day_Speed,1000,port,packet);
+}
+int Protocol::Read2DayOverDrive(RS232Port & port,Packet& packet)
+{
+	return Read(Packet::GET_2Day_OverDrive,1000,port,packet);
+}
 
 
 
