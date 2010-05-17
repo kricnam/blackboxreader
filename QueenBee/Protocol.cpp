@@ -103,7 +103,10 @@ int Protocol::Read2DayOverDrive(RS232Port & port,Packet& packet)
 	return Read(Packet::GET_2Day_OverDrive,1000,port,packet);
 }
 
-
+int Protocol::ReadAllPara(RS232Port & port,Packet& packet)
+{
+    return Read(Packet::GET_ALL_PARA,1000,port,packet);
+}
 
 
 

@@ -6,40 +6,47 @@
  */
 #include <unistd.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "Protocol.h"
 #include "RS232Port.h"
 #include "Packet.h"
+#include "USBDataFile.h"
+
 int main(int argc, char** argv)
 {
-	RS232Port port;
-	Packet packet;
-	Protocol protocol;
-	port.Open(argv[1]);
-	protocol.ReadDriverIDLicenceID(port,packet);
-	protocol.ReadRealTime(port,packet);
-	protocol.Read2DayMileage(port,packet);
-	printf("acc\n");
-	protocol.ReadAccident_Data(port,packet);
-/*
-	char a[250];
 
-	int n;
-	do
-	{
-		n= port.Read(a,250);
+  RS232Port port;
+  Packet packet;
+  Protocol protocol;
+  port.Open(argv[1]);
 
-		if (!n) sleep(2);
-		else
-		{
-			for(int i=0;i<n;i++)
-				printf("%02hhX ",a[i]);
-			printf("\n");
-			char b[]={0x55,0x7A, 0x01 ,0x00,0x15 ,0x00,0x00, 0x22,0xB8 ,0x36,0x36, 0x36 ,0x36 ,00 ,00,0xA8, 0x94, 0xE5 ,0x77, 0x3C ,0xF1 ,0x12 ,00, 0xD0, 0xF2, 0x12, 00,0xE0};
-			port.Write(b,sizeof(b));
-		}
-	}while(1);
+  //protocol.ReadDriverIDLicenceID(port,packet);
+  //protocol.ReadRealTime(port,packet);
+  //protocol.Read2DayMileage(port,packet);
 
-*/
+  //protocol.ReadAccident_Data(port,packet);
+
+  protocol.ReadAllPara(port,packet);
+
+  USBDataFile file;
+  USBDataFile::StructPara para;
+
+  memset(&para,0,sizeof(para));
+  file.Init();
+  memcpy(&para,packet.GetData(),packet.GetSize());
+
+//  para.mark = 0x30aa;
+//  para.IBBType = 0x3000;
+//  strcpy((char*)para.sn,"1234567890");
+//  strcpy((char*)para.DriverLisenseCode,"abcdefghijklmnopqrst");
+//  para.DriverCode = 10000000;
+//  para.CHCO = 0x12345678;
+//  strcpy((char*)para.AutoVIN,"V1234567890");
+//  strcpy((char*)para.AutoCode,"WJ12345678");
+//  file.InitPara(para);
+
+  file.Save("TEST.IBB");
+
 	return 0;
 }
