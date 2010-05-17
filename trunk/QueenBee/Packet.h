@@ -33,6 +33,7 @@ public:
 		GET_2Day_Mileage,
 		GET_2Day_Speed,
 		GET_2Day_OverDrive = 0x11,
+		GET_ALL_PARA =  0x14,
 		SET_DriverID_LicenceID = 0x81,
 		SET_Vehicle_VIC_Number_Class,
 		SET_Time = 0xC2,
@@ -121,6 +122,7 @@ public:
 	int GetDriverCode(void);
 	string GetLicenseID(void);
 	struct Packet::AccidentData*  GetAccidentData(int& num);
+	int GetAllPara(USBDataFile::StructPara& para);
 	void Dump();
 protected:
 	enum PacketState

@@ -8,6 +8,7 @@
 #include "Packet.h"
 #include "DebugLog.h"
 #include <stdio.h>
+#include "USBDataFile.h"
 
 Packet::Packet()
 {
@@ -54,6 +55,19 @@ string Packet::GetLicenseID(void)
 		return id;
 	}
 	return "";
+}
+
+int Packet::GetAllPara(USBDataFile::StructPara& para)
+{
+  struct PacketHead *Head = (struct PacketHead *)GetData();
+
+  if (Head->cCmdWord == GET_ALL_PARA)
+  {
+      USBDataFile::StructPara* pPara = (USBDataFile::StructPara*)(Head+1);
+      para = *pPara;
+      return 1;
+  }
+  return 0;
 }
 
 struct Packet::AccidentData* Packet::GetAccidentData(int& num)
