@@ -91,7 +91,7 @@ int RS232Port::Read(char *buf, int len)
 	do
 	{
 		n = read(handle, buf, len);
-		if (n) TRACE("read %d bytes",n);
+
 		if (n > 0)
 			return n;
 		if (n == -1)
@@ -107,6 +107,7 @@ int RS232Port::Read(char *buf, int len)
 			continue;
 		}
 	} while (try_again);
+	if (n==0) TRACE("no byte read");
 	return n;
 }
 

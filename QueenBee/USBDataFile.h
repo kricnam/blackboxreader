@@ -4,6 +4,8 @@
  *  Created on: 2010-4-29
  *      Author: mxx
  */
+class Packet;
+
 
 #ifndef USBDATAFILE_H_
 #define USBDATAFILE_H_
@@ -45,7 +47,17 @@
 #define BASEDATA_BASE DATAFLASH_BASE+0x0d000
 #define BASEDATA_END  DATAFLASH_BASE+0xfffff
 
+#ifndef u_char
+typedef unsigned char u_char;
+#endif
 
+#ifndef u_short
+typedef unsigned short u_short;
+#endif
+
+#ifndef u_int
+typedef unsigned int u_int;
+#endif
 class USBDataFile {
 public:
 	USBDataFile();
@@ -131,6 +143,46 @@ public:
 
 	} __attribute__ ((packed)) PartitionTable;
 
+        typedef struct
+        {//定义时钟
+
+                u_short type;
+                u_char year;
+                u_char month;
+                u_char day;
+                u_char hour;
+                u_char minute;
+                u_char second;
+
+        } Record_CLOCK;
+        typedef struct
+        {
+                u_int  DriverCode;//驾驶员代码——4(88)
+                u_char  DriverLisenseCode[20];//驾驶证号码——20(108)
+        } DRIVER;
+        typedef struct{
+                Record_CLOCK  dt;
+        }OTDR_start;
+        typedef struct{
+                Record_CLOCK  dt;
+                u_int  TotalDistance;
+                u_int MinuteNb;
+                DRIVER driver;
+        }OTDR_end;
+        typedef struct{
+                OTDR_start start;
+                OTDR_end end;
+        }OTDR;
+        typedef struct
+        {//行驶记录
+                Record_CLOCK dt;
+        }RecordData_start;
+        typedef struct
+        {//行驶记录
+                Record_CLOCK dt;
+                u_int DistancePulse;
+                u_int DriverCode;
+        }RecordData_end;
 	typedef struct
 	{
 		StructPara para;
@@ -142,10 +194,12 @@ public:
 
 	void Init();
 	void InitPara(StructPara& para);
+	int AddSpeedData(Packet &p);
 	void Save(const char* szPath);
 protected:
+	void incTime(Record_CLOCK& t, int nMinute);
+	 USBFile *pData;
 
-	USBFile *pData;
 };
 
 #endif /* USBDATAFILE_H_ */

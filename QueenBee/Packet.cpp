@@ -64,7 +64,7 @@ int Packet::GetAllPara(USBDataFile::StructPara& para)
   if (Head->cCmdWord == GET_ALL_PARA)
   {
       USBDataFile::StructPara* pPara = (USBDataFile::StructPara*)(Head+1);
-      para = *pPara;
+      memcpy(&para,pPara,256);
       return 1;
   }
   return 0;
@@ -76,11 +76,24 @@ struct Packet::AccidentData* Packet::GetAccidentData(int& num)
 	num = 0;
 	if (Head->cCmdWord == GET_Accident_Data)
 	{
-		int n = (Head->Len[0]<< 8)&0xFF00 | Head->Len[1];
+		int n = ((Head->Len[0]<< 8)&0xFF00) | (Head->Len[1]);
 		num = n / sizeof(struct AccidentData);
 		return (struct AccidentData*)(Head+1);
 	}
 	return NULL;
+}
+
+struct Packet::SpeedRecord* Packet::GetSpeedData(int& num)
+{
+        struct PacketHead *Head = (struct PacketHead *)GetData();
+        num = 0;
+        if (Head->cCmdWord == GET_360Hour_Speed || Head->cCmdWord == GET_2Day_Speed)
+        {
+                int n = ((Head->Len[0]<< 8)&0xFF00) | (Head->Len[1]);
+                num = n - sizeof(struct SpeedRecord) + 1;
+                return (struct SpeedRecord*)(Head+1);
+        }
+        return NULL;
 }
 
 unsigned char Packet::XOR()

@@ -9,6 +9,7 @@
 #define PACKET_H_
 #include <string>
 #include "RS232Port.h"
+#include "USBDataFile.h"
 using namespace std;
 class Packet
 {
@@ -122,6 +123,7 @@ public:
 	int GetDriverCode(void);
 	string GetLicenseID(void);
 	struct Packet::AccidentData*  GetAccidentData(int& num);
+	struct Packet::SpeedRecord* GetSpeedData(int& num);
 	int GetAllPara(USBDataFile::StructPara& para);
 	void Dump();
 protected:
