@@ -1,5 +1,5 @@
 #summary 记录仪RS232接口
 
-||2|| 棕||RX||
-||3|| 红||TX||
-||5|| 黄||GROUND||
+||2|| <font color="brown">棕</font>||RX||
+||3||<font color="red"> 红</font>||TX||
+||5|| <font color="yellow">黄</font>||GROUND||
