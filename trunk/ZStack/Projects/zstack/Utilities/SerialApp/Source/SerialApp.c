@@ -673,7 +673,7 @@ void SerialApp_ProcessMSGCmd( afIncomingMSGPacket_t *pkt )
     break;
 #ifndef   ZDO_COORDINATOR
   case SERIALAPP_CLUSTERID_CMD:
-    CommandToBox(pkt->cmd.Data[0]);
+    CommandToBox(pkt->cmd.Data[1]);
     break;
 #endif
   default:
@@ -690,7 +690,7 @@ void SerialApp_ProcessMSGCmd( afIncomingMSGPacket_t *pkt )
  *
  * @return  none
  */
-#ifdef ZDO_COORINATOR
+#ifdef ZDO_COORDINATOR
 static void SerialApp_SendData( uint8 *buf, uint8 len )
 {
   afStatus_t stat;
@@ -704,7 +704,7 @@ static void SerialApp_SendData( uint8 *buf, uint8 len )
   stat = AF_DataRequest( &SerialApp_DstAddr,
                          (endPointDesc_t *)&SerialApp_epDesc,
                           SERIALAPP_CLUSTERID_CMD,
-                          1, otaBuf,
+                          otaLen, otaBuf,
                           &SerialApp_MsgID, 0, AF_DEFAULT_RADIUS );
   HalLedSet(HAL_LED_2,HAL_LED_MODE_OFF);
   FREE_OTABUF();
