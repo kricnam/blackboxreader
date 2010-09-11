@@ -22,7 +22,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
+  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE, 
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -47,6 +47,7 @@
  *     |  mcu   : 8051 core                                        |
  *     |  clock : 32MHz                                            |
  *     =============================================================
+ *     Modified by MXX
  */
 
 
@@ -84,10 +85,10 @@
  *                                       LED Configuration
  * ------------------------------------------------------------------------------------------------
  */
-#define HAL_NUM_LEDS            2
+#define HAL_NUM_LEDS            3
 #define HAL_LED_BLINK_DELAY()   st( { volatile uint32 i; for (i=0; i<0x5800; i++) { }; } )
 
-/* D1 - Green */
+/* D1 - Red */
 #define LED1_BV           BV(0)
 #define LED1_SBIT         P1_0
 #define LED1_DDR          P1DIR
@@ -99,6 +100,11 @@
 #define LED2_DDR          P1DIR
 #define LED2_POLARITY     ACTIVE_LOW
 
+/* D3 - Red */
+#define LED3_BV           BV(2)
+#define LED3_SBIT         P1_2
+#define LED3_DDR          P1DIR
+#define LED3_POLARITY     ACTIVE_LOW
 
 /* ------------------------------------------------------------------------------------------------
  *                                    Push Button Configuration
@@ -108,14 +114,19 @@
 #define ACTIVE_HIGH       !!    /* double negation forces result to be '1' */
 
 /* S1 */
-#define PUSH1_BV          BV(1)
-#define PUSH1_SBIT        P0_1
+#define PUSH1_BV          BV(0)
+#define PUSH1_SBIT        P0_0
 #define PUSH1_POLARITY    ACTIVE_LOW
+/* S2 */
+#define PUSH2_BV          BV(1)
+#define PUSH2_SBIT        P0_1
+#define PUSH2_POLARITY    ACTIVE_LOW
+
 
 /* Joystick Center Press */
-#define PUSH2_BV          BV(0)
-#define PUSH2_SBIT        P2_0
-#define PUSH2_POLARITY    ACTIVE_HIGH
+//#define PUSH2_BV          BV(0)
+//#define PUSH2_SBIT        P2_0
+//#define PUSH2_POLARITY    ACTIVE_HIGH
 
 
 /* ------------------------------------------------------------------------------------------------
@@ -124,9 +135,9 @@
  */
 
 /* ----------- Board Initialization ---------- */
-#define VDD_SW_BV         BV(2)
-#define VDD_SW_SBIT       P1_2
-#define VDD_SW_DDR        P1DIR
+//#define VDD_SW_BV         BV(2)
+//#define VDD_SW_SBIT       P1_2
+//#define VDD_SW_DDR        P1DIR
 
 #define HAL_BOARD_INIT() {                                       \
   uint16 i;                                                      \
@@ -142,13 +153,14 @@
   /* set direction for GPIO outputs  */                          \
   LED1_DDR |= LED1_BV;                                           \
   LED2_DDR |= LED2_BV;                                           \
+  LED3_DDR |= LED3_BV;                                           \
                                                                  \
   /* configure tristates */                                      \
-  P2INP |= PUSH2_BV;                                             \
+  /*P2INP |= PUSH2_BV;*/                                            \
                                                                  \
   /* configure software controlled peripheral VDD */             \
-  VDD_SW_DDR |= VDD_SW_BV;                                       \
-  VDD_SW_SBIT = 0;                                               \
+  /*VDD_SW_DDR |= VDD_SW_BV;                                       \
+    VDD_SW_SBIT = 0; */                                              \
 }
 
 /* ----------- Debounce ---------- */
@@ -165,22 +177,22 @@
 /* ----------- LED's ---------- */
 #define HAL_TURN_OFF_LED1()       st( LED1_SBIT = LED1_POLARITY (0); )
 #define HAL_TURN_OFF_LED2()       st( LED2_SBIT = LED2_POLARITY (0); )
-#define HAL_TURN_OFF_LED3()       HAL_TURN_OFF_LED2()
+#define HAL_TURN_OFF_LED3()       st( LED3_SBIT = LED3_POLARITY (0); )//HAL_TURN_OFF_LED2()
 #define HAL_TURN_OFF_LED4()       HAL_TURN_OFF_LED1()
 
 #define HAL_TURN_ON_LED1()        st( LED1_SBIT = LED1_POLARITY (1); )
 #define HAL_TURN_ON_LED2()        st( LED2_SBIT = LED2_POLARITY (1); )
-#define HAL_TURN_ON_LED3()        HAL_TURN_ON_LED2()
+#define HAL_TURN_ON_LED3()        st( LED3_SBIT = LED3_POLARITY (1); )//HAL_TURN_ON_LED2()
 #define HAL_TURN_ON_LED4()        HAL_TURN_ON_LED1()
 
 #define HAL_TOGGLE_LED1()         st( if (LED1_SBIT) { LED1_SBIT = 0; } else { LED1_SBIT = 1;} )
 #define HAL_TOGGLE_LED2()         st( if (LED2_SBIT) { LED2_SBIT = 0; } else { LED2_SBIT = 1;} )
-#define HAL_TOGGLE_LED3()         HAL_TOGGLE_LED2()
+#define HAL_TOGGLE_LED3()         st( if (LED3_SBIT) { LED3_SBIT = 0; } else { LED3_SBIT = 1;} ) //HAL_TOGGLE_LED2()
 #define HAL_TOGGLE_LED4()         HAL_TOGGLE_LED1()
 
 #define HAL_STATE_LED1()          (LED1_POLARITY (LED1_SBIT))
 #define HAL_STATE_LED2()          (LED2_POLARITY (LED2_SBIT))
-#define HAL_STATE_LED3()          HAL_STATE_LED2()
+#define HAL_STATE_LED3()          (LED3_POLARITY (LED3_SBIT))//HAL_STATE_LED2()
 #define HAL_STATE_LED4()          HAL_STATE_LED1()
 
 /* ------------------------------------------------------------------------------------------------
@@ -200,12 +212,12 @@
 
 /* Set to TRUE enable AES usage, FALSE disable it */
 #ifndef HAL_AES
-#define HAL_AES TRUE
+#define HAL_AES FALSE
 #endif
 
 /* Set to TRUE enable LCD usage, FALSE disable it */
 #ifndef HAL_LCD
-#define HAL_LCD TRUE
+#define HAL_LCD FALSE
 #endif
 
 /* Set to TRUE enable LED usage, FALSE disable it */
@@ -236,9 +248,10 @@
 #endif /* HAL_UART */
 
 #if HAL_UART
-  #define HAL_UART_0_ENABLE  FALSE
-  #define HAL_UART_1_ENABLE  TRUE
-
+  //#define HAL_UART_0_ENABLE  FALSE
+  //#define HAL_UART_1_ENABLE  TRUE
+  #define HAL_UART_0_ENABLE  TRUE
+  #define HAL_UART_1_ENABLE  FALSE
   #if HAL_DMA
   // The DB is forced to still use ISR since DMA cannot be tested on less than Rev-D chips and all available DB's are older.
   //  #if !defined( HAL_UART_DMA )

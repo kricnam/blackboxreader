@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <project>
-  <fileVersion>2</fileVersion>
+  <fileVersion>1</fileVersion>
   <configuration>
     <name>CoordinatorDB</name>
     <toolchain>
@@ -12,7 +12,7 @@
       <name>C-SPY</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>6</version>
+        <version>4</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -38,6 +38,10 @@
         <option>
           <name>MemOverride</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>MemFile</name>
+          <state>$TOOLKIT_DIR$\config\derivatives\Chipcon\CC2430.ddf</state>
         </option>
         <option>
           <name>OCProcessor</name>
@@ -83,13 +87,30 @@
           <name>Debugger Extra Options Edit</name>
           <state></state>
         </option>
+      </data>
+    </settings>
+    <settings>
+      <name>_3RD_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
         <option>
-          <name>DdfFile</name>
-          <state>$TOOLKIT_DIR$\config\devices\Chipcon\CC2430.ddf</state>
+          <name>Third-Party Driver Mandatory</name>
+          <state>1</state>
         </option>
         <option>
-          <name>Debugger data model</name>
-          <state>1</state>
+          <name>Third-Party Driver File Name Edit</name>
+          <state>ThirdPartyDriver.dll</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Check</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Edit</name>
+          <state>cspycomm.log</state>
         </option>
       </data>
     </settings>
@@ -97,7 +118,7 @@
       <name>CHIPCON_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -123,6 +144,10 @@
         <option>
           <name>ChipconVerifyRadio</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>ChipconCacheCode</name>
+          <state>1</state>
         </option>
         <option>
           <name>ChipconReduceSpeed</name>
@@ -177,6 +202,63 @@
         <option>
           <name>ChipconRetainPages</name>
           <state></state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>INFINEON_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>InfineonDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>InfineonEraseFlash</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSuppressDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfServerAddr</name>
+          <state>localhost</state>
+        </option>
+        <option>
+          <name>InfServerName</name>
+          <state>JTAG over USB Box</state>
+        </option>
+        <option>
+          <name>InfKey1</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey3</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey4</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfConnection</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSwBp</name>
+          <state>0</state>
         </option>
       </data>
     </settings>
@@ -247,6 +329,57 @@
         </option>
         <option>
           <name>ToggleRTS</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>AD2_ID</name>
+      <archiveVersion>2</archiveVersion>
+      <data>
+        <version>4</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>CygnalDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CygnVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Port</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Baud</name>
+          <version>0</version>
+          <state>6</state>
+        </option>
+        <option>
+          <name>CygnComm</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADuC8xx</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>HandshakeAt9600</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADeProtocol</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ADuCpuClockFrequency</name>
+          <state>12582912</state>
+        </option>
+        <option>
+          <name>OverrideCpuClkFreq</name>
           <state>0</state>
         </option>
       </data>
@@ -323,88 +456,6 @@
       </data>
     </settings>
     <settings>
-      <name>_3RD_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>Third-Party Driver Mandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>Third-Party Driver File Name Edit</name>
-          <state>ThirdPartyDriver.dll</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Check</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Edit</name>
-          <state>cspycomm.log</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
-      <name>INFINEON_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>InfineonDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>InfineonEraseFlash</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSuppressDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfServerAddr</name>
-          <state>localhost</state>
-        </option>
-        <option>
-          <name>InfServerName</name>
-          <state>JTAG over USB Box</state>
-        </option>
-        <option>
-          <name>InfKey1</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey2</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey3</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey4</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfConnection</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSwBp</name>
-          <state>0</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
       <name>SIM_ID</name>
       <archiveVersion>1</archiveVersion>
       <data>
@@ -421,64 +472,9 @@
         </option>
       </data>
     </settings>
-    <settings>
-      <name>AD2_ID</name>
-      <archiveVersion>2</archiveVersion>
-      <data>
-        <version>5</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>CygnalDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CygnVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Port</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Baud</name>
-          <version>0</version>
-          <state>6</state>
-        </option>
-        <option>
-          <name>CygnComm</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADuC8xx</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>HandshakeAt9600</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADeProtocol</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ADuCpuClockFrequency</name>
-          <state>12582912</state>
-        </option>
-        <option>
-          <name>OverrideCpuClkFreq</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>AD2EraseDataFlash</name>
-          <state>1</state>
-        </option>
-      </data>
-    </settings>
     <debuggerPlugins>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
@@ -486,11 +482,11 @@
         <loadFlag>0</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
     </debuggerPlugins>
@@ -505,7 +501,7 @@
       <name>C-SPY</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>6</version>
+        <version>4</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -531,6 +527,10 @@
         <option>
           <name>MemOverride</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>MemFile</name>
+          <state>$TOOLKIT_DIR$\config\derivatives\Chipcon\CC2430.ddf</state>
         </option>
         <option>
           <name>OCProcessor</name>
@@ -576,13 +576,30 @@
           <name>Debugger Extra Options Edit</name>
           <state></state>
         </option>
+      </data>
+    </settings>
+    <settings>
+      <name>_3RD_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
         <option>
-          <name>DdfFile</name>
-          <state>$TOOLKIT_DIR$\config\devices\Chipcon\CC2430.ddf</state>
+          <name>Third-Party Driver Mandatory</name>
+          <state>1</state>
         </option>
         <option>
-          <name>Debugger data model</name>
-          <state>1</state>
+          <name>Third-Party Driver File Name Edit</name>
+          <state>ThirdPartyDriver.dll</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Check</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Edit</name>
+          <state>cspycomm.log</state>
         </option>
       </data>
     </settings>
@@ -590,7 +607,7 @@
       <name>CHIPCON_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -616,6 +633,10 @@
         <option>
           <name>ChipconVerifyRadio</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>ChipconCacheCode</name>
+          <state>1</state>
         </option>
         <option>
           <name>ChipconReduceSpeed</name>
@@ -670,6 +691,63 @@
         <option>
           <name>ChipconRetainPages</name>
           <state></state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>INFINEON_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>InfineonDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>InfineonEraseFlash</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSuppressDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfServerAddr</name>
+          <state>localhost</state>
+        </option>
+        <option>
+          <name>InfServerName</name>
+          <state>JTAG over USB Box</state>
+        </option>
+        <option>
+          <name>InfKey1</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey3</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey4</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfConnection</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSwBp</name>
+          <state>0</state>
         </option>
       </data>
     </settings>
@@ -740,6 +818,57 @@
         </option>
         <option>
           <name>ToggleRTS</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>AD2_ID</name>
+      <archiveVersion>2</archiveVersion>
+      <data>
+        <version>4</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>CygnalDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CygnVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Port</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Baud</name>
+          <version>0</version>
+          <state>6</state>
+        </option>
+        <option>
+          <name>CygnComm</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADuC8xx</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>HandshakeAt9600</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADeProtocol</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ADuCpuClockFrequency</name>
+          <state>12582912</state>
+        </option>
+        <option>
+          <name>OverrideCpuClkFreq</name>
           <state>0</state>
         </option>
       </data>
@@ -816,88 +945,6 @@
       </data>
     </settings>
     <settings>
-      <name>_3RD_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>Third-Party Driver Mandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>Third-Party Driver File Name Edit</name>
-          <state>ThirdPartyDriver.dll</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Check</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Edit</name>
-          <state>cspycomm.log</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
-      <name>INFINEON_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>InfineonDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>InfineonEraseFlash</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSuppressDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfServerAddr</name>
-          <state>localhost</state>
-        </option>
-        <option>
-          <name>InfServerName</name>
-          <state>JTAG over USB Box</state>
-        </option>
-        <option>
-          <name>InfKey1</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey2</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey3</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey4</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfConnection</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSwBp</name>
-          <state>0</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
       <name>SIM_ID</name>
       <archiveVersion>1</archiveVersion>
       <data>
@@ -914,64 +961,9 @@
         </option>
       </data>
     </settings>
-    <settings>
-      <name>AD2_ID</name>
-      <archiveVersion>2</archiveVersion>
-      <data>
-        <version>5</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>CygnalDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CygnVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Port</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Baud</name>
-          <version>0</version>
-          <state>6</state>
-        </option>
-        <option>
-          <name>CygnComm</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADuC8xx</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>HandshakeAt9600</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADeProtocol</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ADuCpuClockFrequency</name>
-          <state>12582912</state>
-        </option>
-        <option>
-          <name>OverrideCpuClkFreq</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>AD2EraseDataFlash</name>
-          <state>1</state>
-        </option>
-      </data>
-    </settings>
     <debuggerPlugins>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
@@ -979,11 +971,11 @@
         <loadFlag>0</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
     </debuggerPlugins>
@@ -998,7 +990,7 @@
       <name>C-SPY</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>6</version>
+        <version>4</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -1024,6 +1016,10 @@
         <option>
           <name>MemOverride</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>MemFile</name>
+          <state>$TOOLKIT_DIR$\config\derivatives\Chipcon\CC2430.ddf</state>
         </option>
         <option>
           <name>OCProcessor</name>
@@ -1069,13 +1065,30 @@
           <name>Debugger Extra Options Edit</name>
           <state></state>
         </option>
+      </data>
+    </settings>
+    <settings>
+      <name>_3RD_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
         <option>
-          <name>DdfFile</name>
-          <state>$TOOLKIT_DIR$\config\devices\Chipcon\CC2430.ddf</state>
+          <name>Third-Party Driver Mandatory</name>
+          <state>1</state>
         </option>
         <option>
-          <name>Debugger data model</name>
-          <state>1</state>
+          <name>Third-Party Driver File Name Edit</name>
+          <state>ThirdPartyDriver.dll</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Check</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Edit</name>
+          <state>cspycomm.log</state>
         </option>
       </data>
     </settings>
@@ -1083,7 +1096,7 @@
       <name>CHIPCON_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -1109,6 +1122,10 @@
         <option>
           <name>ChipconVerifyRadio</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>ChipconCacheCode</name>
+          <state>1</state>
         </option>
         <option>
           <name>ChipconReduceSpeed</name>
@@ -1163,6 +1180,63 @@
         <option>
           <name>ChipconRetainPages</name>
           <state></state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>INFINEON_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>InfineonDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>InfineonEraseFlash</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSuppressDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfServerAddr</name>
+          <state>localhost</state>
+        </option>
+        <option>
+          <name>InfServerName</name>
+          <state>JTAG over USB Box</state>
+        </option>
+        <option>
+          <name>InfKey1</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey3</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey4</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfConnection</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSwBp</name>
+          <state>0</state>
         </option>
       </data>
     </settings>
@@ -1233,6 +1307,57 @@
         </option>
         <option>
           <name>ToggleRTS</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>AD2_ID</name>
+      <archiveVersion>2</archiveVersion>
+      <data>
+        <version>4</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>CygnalDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CygnVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Port</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Baud</name>
+          <version>0</version>
+          <state>6</state>
+        </option>
+        <option>
+          <name>CygnComm</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADuC8xx</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>HandshakeAt9600</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADeProtocol</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ADuCpuClockFrequency</name>
+          <state>12582912</state>
+        </option>
+        <option>
+          <name>OverrideCpuClkFreq</name>
           <state>0</state>
         </option>
       </data>
@@ -1309,88 +1434,6 @@
       </data>
     </settings>
     <settings>
-      <name>_3RD_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>Third-Party Driver Mandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>Third-Party Driver File Name Edit</name>
-          <state>ThirdPartyDriver.dll</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Check</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Edit</name>
-          <state>cspycomm.log</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
-      <name>INFINEON_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>InfineonDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>InfineonEraseFlash</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSuppressDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfServerAddr</name>
-          <state>localhost</state>
-        </option>
-        <option>
-          <name>InfServerName</name>
-          <state>JTAG over USB Box</state>
-        </option>
-        <option>
-          <name>InfKey1</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey2</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey3</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey4</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfConnection</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSwBp</name>
-          <state>0</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
       <name>SIM_ID</name>
       <archiveVersion>1</archiveVersion>
       <data>
@@ -1407,64 +1450,9 @@
         </option>
       </data>
     </settings>
-    <settings>
-      <name>AD2_ID</name>
-      <archiveVersion>2</archiveVersion>
-      <data>
-        <version>5</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>CygnalDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CygnVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Port</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Baud</name>
-          <version>0</version>
-          <state>6</state>
-        </option>
-        <option>
-          <name>CygnComm</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADuC8xx</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>HandshakeAt9600</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADeProtocol</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ADuCpuClockFrequency</name>
-          <state>12582912</state>
-        </option>
-        <option>
-          <name>OverrideCpuClkFreq</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>AD2EraseDataFlash</name>
-          <state>1</state>
-        </option>
-      </data>
-    </settings>
     <debuggerPlugins>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
@@ -1472,11 +1460,11 @@
         <loadFlag>0</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
     </debuggerPlugins>
@@ -1491,7 +1479,7 @@
       <name>C-SPY</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>6</version>
+        <version>4</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -1517,6 +1505,10 @@
         <option>
           <name>MemOverride</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>MemFile</name>
+          <state>$TOOLKIT_DIR$\config\derivatives\Chipcon\CC2430.ddf</state>
         </option>
         <option>
           <name>OCProcessor</name>
@@ -1562,13 +1554,30 @@
           <name>Debugger Extra Options Edit</name>
           <state></state>
         </option>
+      </data>
+    </settings>
+    <settings>
+      <name>_3RD_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
         <option>
-          <name>DdfFile</name>
-          <state>$TOOLKIT_DIR$\config\devices\Chipcon\CC2430.ddf</state>
+          <name>Third-Party Driver Mandatory</name>
+          <state>1</state>
         </option>
         <option>
-          <name>Debugger data model</name>
-          <state>1</state>
+          <name>Third-Party Driver File Name Edit</name>
+          <state>ThirdPartyDriver.dll</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Check</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Edit</name>
+          <state>cspycomm.log</state>
         </option>
       </data>
     </settings>
@@ -1576,7 +1585,7 @@
       <name>CHIPCON_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -1602,6 +1611,10 @@
         <option>
           <name>ChipconVerifyRadio</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>ChipconCacheCode</name>
+          <state>1</state>
         </option>
         <option>
           <name>ChipconReduceSpeed</name>
@@ -1656,6 +1669,63 @@
         <option>
           <name>ChipconRetainPages</name>
           <state></state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>INFINEON_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>InfineonDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>InfineonEraseFlash</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSuppressDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfServerAddr</name>
+          <state>localhost</state>
+        </option>
+        <option>
+          <name>InfServerName</name>
+          <state>JTAG over USB Box</state>
+        </option>
+        <option>
+          <name>InfKey1</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey3</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey4</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfConnection</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSwBp</name>
+          <state>0</state>
         </option>
       </data>
     </settings>
@@ -1726,6 +1796,57 @@
         </option>
         <option>
           <name>ToggleRTS</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>AD2_ID</name>
+      <archiveVersion>2</archiveVersion>
+      <data>
+        <version>4</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>CygnalDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CygnVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Port</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Baud</name>
+          <version>0</version>
+          <state>6</state>
+        </option>
+        <option>
+          <name>CygnComm</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADuC8xx</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>HandshakeAt9600</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADeProtocol</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ADuCpuClockFrequency</name>
+          <state>12582912</state>
+        </option>
+        <option>
+          <name>OverrideCpuClkFreq</name>
           <state>0</state>
         </option>
       </data>
@@ -1802,88 +1923,6 @@
       </data>
     </settings>
     <settings>
-      <name>_3RD_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>Third-Party Driver Mandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>Third-Party Driver File Name Edit</name>
-          <state>ThirdPartyDriver.dll</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Check</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Edit</name>
-          <state>cspycomm.log</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
-      <name>INFINEON_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>InfineonDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>InfineonEraseFlash</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSuppressDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfServerAddr</name>
-          <state>localhost</state>
-        </option>
-        <option>
-          <name>InfServerName</name>
-          <state>JTAG over USB Box</state>
-        </option>
-        <option>
-          <name>InfKey1</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey2</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey3</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey4</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfConnection</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSwBp</name>
-          <state>0</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
       <name>SIM_ID</name>
       <archiveVersion>1</archiveVersion>
       <data>
@@ -1900,64 +1939,9 @@
         </option>
       </data>
     </settings>
-    <settings>
-      <name>AD2_ID</name>
-      <archiveVersion>2</archiveVersion>
-      <data>
-        <version>5</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>CygnalDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CygnVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Port</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Baud</name>
-          <version>0</version>
-          <state>6</state>
-        </option>
-        <option>
-          <name>CygnComm</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADuC8xx</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>HandshakeAt9600</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADeProtocol</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ADuCpuClockFrequency</name>
-          <state>12582912</state>
-        </option>
-        <option>
-          <name>OverrideCpuClkFreq</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>AD2EraseDataFlash</name>
-          <state>1</state>
-        </option>
-      </data>
-    </settings>
     <debuggerPlugins>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
@@ -1965,11 +1949,11 @@
         <loadFlag>0</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
     </debuggerPlugins>
@@ -1984,7 +1968,7 @@
       <name>C-SPY</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>6</version>
+        <version>4</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2010,6 +1994,10 @@
         <option>
           <name>MemOverride</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>MemFile</name>
+          <state>$TOOLKIT_DIR$\config\derivatives\Chipcon\CC2430.ddf</state>
         </option>
         <option>
           <name>OCProcessor</name>
@@ -2055,13 +2043,30 @@
           <name>Debugger Extra Options Edit</name>
           <state></state>
         </option>
+      </data>
+    </settings>
+    <settings>
+      <name>_3RD_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
         <option>
-          <name>DdfFile</name>
-          <state>$TOOLKIT_DIR$\config\devices\Chipcon\CC2430.ddf</state>
+          <name>Third-Party Driver Mandatory</name>
+          <state>1</state>
         </option>
         <option>
-          <name>Debugger data model</name>
-          <state>1</state>
+          <name>Third-Party Driver File Name Edit</name>
+          <state>ThirdPartyDriver.dll</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Check</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Edit</name>
+          <state>cspycomm.log</state>
         </option>
       </data>
     </settings>
@@ -2069,7 +2074,7 @@
       <name>CHIPCON_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2095,6 +2100,10 @@
         <option>
           <name>ChipconVerifyRadio</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>ChipconCacheCode</name>
+          <state>1</state>
         </option>
         <option>
           <name>ChipconReduceSpeed</name>
@@ -2149,6 +2158,63 @@
         <option>
           <name>ChipconRetainPages</name>
           <state></state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>INFINEON_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>InfineonDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>InfineonEraseFlash</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSuppressDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfServerAddr</name>
+          <state>localhost</state>
+        </option>
+        <option>
+          <name>InfServerName</name>
+          <state>JTAG over USB Box</state>
+        </option>
+        <option>
+          <name>InfKey1</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey3</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey4</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfConnection</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSwBp</name>
+          <state>0</state>
         </option>
       </data>
     </settings>
@@ -2219,6 +2285,57 @@
         </option>
         <option>
           <name>ToggleRTS</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>AD2_ID</name>
+      <archiveVersion>2</archiveVersion>
+      <data>
+        <version>4</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>CygnalDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CygnVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Port</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Baud</name>
+          <version>0</version>
+          <state>6</state>
+        </option>
+        <option>
+          <name>CygnComm</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADuC8xx</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>HandshakeAt9600</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADeProtocol</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ADuCpuClockFrequency</name>
+          <state>12582912</state>
+        </option>
+        <option>
+          <name>OverrideCpuClkFreq</name>
           <state>0</state>
         </option>
       </data>
@@ -2295,88 +2412,6 @@
       </data>
     </settings>
     <settings>
-      <name>_3RD_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>Third-Party Driver Mandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>Third-Party Driver File Name Edit</name>
-          <state>ThirdPartyDriver.dll</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Check</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Edit</name>
-          <state>cspycomm.log</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
-      <name>INFINEON_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>InfineonDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>InfineonEraseFlash</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSuppressDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfServerAddr</name>
-          <state>localhost</state>
-        </option>
-        <option>
-          <name>InfServerName</name>
-          <state>JTAG over USB Box</state>
-        </option>
-        <option>
-          <name>InfKey1</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey2</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey3</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey4</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfConnection</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSwBp</name>
-          <state>0</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
       <name>SIM_ID</name>
       <archiveVersion>1</archiveVersion>
       <data>
@@ -2393,64 +2428,9 @@
         </option>
       </data>
     </settings>
-    <settings>
-      <name>AD2_ID</name>
-      <archiveVersion>2</archiveVersion>
-      <data>
-        <version>5</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>CygnalDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CygnVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Port</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Baud</name>
-          <version>0</version>
-          <state>6</state>
-        </option>
-        <option>
-          <name>CygnComm</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADuC8xx</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>HandshakeAt9600</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADeProtocol</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ADuCpuClockFrequency</name>
-          <state>12582912</state>
-        </option>
-        <option>
-          <name>OverrideCpuClkFreq</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>AD2EraseDataFlash</name>
-          <state>1</state>
-        </option>
-      </data>
-    </settings>
     <debuggerPlugins>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
@@ -2458,11 +2438,11 @@
         <loadFlag>0</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
     </debuggerPlugins>
@@ -2477,7 +2457,7 @@
       <name>C-SPY</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>6</version>
+        <version>4</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2503,6 +2483,10 @@
         <option>
           <name>MemOverride</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>MemFile</name>
+          <state>$TOOLKIT_DIR$\config\derivatives\Chipcon\CC2430.ddf</state>
         </option>
         <option>
           <name>OCProcessor</name>
@@ -2548,13 +2532,30 @@
           <name>Debugger Extra Options Edit</name>
           <state></state>
         </option>
+      </data>
+    </settings>
+    <settings>
+      <name>_3RD_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
         <option>
-          <name>DdfFile</name>
-          <state>$TOOLKIT_DIR$\config\devices\Chipcon\CC2430.ddf</state>
+          <name>Third-Party Driver Mandatory</name>
+          <state>1</state>
         </option>
         <option>
-          <name>Debugger data model</name>
-          <state>1</state>
+          <name>Third-Party Driver File Name Edit</name>
+          <state>ThirdPartyDriver.dll</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Check</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Third-Party Driver LogFile Edit</name>
+          <state>cspycomm.log</state>
         </option>
       </data>
     </settings>
@@ -2562,7 +2563,7 @@
       <name>CHIPCON_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2588,6 +2589,10 @@
         <option>
           <name>ChipconVerifyRadio</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>ChipconCacheCode</name>
+          <state>1</state>
         </option>
         <option>
           <name>ChipconReduceSpeed</name>
@@ -2642,6 +2647,63 @@
         <option>
           <name>ChipconRetainPages</name>
           <state></state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>INFINEON_ID</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>InfineonDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>InfineonEraseFlash</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSuppressDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfServerAddr</name>
+          <state>localhost</state>
+        </option>
+        <option>
+          <name>InfServerName</name>
+          <state>JTAG over USB Box</state>
+        </option>
+        <option>
+          <name>InfKey1</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey3</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfKey4</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfConnection</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>InfineonSwBp</name>
+          <state>0</state>
         </option>
       </data>
     </settings>
@@ -2712,6 +2774,57 @@
         </option>
         <option>
           <name>ToggleRTS</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>AD2_ID</name>
+      <archiveVersion>2</archiveVersion>
+      <data>
+        <version>4</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>CygnalDriverMandatory</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CygnVerifyDownload</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Port</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Baud</name>
+          <version>0</version>
+          <state>6</state>
+        </option>
+        <option>
+          <name>CygnComm</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADuC8xx</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>HandshakeAt9600</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ADeProtocol</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ADuCpuClockFrequency</name>
+          <state>12582912</state>
+        </option>
+        <option>
+          <name>OverrideCpuClkFreq</name>
           <state>0</state>
         </option>
       </data>
@@ -2788,88 +2901,6 @@
       </data>
     </settings>
     <settings>
-      <name>_3RD_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>Third-Party Driver Mandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>Third-Party Driver File Name Edit</name>
-          <state>ThirdPartyDriver.dll</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Check</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Third-Party Driver LogFile Edit</name>
-          <state>cspycomm.log</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
-      <name>INFINEON_ID</name>
-      <archiveVersion>1</archiveVersion>
-      <data>
-        <version>0</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>InfineonDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>InfineonEraseFlash</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSuppressDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfServerAddr</name>
-          <state>localhost</state>
-        </option>
-        <option>
-          <name>InfServerName</name>
-          <state>JTAG over USB Box</state>
-        </option>
-        <option>
-          <name>InfKey1</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey2</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey3</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfKey4</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfConnection</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>InfineonSwBp</name>
-          <state>0</state>
-        </option>
-      </data>
-    </settings>
-    <settings>
       <name>SIM_ID</name>
       <archiveVersion>1</archiveVersion>
       <data>
@@ -2886,64 +2917,9 @@
         </option>
       </data>
     </settings>
-    <settings>
-      <name>AD2_ID</name>
-      <archiveVersion>2</archiveVersion>
-      <data>
-        <version>5</version>
-        <wantNonLocal>1</wantNonLocal>
-        <debug>1</debug>
-        <option>
-          <name>CygnalDriverMandatory</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CygnVerifyDownload</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Port</name>
-          <version>0</version>
-          <state>0</state>
-        </option>
-        <option>
-          <name>Baud</name>
-          <version>0</version>
-          <state>6</state>
-        </option>
-        <option>
-          <name>CygnComm</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADuC8xx</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>HandshakeAt9600</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>ADeProtocol</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ADuCpuClockFrequency</name>
-          <state>12582912</state>
-        </option>
-        <option>
-          <name>OverrideCpuClkFreq</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>AD2EraseDataFlash</name>
-          <state>1</state>
-        </option>
-      </data>
-    </settings>
     <debuggerPlugins>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
@@ -2951,11 +2927,11 @@
         <loadFlag>0</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\CodeCoverage\CodeCoverage.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
       <plugin>
-        <file>$EW_DIR$\common\plugins\Profiling\Profiling.ENU.ewplugin</file>
+        <file>$EW_DIR$\common\plugins\Stack\Stack.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
     </debuggerPlugins>

@@ -22,7 +22,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
+  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE, 
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -49,10 +49,8 @@
   This application doesn't have a profile, so it handles everything directly.
 
   Key control:
-    SW1:
-    SW2:  initiates end device binding
-    SW3:
-    SW4:  initiates a match description request
+    SW5:  initiates end device binding
+    SW6:  initiates a match description request
 *********************************************************************/
 
 /*********************************************************************
@@ -108,8 +106,8 @@
 #endif
 
 #if !defined( SERIAL_APP_BAUD )
-  // CC2430 only allows 38.4k or 115.2k.
-  #define SERIAL_APP_BAUD  HAL_UART_BR_38400
+  // CC2430 only allows 38.4k or 115.2k. 
+  #define SERIAL_APP_BAUD  HAL_UART_BR_9600
   //#define SERIAL_APP_BAUD  HAL_UART_BR_115200
 #endif
 
@@ -175,7 +173,11 @@ const SimpleDescriptionFormat_t SerialApp_SimpleDesc =
 {
   SERIALAPP_ENDPOINT,              //  int   Endpoint;
   SERIALAPP_PROFID,                //  uint16 AppProfId[2];
-  SERIALAPP_DEVICEID,              //  uint16 AppDeviceId[2];
+#ifdef   ZDO_COORDINATOR  
+  SERIALAPP_CENTER_DEVICEID,              //  uint16 AppDeviceId[2];
+#else
+  SERIALAPP_END_DEVICEID,              //  uint16 AppDeviceId[2];
+#endif
   SERIALAPP_DEVICE_VERSION,        //  int   AppDevVer:4;
   SERIALAPP_FLAGS,                 //  int   AppFlags:4;
   SERIALAPP_MAX_CLUSTERS,          //  byte  AppNumInClusters;
@@ -251,6 +253,9 @@ static void rxCB_Loopback( uint8 port, uint8 event );
 static void rxCB( uint8 port, uint8 event );
 #endif
 
+
+void ReqBind(void);
+void ReqMatchDesc(void);
 /*********************************************************************
  * @fn      SerialApp_Init
  *
@@ -294,13 +299,75 @@ void SerialApp_Init( uint8 task_id )
   uartConfig.callBackFunc         = rxCB;
 #endif
   HalUARTOpen (SERIAL_APP_PORT, &uartConfig);
-
+  
 #if defined ( LCD_SUPPORTED )
   HalLcdWriteString( "SerialApp2", HAL_LCD_LINE_2 );
 #endif
+
+  HalLedSet(HAL_LED_1,HAL_LED_MODE_ON);
+  MicroWait(50000);
+  MicroWait(50000);
+  HalLedSet(HAL_LED_2,HAL_LED_MODE_ON);
+  MicroWait(50000);
+  MicroWait(50000);
+  HalLedSet(HAL_LED_3,HAL_LED_MODE_ON);
+  MicroWait(50000);
+  MicroWait(50000);
+  
+  HalLedSet(HAL_LED_1,HAL_LED_MODE_OFF);
+  MicroWait(50000);
+  MicroWait(50000);
+  HalLedSet(HAL_LED_2,HAL_LED_MODE_OFF);
+  MicroWait(50000);
+  MicroWait(50000);
+  HalLedSet(HAL_LED_3,HAL_LED_MODE_OFF);
   
   ZDO_RegisterForZDOMsg( SerialApp_TaskID, End_Device_Bind_rsp );
   ZDO_RegisterForZDOMsg( SerialApp_TaskID, Match_Desc_rsp );
+
+  MicroWait(50000);
+  MicroWait(50000);
+  MicroWait(50000);
+
+#ifndef ZDO_COORDINATOR          
+  
+  const uint8 test[7]={0xAA, 0x75, 0x14, 0x00, 0x00 ,0x00, 0xCB};
+  HalUARTWrite(SERIAL_APP_PORT,(uint8*)test,7);
+
+#endif
+
+
+}
+
+
+void ReqBind(void)
+{
+      HalLedSet ( HAL_LED_1, HAL_LED_MODE_OFF );
+      zAddrType_t dstAddr;
+      // Initiate an End Device Bind Request for the mandatory endpoint
+      dstAddr.addrMode = Addr16Bit;
+      dstAddr.addr.shortAddr = 0x0000; // Coordinator
+      ZDP_EndDeviceBindReq( &dstAddr, NLME_GetShortAddr(), 
+                            SerialApp_epDesc.endPoint,
+                            SERIALAPP_PROFID,
+                            SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
+                            SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
+                            FALSE );
+
+  
+}
+void ReqMatchDesc(void)
+{
+      zAddrType_t dstAddr;
+     // Initiate a Match Description Request (Service Discovery)
+      dstAddr.addrMode = AddrBroadcast;
+      dstAddr.addr.shortAddr = NWK_BROADCAST_SHORTADDR;
+      ZDP_MatchDescReq( &dstAddr, NWK_BROADCAST_SHORTADDR,
+                        SERIALAPP_PROFID,
+                        SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
+                        SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
+                        FALSE );
+
 }
 
 /*********************************************************************
@@ -337,6 +404,9 @@ UINT16 SerialApp_ProcessEvent( uint8 task_id, UINT16 events )
           SerialApp_ProcessMSGCmd( MSGpkt );
           break;
   
+        case ZDO_STATE_CHANGE:
+          ReqBind();
+          break;
         default:
           break;
       }
@@ -410,6 +480,7 @@ UINT16 SerialApp_ProcessEvent( uint8 task_id, UINT16 events )
     return ( events ^ SERIALAPP_TX_RTRY_EVT );
   }
 #endif
+  
 
   return ( 0 );  // Discard unknown events.
 }
@@ -431,13 +502,14 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
       if ( ZDO_ParseBindRsp( inMsg ) == ZSuccess )
       {
         // Light LED
-        HalLedSet( HAL_LED_4, HAL_LED_MODE_ON );
+        HalLedSet( HAL_LED_1, HAL_LED_MODE_ON );
+        
       }
 #if defined(BLINK_LEDS)
       else
       {
         // Flash LED to show failure
-        HalLedSet ( HAL_LED_4, HAL_LED_MODE_FLASH );
+        HalLedSet ( HAL_LED_1, HAL_LED_MODE_FLASH );
       }
 #endif
       break;
@@ -455,7 +527,7 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
             SerialApp_DstAddr.endPoint = pRsp->epList[0];
             
             // Light LED
-            HalLedSet( HAL_LED_4, HAL_LED_MODE_ON );
+            HalLedSet( HAL_LED_1, HAL_LED_MODE_ON );
           }
           osal_mem_free( pRsp );
         }
@@ -476,61 +548,14 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
  */
 void SerialApp_HandleKeys( uint8 shift, uint8 keys )
 {
-  zAddrType_t dstAddr;
-  
-  if ( shift )
+  if ( keys & HAL_KEY_SW_5 )
   {
-    if ( keys & HAL_KEY_SW_1 )
-    {
-    }
-    if ( keys & HAL_KEY_SW_2 )
-    {
-    }
-    if ( keys & HAL_KEY_SW_3 )
-    {
-    }
-    if ( keys & HAL_KEY_SW_4 )
-    {
-    }
+      ReqBind();
   }
-  else
+
+  if ( keys & HAL_KEY_SW_6 )
   {
-    if ( keys & HAL_KEY_SW_1 )
-    {
-    }
-
-    if ( keys & HAL_KEY_SW_2 )
-    {
-      HalLedSet ( HAL_LED_4, HAL_LED_MODE_OFF );
-      
-      // Initiate an End Device Bind Request for the mandatory endpoint
-      dstAddr.addrMode = Addr16Bit;
-      dstAddr.addr.shortAddr = 0x0000; // Coordinator
-      ZDP_EndDeviceBindReq( &dstAddr, NLME_GetShortAddr(), 
-                            SerialApp_epDesc.endPoint,
-                            SERIALAPP_PROFID,
-                            SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
-                            SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
-                            FALSE );
-    }
-
-    if ( keys & HAL_KEY_SW_3 )
-    {
-    }
-
-    if ( keys & HAL_KEY_SW_4 )
-    {
-      HalLedSet ( HAL_LED_4, HAL_LED_MODE_OFF );
-      
-      // Initiate a Match Description Request (Service Discovery)
-      dstAddr.addrMode = AddrBroadcast;
-      dstAddr.addr.shortAddr = NWK_BROADCAST_SHORTADDR;
-      ZDP_MatchDescReq( &dstAddr, NWK_BROADCAST_SHORTADDR,
-                        SERIALAPP_PROFID,
-                        SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
-                        SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
-                        FALSE );
-    }
+     ReqMatchDesc();
   }
 }
 
@@ -656,6 +681,7 @@ static void SerialApp_SendData( uint8 *buf, uint8 len )
     osal_start_timerEx( SerialApp_TaskID, SERIALAPP_MSG_RTRY_EVT,
                       SERIALAPP_MSG_RTRY_TIMEOUT );
     rtryCnt = SERIALAPP_MAX_RETRIES;
+    HalLedSet(HAL_LED_2,HAL_LED_MODE_OFF);
   }
   else
   {
@@ -757,6 +783,8 @@ static void rxCB( uint8 port, uint8 event )
     osal_mem_free( buf );
     return;
   }
+  else
+    HalLedSet(HAL_LED_2,HAL_LED_MODE_ON);
 
   /* If the local global otaBuf is in use, then either the response handshake
    * is being awaited or retries are being attempted. When the wait/retries
