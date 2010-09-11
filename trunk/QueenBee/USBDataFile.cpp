@@ -58,13 +58,15 @@ int USBDataFile::AddSpeedData(Packet &p)
   int n=0;
 
   Packet::SpeedRecord* pRec = p.GetSpeedData(n);
+  char* data = (char*)&(pRec->speed);
+  char* cache = (char*)pData;
 
   DEBUG("Total %d minutes data",n);
   int nStart = pData->table.BaseData.BaseAddr;
   int nEnd = pData->table.BaseData.EndAddr;
   int nCur = nStart;
-
-  RecordData_start* rec_start = (RecordData_start*)(pData+nStart);
+  DEBUG("start address:%d",nStart);
+  RecordData_start* rec_start = (RecordData_start*)(cache+nStart);
   RecordData_end* rec_end;
 
   rec_start->dt.type = 0xFEFE;
@@ -81,21 +83,19 @@ int USBDataFile::AddSpeedData(Packet &p)
       BCD_CHAR(pRec->startTime.bcdHour),
       BCD_CHAR(pRec->startTime.bcdMinute));
 
-  char* data = (char*)&(pRec->speed);
-  char* cache = (char*)pData;
   for (int i = 0; i < n; i++)
     {
       for (int ii = 0; ii < 60; ii++)
         {
-          cache[nStart + sizeof(RecordData_start) + i * 60 + ii] = data[i];
-          cache[nStart + sizeof(RecordData_start) + i * 60 + ii + 1] = 0;
+          cache[nStart + sizeof(RecordData_start) + i * 120 + 2*ii] = data[i];
+          cache[nStart + sizeof(RecordData_start) + i * 120 + 2*ii + 1] = 0;
         }
     }
 
   DEBUG("data fill ok");
-  rec_end = (RecordData_end*)(cache+ nStart + sizeof(RecordData_start)+n);
+  rec_end = (RecordData_end*)(cache+ nStart + sizeof(RecordData_start)+2*n*60);
 
-  memcpy(rec_end,rec_start,sizeof(RecordData_end));
+  memcpy(rec_end,rec_start,sizeof(RecordData_start));
   incTime(rec_end->dt,n);
   rec_end->dt.type = 0xAFAF;
   DEBUG("end at %d-%d-%d %d:%d",BCD_CHAR(rec_end->dt.year),
@@ -103,7 +103,7 @@ int USBDataFile::AddSpeedData(Packet &p)
        BCD_CHAR(rec_end->dt.day),
        BCD_CHAR(rec_end->dt.hour),
        BCD_CHAR(rec_end->dt.minute));
-
+  return 0;
 }
 
 void USBDataFile::incTime(Record_CLOCK& t, int nMinute)

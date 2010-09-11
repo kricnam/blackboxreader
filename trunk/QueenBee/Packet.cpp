@@ -23,12 +23,16 @@ Packet::~Packet()
 
 void Packet::SetCmdPacket(CmdWord cmd)
 {
-	data.clear();
-	data=0xAA;
-	data+=0x75;
-	data+=cmd;
-	data.append(3,0);
-	data+=XOR();
+//      Full Packet
+//	data.clear();
+//	data=0xAA;
+//	data+=0x75;
+//	data+=cmd;
+//	data.append(3,0);
+//	data+=XOR();
+
+        data.clear();
+        data+=cmd;
 }
 
 int Packet::GetDriverCode(void)
