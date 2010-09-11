@@ -163,7 +163,14 @@
 #define SERIAL_APP_RSP_CNT  4
 
 // This list should be filled with Application specific Cluster IDs.
-const cId_t SerialApp_ClusterList[SERIALAPP_MAX_CLUSTERS] =
+const cId_t SerialApp_ClusterList[SERIALAPP_CENTER_OUT_MAX_CLUSTERS] =
+{
+  SERIALAPP_CLUSTERID1,
+  SERIALAPP_CLUSTERID2,
+  SERIALAPP_CLUSTERID_CMD
+};
+
+const cId_t SerialApp_CenterIn_EndOut_ClusterList[SERIALAPP_CENTER_IN_MAX_CLUSTERS] =
 {
   SERIALAPP_CLUSTERID1,
   SERIALAPP_CLUSTERID2
@@ -180,10 +187,17 @@ const SimpleDescriptionFormat_t SerialApp_SimpleDesc =
 #endif
   SERIALAPP_DEVICE_VERSION,        //  int   AppDevVer:4;
   SERIALAPP_FLAGS,                 //  int   AppFlags:4;
-  SERIALAPP_MAX_CLUSTERS,          //  byte  AppNumInClusters;
-  (cId_t *)SerialApp_ClusterList,  //  byte *pAppInClusterList;
-  SERIALAPP_MAX_CLUSTERS,          //  byte  AppNumOutClusters;
+#ifdef   ZDO_COORDINATOR
+  SERIALAPP_CENTER_IN_MAX_CLUSTERS,          //  byte  AppNumInClusters;
+  (cId_t *)SerialApp_CenterIn_EndOut_ClusterList,  //  byte *pAppInClusterList;
+  SERIALAPP_CENTER_OUT_MAX_CLUSTERS,          //  byte  AppNumOutClusters;
   (cId_t *)SerialApp_ClusterList   //  byte *pAppOutClusterList;
+#else
+  SERIALAPP_END_IN_MAX_CLUSTERS,          //  byte  AppNumInClusters;
+  (cId_t *)SerialApp_ClusterList,  //  byte *pAppInClusterList;
+  SERIALAPP_END_OUT_MAX_CLUSTERS,          //  byte  AppNumOutClusters;
+  (cId_t *)SerialApp_CenterIn_EndOut_ClusterList   //  byte *pAppOutClusterList;
+#endif
 };
 
 const endPointDesc_t SerialApp_epDesc =
@@ -256,6 +270,7 @@ static void rxCB( uint8 port, uint8 event );
 
 void ReqBind(void);
 void ReqMatchDesc(void);
+void CommandToBox(uint8 cmd);
 /*********************************************************************
  * @fn      SerialApp_Init
  *
@@ -304,42 +319,29 @@ void SerialApp_Init( uint8 task_id )
   HalLcdWriteString( "SerialApp2", HAL_LCD_LINE_2 );
 #endif
 
-  HalLedSet(HAL_LED_1,HAL_LED_MODE_ON);
-  MicroWait(50000);
-  MicroWait(50000);
-  HalLedSet(HAL_LED_2,HAL_LED_MODE_ON);
-  MicroWait(50000);
-  MicroWait(50000);
-  HalLedSet(HAL_LED_3,HAL_LED_MODE_ON);
-  MicroWait(50000);
-  MicroWait(50000);
   
   HalLedSet(HAL_LED_1,HAL_LED_MODE_OFF);
-  MicroWait(50000);
-  MicroWait(50000);
   HalLedSet(HAL_LED_2,HAL_LED_MODE_OFF);
-  MicroWait(50000);
-  MicroWait(50000);
   HalLedSet(HAL_LED_3,HAL_LED_MODE_OFF);
   
   ZDO_RegisterForZDOMsg( SerialApp_TaskID, End_Device_Bind_rsp );
   ZDO_RegisterForZDOMsg( SerialApp_TaskID, Match_Desc_rsp );
-
-  MicroWait(50000);
-  MicroWait(50000);
-  MicroWait(50000);
-
-#ifndef ZDO_COORDINATOR          
-  
-  const uint8 test[7]={0xAA, 0x75, 0x14, 0x00, 0x00 ,0x00, 0xCB};
-  HalUARTWrite(SERIAL_APP_PORT,(uint8*)test,7);
-
-#endif
-
-
 }
-
-
+#ifndef ZDO_COORDINATOR
+void CommandToBox(uint8 cmd)
+{
+    uint8 data[7];//format {0xAA, 0x75, 0x14, 0x00, 0x00 ,0x00, 0xCB};
+    data[0]=0xAA;
+    data[1]=0x75;
+    data[6]=data[0]^data[1];
+    data[2]=cmd;
+    data[6]=data[6]^data[2];
+    data[3]=0;
+    data[4]=0;
+    data[5]=0;
+    HalUARTWrite(SERIAL_APP_PORT,(uint8*)data,7);
+}
+#endif
 void ReqBind(void)
 {
       HalLedSet ( HAL_LED_1, HAL_LED_MODE_OFF );
@@ -347,13 +349,25 @@ void ReqBind(void)
       // Initiate an End Device Bind Request for the mandatory endpoint
       dstAddr.addrMode = Addr16Bit;
       dstAddr.addr.shortAddr = 0x0000; // Coordinator
+#ifdef ZDO_COORDINATOR
       ZDP_EndDeviceBindReq( &dstAddr, NLME_GetShortAddr(), 
                             SerialApp_epDesc.endPoint,
                             SERIALAPP_PROFID,
-                            SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
-                            SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
+                            SERIALAPP_CENTER_OUT_MAX_CLUSTERS, 
+                            (cId_t *)SerialApp_ClusterList,
+                            SERIALAPP_CENTER_IN_MAX_CLUSTERS, 
+                            (cId_t *)SerialApp_CenterIn_EndOut_ClusterList,
                             FALSE );
-
+#else
+      ZDP_EndDeviceBindReq( &dstAddr, NLME_GetShortAddr(), 
+                            SerialApp_epDesc.endPoint,
+                            SERIALAPP_PROFID,
+                            SERIALAPP_CENTER_IN_MAX_CLUSTERS, 
+                            (cId_t *)SerialApp_CenterIn_EndOut_ClusterList,
+                            SERIALAPP_CENTER_OUT_MAX_CLUSTERS, 
+                            (cId_t *)SerialApp_ClusterList,
+                            FALSE );
+#endif
   
 }
 void ReqMatchDesc(void)
@@ -362,12 +376,23 @@ void ReqMatchDesc(void)
      // Initiate a Match Description Request (Service Discovery)
       dstAddr.addrMode = AddrBroadcast;
       dstAddr.addr.shortAddr = NWK_BROADCAST_SHORTADDR;
+#ifdef ZDO_COORDINATOR
       ZDP_MatchDescReq( &dstAddr, NWK_BROADCAST_SHORTADDR,
                         SERIALAPP_PROFID,
-                        SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
-                        SERIALAPP_MAX_CLUSTERS, (cId_t *)SerialApp_ClusterList,
+                        SERIALAPP_CENTER_OUT_MAX_CLUSTERS, 
+                        (cId_t *)SerialApp_ClusterList,
+                        SERIALAPP_CENTER_IN_MAX_CLUSTERS, 
+                        (cId_t *)SerialApp_CenterIn_EndOut_ClusterList,
                         FALSE );
-
+#else
+      ZDP_MatchDescReq( &dstAddr, NWK_BROADCAST_SHORTADDR,
+                        SERIALAPP_PROFID,
+                        SERIALAPP_CENTER_IN_MAX_CLUSTERS, 
+                        (cId_t *)SerialApp_CenterIn_EndOut_ClusterList,
+                        SERIALAPP_CENTER_OUT_MAX_CLUSTERS, 
+                        (cId_t *)SerialApp_ClusterList,
+                        FALSE );
+#endif
 }
 
 /*********************************************************************
@@ -405,7 +430,8 @@ UINT16 SerialApp_ProcessEvent( uint8 task_id, UINT16 events )
           break;
   
         case ZDO_STATE_CHANGE:
-          ReqBind();
+          if (SerialApp_DstAddr.addrMode == afAddrNotPresent)
+            ReqMatchDesc();
           break;
         default:
           break;
@@ -645,8 +671,12 @@ void SerialApp_ProcessMSGCmd( afIncomingMSGPacket_t *pkt )
       osal_start_timerEx( SerialApp_TaskID, SERIALAPP_MSG_RTRY_EVT, delay );
     }
     break;
-
-    default:
+#ifndef   ZDO_COORDINATOR
+  case SERIALAPP_CLUSTERID_CMD:
+    CommandToBox(pkt->cmd.Data[0]);
+    break;
+#endif
+  default:
       break;
   }
 }
@@ -660,6 +690,26 @@ void SerialApp_ProcessMSGCmd( afIncomingMSGPacket_t *pkt )
  *
  * @return  none
  */
+#ifdef ZDO_COORINATOR
+static void SerialApp_SendData( uint8 *buf, uint8 len )
+{
+  afStatus_t stat;
+
+  // Pre-pend sequence number to the start of the Rx buffer.
+  *buf = ++SerialApp_SeqTx;
+
+  otaBuf = buf;
+  otaLen = len+1;
+
+  stat = AF_DataRequest( &SerialApp_DstAddr,
+                         (endPointDesc_t *)&SerialApp_epDesc,
+                          SERIALAPP_CLUSTERID_CMD,
+                          1, otaBuf,
+                          &SerialApp_MsgID, 0, AF_DEFAULT_RADIUS );
+  HalLedSet(HAL_LED_2,HAL_LED_MODE_OFF);
+  FREE_OTABUF();
+}
+#else
 static void SerialApp_SendData( uint8 *buf, uint8 len )
 {
   afStatus_t stat;
@@ -688,6 +738,7 @@ static void SerialApp_SendData( uint8 *buf, uint8 len )
     FREE_OTABUF();
   }
 }
+#endif
 
 #if SERIAL_APP_LOOPBACK
 /*********************************************************************
