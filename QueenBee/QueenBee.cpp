@@ -48,11 +48,12 @@ int main(int argc, char** argv)
 //  strcpy((char*)para.AutoCode,"WJ12345678");
 //
 
-  file.Init();
+
   INFO("read para part");
   protocol.ReadAllPara(port,packet);
   packet.GetAllPara(para);
   file.InitPara(para);
+  file.Init();
 
   INFO("read speed");
   protocol.Read360HourSpeed(port,packet);

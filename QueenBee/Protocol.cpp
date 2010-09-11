@@ -89,6 +89,7 @@ int Protocol::ReadAccident_Data(RS232Port & port,Packet& packet)
 //					);
 //		}
 	}
+	return 0;
 }
 int Protocol::Read2DayMileage(RS232Port & port,Packet& packet)
 {
