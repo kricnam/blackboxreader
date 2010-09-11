@@ -22,7 +22,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
+  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE, 
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -591,7 +591,7 @@ uint8 HalUARTOpen( uint8 port, halUARTCfg_t *config )
   HAL_UART_ASSERT( *cfgPP == NULL );
 #endif
 
-  HAL_UART_ASSERT( (config->baudRate == HAL_UART_BR_38400) ||
+  HAL_UART_ASSERT( (config->baudRate == HAL_UART_BR_9600) ||
                    (config->baudRate == HAL_UART_BR_115200) );
 
   /* Whereas runtime heap alloc can be expected to fail - one-shot system
@@ -618,8 +618,8 @@ uint8 HalUARTOpen( uint8 port, halUARTCfg_t *config )
   if ( port == HAL_UART_PORT_0 )
   {
     // Only supporting 38400 or 115200 for code size - other is possible.
-    U0BAUD = (config->baudRate == HAL_UART_BR_38400) ? 59 : 216;
-    U0GCR = (config->baudRate == HAL_UART_BR_38400) ? 10 : 11;
+    U0BAUD = (config->baudRate == HAL_UART_BR_9600) ? 59 : 216;
+    U0GCR = (config->baudRate == HAL_UART_BR_9600) ? 8 : 11;
 
     U0CSR |= CSR_RE;
 
@@ -642,7 +642,7 @@ uint8 HalUARTOpen( uint8 port, halUARTCfg_t *config )
     if ( config->flowControl )
     {
       cfg->flag |= UART_CFG_FLW;
-      U0UCR = UCR_FLOW | UCR_STOP;
+      U0UCR = UCR_D9 | UCR_BIT9 | UCR_PARITY | UCR_STOP; //UCR_FLOW | UCR_STOP;
       // Must rely on H/W for RTS (i.e. Tx stops when receiver negates CTS.)
       P0SEL |= HAL_UART_0_P0_RTS;
       // Cannot use H/W for CTS as DMA does not clear the Rx bytes properly.
@@ -660,8 +660,8 @@ uint8 HalUARTOpen( uint8 port, halUARTCfg_t *config )
   if ( port == HAL_UART_PORT_1 )
   {
     // Only supporting 38400 or 115200 for code size - other is possible.
-    U1BAUD = (config->baudRate == HAL_UART_BR_38400) ? 59 : 216;
-    U1GCR = (config->baudRate == HAL_UART_BR_38400) ? 10 : 11;
+    U1BAUD = (config->baudRate == HAL_UART_BR_9600) ? 59 : 216;
+    U1GCR = (config->baudRate == HAL_UART_BR_9600) ? 8 : 11;
 
     U1CSR |= CSR_RE;
 
@@ -684,7 +684,7 @@ uint8 HalUARTOpen( uint8 port, halUARTCfg_t *config )
     if ( config->flowControl )
     {
       cfg->flag |= UART_CFG_FLW;
-      U1UCR = UCR_FLOW | UCR_STOP;
+      U1UCR = UCR_D9 | UCR_BIT9 | UCR_PARITY | UCR_STOP;//UCR_FLOW | UCR_STOP;
       // Must rely on H/W for RTS (i.e. Tx stops when receiver negates CTS.)
       P1SEL |= HAL_UART_1_P1_RTS;
       // Cannot use H/W for CTS as DMA does not clear the Rx bytes properly.

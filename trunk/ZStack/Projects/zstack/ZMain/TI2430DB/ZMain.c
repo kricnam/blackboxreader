@@ -23,7 +23,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
+  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE, 
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -203,6 +203,7 @@ ZSEG int main( void )
   zmain_lcd_init();
 #endif
 
+  //HalUARTWrite(SERIAL_APP_PORT,"START\r\n",7);
   osal_start_system(); // No Return from here
 } // main()
 
@@ -281,7 +282,7 @@ static ZSEG void zmain_ext_addr( void )
 
   // Flash LED1 until user hits SW5
   led = HAL_LED_MODE_OFF;
-  while ( HAL_KEY_SW_5 != HalKeyRead() )
+  //while ( HAL_KEY_SW_5 != HalKeyRead() )
   {
     MicroWait( 62500 );
     HalLedSet( HAL_LED_1, led^=HAL_LED_MODE_ON );  // Toggle the LED

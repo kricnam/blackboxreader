@@ -22,7 +22,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
+  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE, 
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -129,10 +129,24 @@
   #define HAL_KEY_SW_6_ICTLBIT  HAL_KEY_BIT3            /* Interrupt enable bit for SW1 */
   #define HAL_KEY_SW_6_PXIFG    P0IFG                   /* Port Interrupt Flag for SW1 */
 
+
+  #define HAL_KEY_SW_5_ENABLE   /* 2430DB - SW5 is enabled based on key interrupt enable or not - see config */
+  #define HAL_KEY_SW_5_PORT     P0                      /* Port location of SW5 */
+  #define HAL_KEY_SW_5_BIT      HAL_KEY_BIT0            /* Bit location of SW5 */
+  #define HAL_KEY_SW_5_SEL      P0SEL                   /* Port Select Register for SW5 */
+  #define HAL_KEY_SW_5_DIR      P0DIR                   /* Port Direction Register for SW5 */
+  #define HAL_KEY_SW_5_INP      P0INP                   /* Port Input Mode Register for SW5 */
+  #define HAL_KEY_SW_5_IEN      IEN1                    /* Interrupt Enable Register for SW5 */
+  #define HAL_KEY_SW_5_IENBIT   HAL_KEY_BIT5            /* Interrupt Enable bit for SW5 */
+  #define HAL_KEY_SW_5_EDGE     HAL_KEY_RISING_EDGE    /* Type of interrupt for SW5 */
+  #define HAL_KEY_SW_5_EDGEBIT  HAL_KEY_BIT0            /* EdgeType enable bit SW5 */
+  #define HAL_KEY_SW_5_ICTL     PICTL                   /* Port Interrupt Control for SW5 */
+  #define HAL_KEY_SW_5_ICTLBIT  HAL_KEY_BIT3            /* Interrupt enable bit for SW5 */
+  #define HAL_KEY_SW_5_PXIFG    P0IFG                   /* Port Interrupt Flag for SW5 */
+#ifdef 0
   #define HAL_KEY_JOYSTICK_ENABLE
   #define HAL_KEY_JOY_CHN   HAL_ADC_CHANNEL_6
 
-  #define HAL_KEY_SW_5_ENABLE   /* 2430DB - SW5 is enabled based on key interrupt enable or not - see config */
   #define HAL_KEY_SW_5_PORT     P2                      /* Port location of SW5 */
   #define HAL_KEY_SW_5_BIT      HAL_KEY_BIT0            /* Bit location of SW5 */
   #define HAL_KEY_SW_5_SEL      P2SEL                   /* Port Select Register for SW5 */
@@ -145,7 +159,7 @@
   #define HAL_KEY_SW_5_ICTL     PICTL                   /* Port Interrupt Control for SW5 */
   #define HAL_KEY_SW_5_ICTLBIT  HAL_KEY_BIT5            /* Interrupt enable bit for SW5 */
   #define HAL_KEY_SW_5_PXIFG    P2IFG                   /* Port Interrupt Flag for SW5 */
-
+#endif
   #define HAL_KEY_P0INT_LOW_USED    HAL_KEY_SW_6_BIT    /* P0 can only be enabled/disabled as group of high or low nibble */
   #define HAL_KEY_POINT_HIGH_USED   0                   /* P0 can only be enabled/disabled as group of high or low nibble */
 #endif
@@ -230,7 +244,9 @@ void HalKeyInit( void )
 #if (HAL_KEY == TRUE)
   /* Initialize previous key to 0 */
   halKeySavedKeys = 0;
-
+  P0SEL &= ~(0x03);
+  P0DIR &= ~(0x03);
+#if 0
 #if defined (HAL_KEY_SW_6_ENABLE)
   HAL_KEY_SW_6_SEL &= ~(HAL_KEY_SW_6_BIT);    /* Set pin function to GPIO */
   HAL_KEY_SW_6_DIR &= ~(HAL_KEY_SW_6_BIT);    /* Set pin direction to Input */
@@ -241,12 +257,13 @@ void HalKeyInit( void )
   HAL_KEY_SW_5_DIR &= ~(HAL_KEY_SW_5_BIT);    /* Set pin direction to Input */
   HAL_KEY_SW_5_INP |= HAL_KEY_SW_5_BIT;       /* Set pin input mode to tri-state */
 #endif
-
+#endif /*0*/
   /* Initialize callback function */
   pHalKeyProcessFunction  = NULL;
 
   /* Start with key is not configured */
   HalKeyConfigured = FALSE;
+
 #endif /* HAL_KEY */
 }
 
@@ -279,10 +296,11 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
        causes contant interruption on P2INT_VECTOR. Disable the usage of P2 interrupt
        will stop this problem.
     */
+#ifdef 0
     #if defined (HAL_BOARD_CC2430DB)
       #undef HAL_KEY_SW_5_ENABLE                      /* Dis-allow SW5 when key interrupt is enable */
     #endif
-
+#endif /*0*/
 #if defined (HAL_KEY_SW_5_ENABLE)
     PICTL &= ~(HAL_KEY_SW_5_EDGEBIT);                 /* Set rising or falling edge */
   #if (HAL_KEY_SW_5_EDGE == HAL_KEY_FALLING_EDGE)
@@ -318,8 +336,8 @@ void HalKeyConfig (bool interruptEnable, halKeyCBack_t cback)
        causes contant interruption on P2INT_VECTOR. Disable the usage of P2 interrupt
        will stop this problem.
     */
-    #if defined (HAL_BOARD_CC2430DB)
-      #define HAL_KEY_SW_5_ENABLE                     /* Allow SW5 only when key interrupt is disable */
+    #if defined (HAL_BOARD_CC2430DB )
+      //#define HAL_KEY_SW_5_ENABLE                     /* Allow SW5 only when key interrupt is disable */
     #endif
 
 #if defined (HAL_KEY_SW_6_ENABLE)
@@ -369,7 +387,7 @@ uint8 HalKeyRead ( void )
   }
 #endif
 #if defined (HAL_KEY_SW_5_ENABLE)
-  if (HAL_KEY_SW_5_PORT & HAL_KEY_SW_5_BIT)       /* Key is active high */
+  if (!(HAL_KEY_SW_5_PORT & HAL_KEY_SW_5_BIT))       /* Key is active high */
   {
     keys |= HAL_KEY_SW_5;
   }
@@ -479,7 +497,7 @@ void HalKeyPoll (void)
   }
 #endif
 #if defined (HAL_KEY_SW_5_ENABLE)
-  if (HAL_KEY_SW_5_PORT & HAL_KEY_SW_5_BIT)       /* Key is active high */
+  if (!(HAL_KEY_SW_5_PORT & HAL_KEY_SW_5_BIT))       /* Key is active high */
   {
     keys |= HAL_KEY_SW_5;
   }
@@ -627,7 +645,7 @@ void HalKeyEnterSleep ( void )
    * It was set to tri-state during active state. It needs to be pulled-up.
    */
 #if defined (HAL_KEY_SW_5_ENABLE)
-  HAL_KEY_SW_5_INP &= ~HAL_KEY_SW_5_BIT;       /* Set pin input mode to pull-up */
+  //HAL_KEY_SW_5_INP &= ~HAL_KEY_SW_5_BIT;       /* Set pin input mode to pull-up */
 #endif
 }
 
@@ -646,7 +664,7 @@ uint8 HalKeyExitSleep ( void )
    * It was pulled up during sleep. It needs to be set to tri-state during active state.
    */
 #if defined (HAL_KEY_SW_5_ENABLE)
-  HAL_KEY_SW_5_INP |= HAL_KEY_SW_5_BIT;       /* Set pin input mode to tri-state */
+  //HAL_KEY_SW_5_INP |= HAL_KEY_SW_5_BIT;       /* Set pin input mode to tri-state */
 #endif
 
   /* Wake up and read keys */

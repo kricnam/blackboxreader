@@ -24,7 +24,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
+  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE, 
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -265,13 +265,13 @@ byte OnBoard_SendKeys( byte keys, byte state )
  *********************************************************************/
 void OnBoard_KeyCallback ( uint8 keys, uint8 state )
 {
-  uint8 shift;
+  //uint8 shift;
 
   // shift key (S1) is used to generate key interrupt
   // applications should not use S1 when key interrupt is enabled
-  shift = (OnboardKeyIntEnable == HAL_KEY_INTERRUPT_ENABLE) ? false : ((keys & HAL_KEY_SW_6) ? true : false);
+  //shift = (OnboardKeyIntEnable == HAL_KEY_INTERRUPT_ENABLE) ? false : ((keys & HAL_KEY_SW_6) ? true : false);
 
-  if ( OnBoard_SendKeys( keys, shift ) != ZSuccess )
+  if ( OnBoard_SendKeys( keys, /*shift*/0 ) != ZSuccess )
   {
     // Process SW1 here
     if ( keys & HAL_KEY_SW_1 )  // Switch 1

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <project>
-  <fileVersion>2</fileVersion>
+  <fileVersion>1</fileVersion>
   <configuration>
     <name>CoordinatorDB</name>
     <toolchain>
@@ -12,7 +12,7 @@
       <name>General</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>3</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -29,22 +29,22 @@
         </option>
         <option>
           <name>CPU Core</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>CPU Core Slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>Code Memory Model</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
           <name>Code Memory Model slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
@@ -111,6 +111,15 @@
         <option>
           <name>DPTR Addresses</name>
           <state> -D?DPL1=0x84 -D?DPH1=0x85</state>
+        </option>
+        <option>
+          <name>Use arithmetic unit</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Peripheral To Simulate</name>
+          <version>0</version>
+          <state>1</state>
         </option>
         <option>
           <name>CodeBankReg</name>
@@ -181,6 +190,11 @@
           <state>No float, no field width, no precision.</state>
         </option>
         <option>
+          <name>GeneralMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
           <name>GeneralEnableMisra</name>
           <state>0</state>
         </option>
@@ -216,26 +230,13 @@
           <name>General Huge Heap Size</name>
           <state>0x000</state>
         </option>
-        <option>
-          <name>CodeBankNrOfs</name>
-          <state>0x03</state>
-        </option>
-        <option>
-          <name>CodeBankRegMask</name>
-          <state>0x30</state>
-        </option>
-        <option>
-          <name>GeneralMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>ICC8051</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>6</version>
+        <version>5</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -247,7 +248,7 @@
           <state>CC2430DB</state>
           <state>REFLECTOR</state>
           <state>HAL_UART</state>
-          <state>SERIAL_APP_PORT=1</state>
+          <state>SERIAL_APP_PORT=0</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -326,9 +327,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeed</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimization</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>11101</state>
+          <state>00000</state>
+        </option>
+        <option>
+          <name>CCMakeLibraryModule</name>
+          <state>0</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -399,8 +413,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeedSlave</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimizationSlave</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
           <name>NoUBROFMessages</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
         </option>
         <option>
           <name>CompilerMisraOverride</name>
@@ -447,36 +475,6 @@
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
           <state>$TOOLKIT_DIR$\INC\CLIB\</state>
-        </option>
-        <option>
-          <name>CompilerMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
-        <option>
-          <name>CCOverrideModuleTypeDefault</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleType</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleTypeSlave</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevel</name>
-          <state>3</state>
-        </option>
-        <option>
-          <name>CCOptStrategy</name>
-          <version>0</version>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevelSlave</name>
-          <state>3</state>
         </option>
       </data>
     </settings>
@@ -658,9 +656,9 @@
     </settings>
     <settings>
       <name>XLINK</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>16</version>
+        <version>15</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -746,8 +744,32 @@
           <state></state>
         </option>
         <option>
+          <name>StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>Ext StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
           <name>Config Include Dir</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>Idata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Pdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Xdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Ext Stack Size</name>
+          <state>0</state>
         </option>
         <option>
           <name>XLink Dptr Switch mask</name>
@@ -1016,7 +1038,7 @@
       <name>General</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>3</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -1033,22 +1055,22 @@
         </option>
         <option>
           <name>CPU Core</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>CPU Core Slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>Code Memory Model</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
           <name>Code Memory Model slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
@@ -1115,6 +1137,15 @@
         <option>
           <name>DPTR Addresses</name>
           <state> -D?DPL1=0x84 -D?DPH1=0x85</state>
+        </option>
+        <option>
+          <name>Use arithmetic unit</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Peripheral To Simulate</name>
+          <version>0</version>
+          <state>1</state>
         </option>
         <option>
           <name>CodeBankReg</name>
@@ -1185,6 +1216,11 @@
           <state>No float, no field width, no precision.</state>
         </option>
         <option>
+          <name>GeneralMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
           <name>GeneralEnableMisra</name>
           <state>0</state>
         </option>
@@ -1220,26 +1256,13 @@
           <name>General Huge Heap Size</name>
           <state>0x000</state>
         </option>
-        <option>
-          <name>CodeBankNrOfs</name>
-          <state>0x03</state>
-        </option>
-        <option>
-          <name>CodeBankRegMask</name>
-          <state>0x30</state>
-        </option>
-        <option>
-          <name>GeneralMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>ICC8051</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>6</version>
+        <version>5</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -1331,9 +1354,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeed</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimization</name>
+          <version>0</version>
+          <state>3</state>
+        </option>
+        <option>
           <name>CCAllowList</name>
           <version>1</version>
           <state>11101</state>
+        </option>
+        <option>
+          <name>CCMakeLibraryModule</name>
+          <state>0</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1404,8 +1440,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeedSlave</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimizationSlave</name>
+          <version>0</version>
+          <state>3</state>
+        </option>
+        <option>
           <name>NoUBROFMessages</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
         </option>
         <option>
           <name>CompilerMisraOverride</name>
@@ -1451,36 +1501,6 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>###Uninitialized###</state>
-        </option>
-        <option>
-          <name>CompilerMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
-        <option>
-          <name>CCOverrideModuleTypeDefault</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleType</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleTypeSlave</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevel</name>
-          <state>3</state>
-        </option>
-        <option>
-          <name>CCOptStrategy</name>
-          <version>0</version>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevelSlave</name>
-          <state>3</state>
         </option>
       </data>
     </settings>
@@ -1662,9 +1682,9 @@
     </settings>
     <settings>
       <name>XLINK</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>16</version>
+        <version>15</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -1750,8 +1770,32 @@
           <state></state>
         </option>
         <option>
+          <name>StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>Ext StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
           <name>Config Include Dir</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>Idata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Pdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Xdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Ext Stack Size</name>
+          <state>0</state>
         </option>
         <option>
           <name>XLink Dptr Switch mask</name>
@@ -2020,7 +2064,7 @@
       <name>General</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>3</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2037,22 +2081,22 @@
         </option>
         <option>
           <name>CPU Core</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>CPU Core Slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>Code Memory Model</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
           <name>Code Memory Model slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
@@ -2119,6 +2163,15 @@
         <option>
           <name>DPTR Addresses</name>
           <state> -D?DPL1=0x84 -D?DPH1=0x85</state>
+        </option>
+        <option>
+          <name>Use arithmetic unit</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Peripheral To Simulate</name>
+          <version>0</version>
+          <state>1</state>
         </option>
         <option>
           <name>CodeBankReg</name>
@@ -2189,6 +2242,11 @@
           <state>No float, no field width, no precision.</state>
         </option>
         <option>
+          <name>GeneralMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
           <name>GeneralEnableMisra</name>
           <state>0</state>
         </option>
@@ -2224,26 +2282,13 @@
           <name>General Huge Heap Size</name>
           <state>0x000</state>
         </option>
-        <option>
-          <name>CodeBankNrOfs</name>
-          <state>0x03</state>
-        </option>
-        <option>
-          <name>CodeBankRegMask</name>
-          <state>0x30</state>
-        </option>
-        <option>
-          <name>GeneralMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>ICC8051</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>6</version>
+        <version>5</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2335,9 +2380,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeed</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimization</name>
+          <version>0</version>
+          <state>3</state>
+        </option>
+        <option>
           <name>CCAllowList</name>
           <version>1</version>
           <state>11101</state>
+        </option>
+        <option>
+          <name>CCMakeLibraryModule</name>
+          <state>0</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -2408,8 +2466,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeedSlave</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimizationSlave</name>
+          <version>0</version>
+          <state>3</state>
+        </option>
+        <option>
           <name>NoUBROFMessages</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
         </option>
         <option>
           <name>CompilerMisraOverride</name>
@@ -2456,36 +2528,6 @@
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
           <state>$TOOLKIT_DIR$\INC\CLIB\</state>
-        </option>
-        <option>
-          <name>CompilerMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
-        <option>
-          <name>CCOverrideModuleTypeDefault</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleType</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleTypeSlave</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevel</name>
-          <state>3</state>
-        </option>
-        <option>
-          <name>CCOptStrategy</name>
-          <version>0</version>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevelSlave</name>
-          <state>3</state>
         </option>
       </data>
     </settings>
@@ -2667,9 +2709,9 @@
     </settings>
     <settings>
       <name>XLINK</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>16</version>
+        <version>15</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2755,8 +2797,32 @@
           <state></state>
         </option>
         <option>
+          <name>StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>Ext StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
           <name>Config Include Dir</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>Idata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Pdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Xdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Ext Stack Size</name>
+          <state>0</state>
         </option>
         <option>
           <name>XLink Dptr Switch mask</name>
@@ -3025,7 +3091,7 @@
       <name>General</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>3</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -3042,22 +3108,22 @@
         </option>
         <option>
           <name>CPU Core</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>CPU Core Slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>Code Memory Model</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
           <name>Code Memory Model slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
@@ -3124,6 +3190,15 @@
         <option>
           <name>DPTR Addresses</name>
           <state> -D?DPL1=0x84 -D?DPH1=0x85</state>
+        </option>
+        <option>
+          <name>Use arithmetic unit</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Peripheral To Simulate</name>
+          <version>0</version>
+          <state>1</state>
         </option>
         <option>
           <name>CodeBankReg</name>
@@ -3194,6 +3269,11 @@
           <state>No float, no field width, no precision.</state>
         </option>
         <option>
+          <name>GeneralMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
           <name>GeneralEnableMisra</name>
           <state>0</state>
         </option>
@@ -3229,26 +3309,13 @@
           <name>General Huge Heap Size</name>
           <state>0x000</state>
         </option>
-        <option>
-          <name>CodeBankNrOfs</name>
-          <state>0x03</state>
-        </option>
-        <option>
-          <name>CodeBankRegMask</name>
-          <state>0x30</state>
-        </option>
-        <option>
-          <name>GeneralMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>ICC8051</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>6</version>
+        <version>5</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -3341,9 +3408,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeed</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimization</name>
+          <version>0</version>
+          <state>3</state>
+        </option>
+        <option>
           <name>CCAllowList</name>
           <version>1</version>
           <state>11101</state>
+        </option>
+        <option>
+          <name>CCMakeLibraryModule</name>
+          <state>0</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -3414,8 +3494,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeedSlave</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimizationSlave</name>
+          <version>0</version>
+          <state>3</state>
+        </option>
+        <option>
           <name>NoUBROFMessages</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
         </option>
         <option>
           <name>CompilerMisraOverride</name>
@@ -3462,36 +3556,6 @@
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
           <state>$TOOLKIT_DIR$\INC\CLIB\</state>
-        </option>
-        <option>
-          <name>CompilerMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
-        <option>
-          <name>CCOverrideModuleTypeDefault</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleType</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleTypeSlave</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevel</name>
-          <state>3</state>
-        </option>
-        <option>
-          <name>CCOptStrategy</name>
-          <version>0</version>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevelSlave</name>
-          <state>3</state>
         </option>
       </data>
     </settings>
@@ -3673,9 +3737,9 @@
     </settings>
     <settings>
       <name>XLINK</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>16</version>
+        <version>15</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -3761,8 +3825,32 @@
           <state></state>
         </option>
         <option>
+          <name>StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>Ext StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
           <name>Config Include Dir</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>Idata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Pdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Xdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Ext Stack Size</name>
+          <state>0</state>
         </option>
         <option>
           <name>XLink Dptr Switch mask</name>
@@ -4031,7 +4119,7 @@
       <name>General</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>3</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -4048,22 +4136,22 @@
         </option>
         <option>
           <name>CPU Core</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>CPU Core Slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>Code Memory Model</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
           <name>Code Memory Model slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
@@ -4130,6 +4218,15 @@
         <option>
           <name>DPTR Addresses</name>
           <state> -D?DPL1=0x84 -D?DPH1=0x85</state>
+        </option>
+        <option>
+          <name>Use arithmetic unit</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Peripheral To Simulate</name>
+          <version>0</version>
+          <state>1</state>
         </option>
         <option>
           <name>CodeBankReg</name>
@@ -4200,6 +4297,11 @@
           <state>No float, no field width, no precision.</state>
         </option>
         <option>
+          <name>GeneralMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
           <name>GeneralEnableMisra</name>
           <state>0</state>
         </option>
@@ -4235,26 +4337,13 @@
           <name>General Huge Heap Size</name>
           <state>0x000</state>
         </option>
-        <option>
-          <name>CodeBankNrOfs</name>
-          <state>0x03</state>
-        </option>
-        <option>
-          <name>CodeBankRegMask</name>
-          <state>0x30</state>
-        </option>
-        <option>
-          <name>GeneralMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>ICC8051</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>6</version>
+        <version>5</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -4267,7 +4356,7 @@
           <state>NWK_AUTO_POLL</state>
           <state>REFLECTOR</state>
           <state>HAL_UART</state>
-          <state>SERIAL_APP_PORT=1</state>
+          <state>SERIAL_APP_PORT=0</state>
           <state>INT_HEAP_LEN=4096</state>
         </option>
         <option>
@@ -4347,9 +4436,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeed</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimization</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>11101</state>
+          <state>00000</state>
+        </option>
+        <option>
+          <name>CCMakeLibraryModule</name>
+          <state>0</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -4420,8 +4522,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeedSlave</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimizationSlave</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
           <name>NoUBROFMessages</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
         </option>
         <option>
           <name>CompilerMisraOverride</name>
@@ -4468,36 +4584,6 @@
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
           <state>$TOOLKIT_DIR$\INC\CLIB\</state>
-        </option>
-        <option>
-          <name>CompilerMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
-        <option>
-          <name>CCOverrideModuleTypeDefault</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleType</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleTypeSlave</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevel</name>
-          <state>3</state>
-        </option>
-        <option>
-          <name>CCOptStrategy</name>
-          <version>0</version>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevelSlave</name>
-          <state>3</state>
         </option>
       </data>
     </settings>
@@ -4679,9 +4765,9 @@
     </settings>
     <settings>
       <name>XLINK</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>16</version>
+        <version>15</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -4699,7 +4785,7 @@
         <option>
           <name>OutputFormat</name>
           <version>11</version>
-          <state>23</state>
+          <state>57</state>
         </option>
         <option>
           <name>FormatVariant</name>
@@ -4736,7 +4822,7 @@
         </option>
         <option>
           <name>ListSymbols</name>
-          <state>2</state>
+          <state>1</state>
         </option>
         <option>
           <name>PageLengthCheck</name>
@@ -4767,8 +4853,32 @@
           <state></state>
         </option>
         <option>
+          <name>StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>Ext StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
           <name>Config Include Dir</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>Idata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Pdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Xdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Ext Stack Size</name>
+          <state>0</state>
         </option>
         <option>
           <name>XLink Dptr Switch mask</name>
@@ -5037,7 +5147,7 @@
       <name>General</name>
       <archiveVersion>1</archiveVersion>
       <data>
-        <version>3</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -5054,22 +5164,22 @@
         </option>
         <option>
           <name>CPU Core</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>CPU Core Slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>1</state>
         </option>
         <option>
           <name>Code Memory Model</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
           <name>Code Memory Model slave</name>
-          <version>1</version>
+          <version>0</version>
           <state>2</state>
         </option>
         <option>
@@ -5136,6 +5246,15 @@
         <option>
           <name>DPTR Addresses</name>
           <state> -D?DPL1=0x84 -D?DPH1=0x85</state>
+        </option>
+        <option>
+          <name>Use arithmetic unit</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Peripheral To Simulate</name>
+          <version>0</version>
+          <state>1</state>
         </option>
         <option>
           <name>CodeBankReg</name>
@@ -5206,6 +5325,11 @@
           <state>No float, no field width, no precision.</state>
         </option>
         <option>
+          <name>GeneralMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
           <name>GeneralEnableMisra</name>
           <state>0</state>
         </option>
@@ -5241,26 +5365,13 @@
           <name>General Huge Heap Size</name>
           <state>0x000</state>
         </option>
-        <option>
-          <name>CodeBankNrOfs</name>
-          <state>0x03</state>
-        </option>
-        <option>
-          <name>CodeBankRegMask</name>
-          <state>0x30</state>
-        </option>
-        <option>
-          <name>GeneralMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>ICC8051</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>6</version>
+        <version>5</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -5355,9 +5466,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeed</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimization</name>
+          <version>0</version>
+          <state>3</state>
+        </option>
+        <option>
           <name>CCAllowList</name>
           <version>1</version>
           <state>11101</state>
+        </option>
+        <option>
+          <name>CCMakeLibraryModule</name>
+          <state>0</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -5428,8 +5552,22 @@
           <state>0</state>
         </option>
         <option>
+          <name>CCOptSizeSpeedSlave</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCOptimizationSlave</name>
+          <version>0</version>
+          <state>3</state>
+        </option>
+        <option>
           <name>NoUBROFMessages</name>
           <state>0</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
         </option>
         <option>
           <name>CompilerMisraOverride</name>
@@ -5476,36 +5614,6 @@
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
           <state>$TOOLKIT_DIR$\INC\CLIB\</state>
-        </option>
-        <option>
-          <name>CompilerMisraRules98</name>
-          <version>0</version>
-          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-        </option>
-        <option>
-          <name>CCOverrideModuleTypeDefault</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleType</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>CCRadioModuleTypeSlave</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevel</name>
-          <state>3</state>
-        </option>
-        <option>
-          <name>CCOptStrategy</name>
-          <version>0</version>
-          <state>1</state>
-        </option>
-        <option>
-          <name>CCOptLevelSlave</name>
-          <state>3</state>
         </option>
       </data>
     </settings>
@@ -5687,9 +5795,9 @@
     </settings>
     <settings>
       <name>XLINK</name>
-      <archiveVersion>3</archiveVersion>
+      <archiveVersion>2</archiveVersion>
       <data>
-        <version>16</version>
+        <version>15</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -5775,8 +5883,32 @@
           <state></state>
         </option>
         <option>
+          <name>StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>Ext StackSize Invisible check</name>
+          <state>1</state>
+        </option>
+        <option>
           <name>Config Include Dir</name>
           <state>1</state>
+        </option>
+        <option>
+          <name>Idata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Pdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Xdata Stack Size</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Ext Stack Size</name>
+          <state>0</state>
         </option>
         <option>
           <name>XLink Dptr Switch mask</name>
