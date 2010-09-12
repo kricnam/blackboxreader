@@ -150,8 +150,8 @@
  * the min & max expected baud rate.
  */
 #if !defined( SAFE_RX_MIN )
-  #define SAFE_RX_MIN  48  // bytes - max expected per poll @ 115.2k
-  // 16 bytes @ 38.4 kBaud -> 4.16 msecs -> 138 32-kHz ticks.
+  #define SAFE_RX_MIN  6  // 48 bytes - max expected per poll @ 115.2k
+  // 16 bytes @ 38.4 kBaud -> 4.16 msecs -> 138 32-kHz ticks. 4 @ 9.6k
   #define DMA_RX_DLY  140
   //  2 bytes @ 38.4 kBaud -> 0.52 msecs ->  17 32-kHz ticks.
   #define DMA_TX_DLY   20
@@ -162,7 +162,7 @@
 
 // The timeout only supports 1 byte.
 #if !defined( HAL_UART_RX_IDLE )
-  #define HAL_UART_RX_IDLE  (6 * RX_MSECS_TO_TICKS)
+  #define HAL_UART_RX_IDLE  250 //(6 * RX_MSECS_TO_TICKS)
 #endif
 
 // Only supporting 1 of the 2 USART modules to be driven by DMA at a time.
@@ -421,10 +421,10 @@ static void pollISR( uartCfg_t *cfg )
     /* It is necessary to stop Rx flow in advance of a full Rx buffer because
      * bytes can keep coming while sending H/W fifo flushes.
      */
-    if ( cfg->rxCnt >= (cfg->rxMax - SAFE_RX_MIN) )
-    {
-      RX_STOP_FLOW( cfg );
-    }
+    //if ( cfg->rxCnt >= (cfg->rxMax - SAFE_RX_MIN) )
+    //{
+    //  RX_STOP_FLOW( cfg );
+    //}
   }
 }
 #endif
@@ -831,33 +831,33 @@ void HalUARTPoll( void )
      * until the condition corresponding to the flag is rectified.
      * So even if new data is not received, continuous callbacks are made.
      */
-      if ( cfg->rxHead != cfg->rxTail )
-      {
+    if ( cfg->rxHead != cfg->rxTail )
+    {
       uint8 evt;
-
-      if ( cfg->rxHead >= (cfg->rxMax - SAFE_RX_MIN) )
+      
+      if ( cfg->rxCnt >= (cfg->rxMax - SAFE_RX_MIN) )
       {
         evt = HAL_UART_RX_FULL;
       }
-      else if ( cfg->rxHigh && (cfg->rxHead >= cfg->rxHigh) )
+      else if ( cfg->rxHigh && (cfg->rxCnt >= cfg->rxHigh) )
       {
         evt = HAL_UART_RX_ABOUT_FULL;
-    }
+      }
       else if ( cfg->rxTick == 0 )
-    {
+      {
         evt = HAL_UART_RX_TIMEOUT;
-    }
-    else
-    {
+      }
+      else
+      {
         evt = 0;
-    }
-
-    if ( evt && cfg->rxCB )
-    {
+      }
+      
+      if ( evt && cfg->rxCB )
+      {
         cfg->rxCB( ((cfg->flag & UART_CFG_U1F)!=0), evt );
+      }
     }
-    }
-
+    
 #if HAL_UART_0_ENABLE
     if ( cfg == cfg0 )
     {
