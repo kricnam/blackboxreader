@@ -119,7 +119,7 @@ public:
 	const char* GetData() { return data.data();}
 	int GetSize() {return data.size();}
 	void SetCmdPacket(CmdWord cmd);
-	void ReceiveFrameFrom(RS232Port & port);
+	void ReceiveFrameFrom(RS232Port & port,int wait_ms=10000);
 	int GetDriverCode(void);
 	string GetLicenseID(void);
 	struct Packet::AccidentData*  GetAccidentData(int& num);

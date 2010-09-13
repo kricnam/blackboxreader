@@ -16,12 +16,15 @@
 
 int main(int argc, char** argv)
 {
-  if (argc > 2)  SETTRACELEVEL(atoi(argv[2]));
-  else SETTRACELEVEL(2);
   RS232Port port;
   Packet packet;
   Protocol protocol;
   port.Open(argv[1]);
+
+  if (argc > 3)  SETTRACELEVEL(atoi(argv[3]));
+  else SETTRACELEVEL(3);
+  if (argc > 2)
+    protocol.SetOTA(atoi(argv[2])>0);
 
   //protocol.ReadDriverIDLicenceID(port,packet);
   //protocol.ReadRealTime(port,packet);

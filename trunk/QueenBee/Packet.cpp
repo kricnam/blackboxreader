@@ -9,6 +9,7 @@
 #include "DebugLog.h"
 #include <stdio.h>
 #include "USBDataFile.h"
+#include <sys/time.h>
 
 Packet::Packet()
 {
@@ -24,15 +25,12 @@ Packet::~Packet()
 void Packet::SetCmdPacket(CmdWord cmd)
 {
 //      Full Packet
-//	data.clear();
-//	data=0xAA;
-//	data+=0x75;
-//	data+=cmd;
-//	data.append(3,0);
-//	data+=XOR();
-
-        data.clear();
-        data+=cmd;
+	data.clear();
+	data=0xAA;
+	data+=0x75;
+	data+=cmd;
+	data.append(3,0);
+	data+=XOR();
 }
 
 int Packet::GetDriverCode(void)
@@ -112,13 +110,14 @@ unsigned char Packet::XOR()
     return sum;
 }
 
-void Packet::ReceiveFrameFrom(RS232Port & port)
+void Packet::ReceiveFrameFrom(RS232Port & port,int wait_ms)
 {
 	char buff;
 	int n;
 	int count = 0;
 	int err=0;
-
+	struct timeval now, start, diff;
+	gettimeofday(&start, 0);
 	data.clear();
 	frameState = NONE;
 	do
@@ -126,6 +125,15 @@ void Packet::ReceiveFrameFrom(RS232Port & port)
 		n = port.Read(&buff, 1);
 		if (n == 0)
 		{
+		       gettimeofday(&now, 0);
+		       timersub(&now,&start,&diff);
+		       if ((diff.tv_sec*1000 + diff.tv_usec/1000) < wait_ms)
+		         {
+                          usleep(100000);
+                          if (data.size()) start = now;
+		            continue;
+		         }
+
 			data.clear();
 			return;
 		}
@@ -158,6 +166,7 @@ void Packet::ReceiveFrameFrom(RS232Port & port)
 		case SIZE1:
 			frameState = SIZE2;
 			count = (count&0xFF00)|(buff&0xFF);
+			TRACE("Shold recv %u bytes",count);
 			break;
 		case SIZE2:
 			frameState = DUMMY;
@@ -168,6 +177,7 @@ void Packet::ReceiveFrameFrom(RS232Port & port)
 			break;
 		case DATA:
 			count--;
+			TRACE("%u bytes left",count);
 			frameState = DATA;
 			if (!(count-1)) frameState=CHECKSUM;
 			break;
