@@ -25,8 +25,10 @@ public:
 	int Read2DaySpeed(RS232Port & port,Packet& packet);
 	int Read2DayOverDrive(RS232Port & port,Packet& packet);
 	int ReadAllPara(RS232Port & port,Packet& packet);
+	void SetOTA(bool b) {bOTA = b;};
 protected:
 	int Read(Packet::CmdWord cmd,int wait_ms,RS232Port & port,Packet& packet);
+	bool bOTA;
 };
 
 

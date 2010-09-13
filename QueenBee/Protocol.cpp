@@ -10,8 +10,7 @@
 
 Protocol::Protocol()
 {
-	// TODO Auto-generated constructor stub
-
+  bOTA = false;
 }
 
 Protocol::~Protocol()
@@ -21,17 +20,26 @@ Protocol::~Protocol()
 
 int Protocol::Read(Packet::CmdWord cmd,int wait_ms,RS232Port & port,Packet& packet)
 {
-	packet.SetCmdPacket(cmd);
-	int n = packet.GetSize();
-	const char* c=packet.GetData();
-	if (n == port.Write(c,n))
-	{
-		usleep(wait_ms*1000);
-		packet.ReceiveFrameFrom(port);
-		packet.Dump();
-		return packet.GetSize();
-	}
-	return -1;
+  const char* c;
+  int n;
+  if (bOTA)
+    {
+      c = (const char*)&cmd;
+      n = 1;
+    }
+  else
+    {
+      packet.SetCmdPacket(cmd);
+      n = packet.GetSize();
+      c = packet.GetData();
+    }
+  if (n == port.Write(c, n))
+    {
+      packet.ReceiveFrameFrom(port,wait_ms);
+      packet.Dump();
+      return packet.GetSize();
+    }
+  return -1;
 }
 
 int Protocol::ReadDriverIDLicenceID(RS232Port &port,Packet& packet)
@@ -106,7 +114,7 @@ int Protocol::Read2DayOverDrive(RS232Port & port,Packet& packet)
 
 int Protocol::ReadAllPara(RS232Port & port,Packet& packet)
 {
-    return Read(Packet::GET_ALL_PARA,2000,port,packet);
+    return Read(Packet::GET_ALL_PARA,5000,port,packet);
 }
 
 
