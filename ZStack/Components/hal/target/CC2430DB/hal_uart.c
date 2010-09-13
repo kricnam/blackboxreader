@@ -1150,6 +1150,10 @@ HAL_ISR_FUNCTION( halUart1RxIsr, URX1_VECTOR )
 HAL_ISR_FUNCTION( halUart0TxIsr, UTX0_VECTOR )
 {
   UTX0IF = 0;
+  asm("NOP");
+  asm("NOP");
+  asm("NOP");
+  asm("NOP");
 
   if ( cfg0->txTail == cfg0->txMax )
   {
@@ -1163,6 +1167,11 @@ HAL_ISR_FUNCTION( halUart0TxIsr, UTX0_VECTOR )
   if ( cfg0->txTail != cfg0->txHead )
   {
     U0DBUF = cfg0->txBuf[cfg0->txTail];
+    asm("NOP");
+    asm("NOP");
+    asm("NOP");
+    asm("NOP");
+    asm("NOP");
   }
 }
 #endif

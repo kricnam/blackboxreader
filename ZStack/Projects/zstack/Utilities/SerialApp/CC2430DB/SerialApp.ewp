@@ -3204,68 +3204,6 @@
           </file>
         </group>
       </group>
-      <group>
-        <name>CC2430EB</name>
-        <excluded>
-          <configuration>CoordinatorDB</configuration>
-          <configuration>RouterDB</configuration>
-          <configuration>EndDeviceDB</configuration>
-        </excluded>
-        <group>
-          <name>Config</name>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_board_cfg.h</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_target.c</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_target.h</name>
-          </file>
-        </group>
-        <group>
-          <name>Drivers</name>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_adc.c</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_dma.c</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_key.c</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_lcd.c</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_led.c</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_sleep.c</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_timer.c</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_uart.c</name>
-          </file>
-        </group>
-        <group>
-          <name>Includes</name>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_aes.h</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_mailbox.h</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_mcu.h</name>
-          </file>
-          <file>
-            <name>$PROJ_DIR$\..\..\..\..\..\Components\hal\target\CC2430EB\hal_types.h</name>
-          </file>
-        </group>
-      </group>
     </group>
   </group>
   <group>
