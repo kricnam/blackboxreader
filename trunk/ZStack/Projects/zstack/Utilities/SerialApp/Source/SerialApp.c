@@ -113,7 +113,7 @@
 
 // When the Rx buf space is less than this threshold, invoke the Rx callback.
 #if !defined( SERIAL_APP_THRESH )
-  #define SERIAL_APP_THRESH  10
+  #define SERIAL_APP_THRESH  30
 #endif
 
 #if !defined( SERIAL_APP_RX_MAX )
@@ -124,7 +124,7 @@
      * continue to send more than a byte after receiving the ~CTS, lower max
      * here and safe min in _hal_uart.c to just 8.
      */
-    #define SERIAL_APP_RX_MAX  120 //64
+    #define SERIAL_APP_RX_MAX   64
   #endif
 #endif
 
@@ -132,7 +132,7 @@
   #if (defined( HAL_UART_DMA )) && HAL_UART_DMA
   #define SERIAL_APP_TX_MAX  128
   #else
-    #define SERIAL_APP_TX_MAX  125
+    #define SERIAL_APP_TX_MAX  64
   #endif
 #endif
 
@@ -146,7 +146,7 @@
   #if (defined( HAL_UART_DMA )) && HAL_UART_DMA
     #define SERIAL_APP_RX_CNT  80
   #else
-    #define SERIAL_APP_RX_CNT  120//6
+    #define SERIAL_APP_RX_CNT  48//6
   #endif
 #endif
 
@@ -818,9 +818,8 @@ static void rxCB( uint8 port, uint8 event )
   {
     return;
   }
-  len = Hal_UART_RxBufLen(port)+1;
-  if (len > SERIAL_APP_RX_CNT) len = SERIAL_APP_RX_CNT;
-  if ( !(buf = osal_mem_alloc( len )) )
+
+  if ( !(buf = osal_mem_alloc( SERIAL_APP_RX_CNT )) )
   {
     return;
   }
@@ -828,8 +827,8 @@ static void rxCB( uint8 port, uint8 event )
   /* HAL UART Manager will turn flow control back on if it can after read.
    * Reserve 1 byte for the 'sequence number'.
    */
-  //len = HalUARTRead( port, buf+1, SERIAL_APP_RX_CNT-1 );
-  len = HalUARTRead( port, buf+1, len-1 );
+  len = HalUARTRead( port, buf+1, SERIAL_APP_RX_CNT-1 );
+  
   if ( !len )  // Length is not expected to ever be zero.
   {
     osal_mem_free( buf );

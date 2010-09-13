@@ -82,9 +82,9 @@ extern "C"
 // shall be set to two times end device poll rate to be safe.
 // If only router and coordinator are communicating, these values 
 // can be set to smaller value like 100 ms.
-#define SERIALAPP_MSG_RTRY_TIMEOUT   POLL_RATE*2
-#define SERIALAPP_RSP_RTRY_TIMEOUT   POLL_RATE*2
-#define SERIALAPP_RSP_LOST_TIMEOUT   POLL_RATE*2
+#define SERIALAPP_MSG_RTRY_TIMEOUT   50//POLL_RATE*2
+#define SERIALAPP_RSP_RTRY_TIMEOUT   50//POLL_RATE*2
+#define SERIALAPP_RSP_LOST_TIMEOUT   50//POLL_RATE*2
 
 // OTA Flow Control Delays
 #define SERIALAPP_ACK_DELAY          1
