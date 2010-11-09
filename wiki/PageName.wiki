@@ -58,11 +58,68 @@
 
 * 准备Linux操作系统
 
+建议安装Ubuntu发行版的Linux系统，具体参考ubuntu网站，或其他资料
+网站地址  http://www.ubuntu.org.cn/
+
 * 在Linux系统中安装交叉编译器
+
+基本操作是将编译器包解压缩到自选的目录，一般建议解压缩到/opt目录下
+在此项目中使用的版本是arm-none-linux-gnueabi-gcc 4.3.4版
 
 ===烧写控制单元操作系统===
 
+开发版提供的已经烧写好的系统不能满足需要，需要烧写自己定制的操作系统和文件系统才能满足功能要求。
 
+====烧写前准备====
+
+下载安装SAM-BA软件
+
+====烧写步骤====
+
+1  将核心版SW1，SW2置于OFF位，链接USB电缆
+
+2  启动SAM-BA软件，选择board type(at91sam9261ek)和端口(/dev/ttyUSB1) 
+
+3  选择Nandflash
+
+4  选择Enable Nandflash script并执行
+
+5  选项 执行 Erase All script
+
+6  选择 SendBootFile, 并执行, 选择 BootStrap文件
+
+7  发送U-Boot bin 文件到 Nandflash 地址 0x20000
+
+8  发送linux核心uImage bin文件到 nandflase 地址 0xA0000
+
+9  传送r根文件系统ram-disk image(gziped)到地址address 0x400000
+
+10 SW1 on,选择Dataflash标签
+
+11 执行EnableDataflash脚本
+
+12 (optional)执行EraseAll脚本
+
+13 执行SendBootFile脚本
+
+14 传送U-Boot bin文件到dataflash, 地址0x8400
+
+15 传送linux uImage bin文件到data-flash 地址 0x42000
+
+16 输入 exit 退出SAM-BA
+
+17 重启系统
+
+18 登入系统，安装nandflash盘，将ram盘拷贝到nandflash
+
+19 重新启动系统，修改U-boot配置，从nandflash启动
+
+{{{
+setenv bootcmd cp.b 0xC0042000 0x20400000 0x300000\; bootm 0x20400000
+setenv bootargs mem=64M console=ttyS0,115200 root=/dev/mtdblock1 rw rootfstype=yaffs2
+setenv bootdelay 0
+saveenv
+}}}
 
 ===软件编译===
 
