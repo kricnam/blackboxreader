@@ -46,7 +46,7 @@
 
 = 基站模块 =
 
-基站模块分两部分，一部分是基站控制单元，另一部分是无线通信单元。无线通信单元的程序编译烧制如前所述，参见无线通信单元的。这里主要介绍控制单元的硬件和软件设置
+基站模块分两部分，一部分是基站控制单元，另一部分是无线通信单元。无线通信单元的程序编译烧制如前所述，参见无线终端的描述。这里主要介绍控制单元的硬件和软件设置
 
 == 硬件 ==
 
@@ -60,11 +60,12 @@
 
 建议安装Ubuntu发行版的Linux系统，具体参考ubuntu网站，或其他资料
 网站地址  http://www.ubuntu.org.cn/
+下载光盘镜像文件（ISO）后刻录到光盘上安装
 
 * 在Linux系统中安装交叉编译器
 
 基本操作是将编译器包解压缩到自选的目录，一般建议解压缩到/opt目录下
-在此项目中使用的版本是arm-none-linux-gnueabi-gcc 4.3.4版
+在此项目中使用的版本是arm-none-linux-gnueabi-gcc 4.3.2版
 
 ===烧写控制单元操作系统===
 
@@ -72,7 +73,29 @@
 
 ====烧写前准备====
 
-下载安装SAM-BA软件
+下载安装SAM-BA软件，及解压缩文件到自选目录
+
+=====环境配置=====
+{{{
+sudo bash
+rmmod usbserial
+modprobe usbserial vendor=0x03eb product=0x6124
+exit
+}}}
+连接USB后可使用以下命令验证是否连接成功
+{{{
+lsusb -d 03eb:6124
+    Bus 004 Device 006: ID 03eb:6124 Atmel Corp
+dmesg
+    ...
+    kernel: usb 4-2: new full speed USB device using uhci_hcd and address 5
+    kernel: usb 4-2: configuration #1 chosen from 1 choice
+    kernel: usbserial_generic 4-2:1.0: generic converter detected
+    kernel: usbserial_generic: probe of 4-2:1.0 failed with error -5
+    kernel: usbserial_generic 4-2:1.1: generic converter detected
+    kernel: usb 4-2: generic converter now attached to ttyUSBx
+
+}}}
 
 ====烧写步骤====
 
