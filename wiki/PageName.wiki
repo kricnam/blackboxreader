@@ -100,6 +100,8 @@ dmesg
 
 ====烧写步骤====
 
+下面的烧写步骤也可以使用脚本完成。
+
 1  将核心版SW1，SW2置于OFF位，链接USB电缆
 
 2  启动SAM-BA软件，选择board type(at91sam9261ek)和端口(/dev/ttyUSB1) 
@@ -134,7 +136,11 @@ dmesg
 
 17 重启系统
 
-18 登入系统，安装nandflash盘，将ram盘拷贝到nandflash
+18 登入系统，安装nandflash盘，将ram盘拷贝到nandflash。
+{{{
+mount -t yaffs2 /dev/mtd3 /mnt
+/bin/init-mnt-fs.sh
+}}}
 
 19 重新启动系统，修改U-boot配置，从nandflash启动
 
