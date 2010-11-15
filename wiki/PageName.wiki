@@ -76,6 +76,7 @@
 下载安装SAM-BA软件，及解压缩文件到自选目录
 
 =====环境配置=====
+如果在Linux环境下，可能需要如下配置
 {{{
 sudo bash
 rmmod usbserial
