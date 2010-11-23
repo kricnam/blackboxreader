@@ -136,15 +136,15 @@ dmesg
 
 16 输入 exit 退出SAM-BA
 
-17 重启系统
+17 重启核心板系统
 
-18 登入系统，安装nandflash盘，将ram盘拷贝到nandflash。
+18 登入核心板系统，安装nandflash盘，将ram盘拷贝到nandflash。
 {{{
 mount -t yaffs2 /dev/mtd3 /mnt
 /bin/init-mnt-fs.sh
 }}}
 
-19 重新启动系统，修改U-boot配置，从nandflash启动
+19 重新启动核心板系统，修改U-boot配置，从nandflash启动
 
 {{{
 setenv bootcmd cp.b 0xC0042000 0x20400000 0x300000\; bootm 0x20400000
