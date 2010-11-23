@@ -196,7 +196,7 @@ scp qb root@192.168.1.77:/
 {{{
 ssh root@192.168.1.77
 }}}
-   在windows环境下，可下载ssh客户端putty软件连接
+   在windows环境下，可下载ssh客户端[http://the.earth.li/~sgtatham/putty/latest/x86/putty.exe putty]软件连接
  # 登录系统后，运行/qb /dev/ttyS2
    程序执行结束后，应该在根目录下生成TEST.IBB文件
  # 在Windows系统下，安装WinScp程序，启动WinScp后将IBB文件拷贝到Windows系统，就可以象读U盘一样导入数据了。
