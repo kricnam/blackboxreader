@@ -140,7 +140,7 @@ dmesg
 
 18 登入核心板系统，安装nandflash盘，将ram盘拷贝到nandflash。
 {{{
-mount -t yaffs2 /dev/mtd3 /mnt
+mount -t yaffs2 /dev/mtdblock1 /mnt
 /bin/init-mnt-fs.sh
 }}}
 
