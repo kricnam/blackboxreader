@@ -162,7 +162,7 @@ saveenv
 * 编译控制软件
 
 解压缩控制源程序到目录。
-进入src子目录，运行
+进入QueenBee子目录，运行
 {{{
 arm-none-linux-gnueabi-g++ -o qb *.cpp
 }}}
