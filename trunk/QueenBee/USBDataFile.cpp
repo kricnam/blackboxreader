@@ -87,6 +87,12 @@ int USBDataFile::AddSpeedData(Packet &p)
     {
       for (int ii = 0; ii < 60; ii++)
         {
+          if (nStart + sizeof(RecordData_start) + i * 120 + 2*ii > sizeof(USBFile))
+            {
+              INFO("Data exceed");
+              i=n;
+              break;
+            }
           cache[nStart + sizeof(RecordData_start) + i * 120 + 2*ii] = data[i];
           cache[nStart + sizeof(RecordData_start) + i * 120 + 2*ii + 1] = 0;
         }
