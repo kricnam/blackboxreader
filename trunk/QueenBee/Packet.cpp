@@ -130,13 +130,14 @@ void Packet::ReceiveFrameFrom(RS232Port & port,int wait_ms)
 		       if ((diff.tv_sec*1000 + diff.tv_usec/1000) < wait_ms)
 		         {
                           usleep(100000);
-                          if (data.size()) start = now;
+                          //if (data.size()) start = now;
 		            continue;
 		         }
 
 			data.clear();
 			return;
 		}
+		start = now;
 		TRACE("%02hhX ",buff);
 
 		switch (frameState)
@@ -196,6 +197,7 @@ void Packet::ReceiveFrameFrom(RS232Port & port,int wait_ms)
 		};
 		TRACE("FRAME[%d]",frameState);
 		if (frameState!=NONE) data.append(&buff,1);
+
 	} while (err < 0xFFFF);
 }
 
