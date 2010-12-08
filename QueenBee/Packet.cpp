@@ -66,7 +66,7 @@ int Packet::GetAllPara(USBDataFile::StructPara& para)
   if (Head->cCmdWord == GET_ALL_PARA)
   {
       USBDataFile::StructPara* pPara = (USBDataFile::StructPara*)(Head+1);
-      memcpy(&para,pPara,256);
+      memcpy(&para,pPara,sizeof(para));
       return 1;
   }
   return 0;
@@ -134,7 +134,7 @@ void Packet::ReceiveFrameFrom(RS232Port & port,int wait_ms)
 		            continue;
 		         }
 
-			data.clear();
+			//data.clear();
 			return;
 		}
 		start = now;

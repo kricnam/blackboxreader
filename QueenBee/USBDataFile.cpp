@@ -56,8 +56,9 @@ void USBDataFile::InitPara(StructPara& para)
 int USBDataFile::AddSpeedData(Packet &p)
 {
   int n=0;
-
+  if (p.GetSize()) return 0;
   Packet::SpeedRecord* pRec = p.GetSpeedData(n);
+  if (!pRec) return 0;
   char* data = (char*)&(pRec->speed);
   char* cache = (char*)pData;
 
@@ -87,19 +88,20 @@ int USBDataFile::AddSpeedData(Packet &p)
     {
       for (int ii = 0; ii < 60; ii++)
         {
-          if (nStart + sizeof(RecordData_start) + i * 120 + 2*ii > sizeof(USBFile))
+          if ((nCur + sizeof(rec_end))>= nEnd)
             {
-              INFO("Data exceed");
-              i=n;
+              INFO("Data exceed at %d:%d",i,ii);
+              n=i;
               break;
             }
           cache[nStart + sizeof(RecordData_start) + i * 120 + 2*ii] = data[i];
           cache[nStart + sizeof(RecordData_start) + i * 120 + 2*ii + 1] = 0;
+          nCur = nStart + sizeof(RecordData_start) + i * 120 + 2*ii + 2;
         }
     }
 
   DEBUG("data fill ok");
-  rec_end = (RecordData_end*)(cache+ nStart + sizeof(RecordData_start)+2*n*60);
+  rec_end = (RecordData_end*)(cache+ nCur);
 
   memcpy(rec_end,rec_start,sizeof(RecordData_start));
   incTime(rec_end->dt,n);
@@ -140,6 +142,10 @@ void USBDataFile::incTime(Record_CLOCK& t, int nMinute)
 void USBDataFile::Save(const char* szPath)
 {
     FILE* f = fopen(szPath,"wb");
-    fwrite((const char*)pData,1,sizeof(USBFile),f);
-    fclose(f);
+    if (f)
+      {
+      fwrite((const char*)pData,1,sizeof(USBFile),f);
+      fclose(f);
+      }
+
 }
