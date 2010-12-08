@@ -86,6 +86,9 @@ int USBDataFile::AddSpeedData(Packet &p)
 
   for (int i = 0; i < n; i++)
     {
+      if (data[i]>= (p.GetData()  + p.GetSize()))
+        break;
+
       for (int ii = 0; ii < 60; ii++)
         {
           if ((nCur + sizeof(rec_end))>= nEnd)
