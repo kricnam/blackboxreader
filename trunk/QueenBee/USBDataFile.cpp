@@ -63,8 +63,8 @@ int USBDataFile::AddSpeedData(Packet &p)
   char* cache = (char*)pData;
 
   DEBUG("Total %d minutes data",n);
-  int nStart = pData->table.BaseData.BaseAddr;
-  int nEnd = pData->table.BaseData.EndAddr;
+  int nStart = pData->table.RunRecord360h.BaseAddr;
+  int nEnd = pData->table.RunRecord360h.EndAddr;
   int nCur = nStart;
   DEBUG("start address:%d",nStart);
   RecordData_start* rec_start = (RecordData_start*)(cache+nStart);
