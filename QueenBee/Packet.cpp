@@ -134,7 +134,7 @@ void Packet::ReceiveFrameFrom(RS232Port & port,int wait_ms)
 		            continue;
 		         }
 
-			//data.clear();
+			ERROR("Receive time out %d.",wait_ms);
 			return;
 		}
 		start = now;
