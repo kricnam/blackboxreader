@@ -56,7 +56,7 @@ void USBDataFile::InitPara(StructPara& para)
 int USBDataFile::AddSpeedData(Packet &p)
 {
   int n=0;
-  if (p.GetSize()) return 0;
+  if (!p.GetSize()) return 0;
   Packet::SpeedRecord* pRec = p.GetSpeedData(n);
   if (!pRec) return 0;
   char* data = (char*)&(pRec->speed);
