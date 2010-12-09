@@ -123,9 +123,9 @@ void Packet::ReceiveFrameFrom(RS232Port & port,int wait_ms)
 	do
 	{
 		n = port.Read(&buff, 1);
+		gettimeofday(&now, 0);
 		if (n == 0)
 		{
-		       gettimeofday(&now, 0);
 		       timersub(&now,&start,&diff);
 		       if ((diff.tv_sec*1000 + diff.tv_usec/1000) < wait_ms)
 		         {
