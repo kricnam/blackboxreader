@@ -57,19 +57,93 @@ int USBDataFile::AddSpeedData(Packet &p)
 {
   int n=0;
   if (!p.GetSize()) return 0;
-  Packet::SpeedRecord* pRec = p.GetSpeedData(n);
+  SpeedRecord* pRec = p.GetSpeedData(n);
   if (!pRec) return 0;
-  char* data = (char*)&(pRec->speed);
+
   char* cache = (char*)pData;
 
-  DEBUG("Total %d minutes data",n);
+  if ((n+sizeof(struct PacketHead)) < p.GetSize())
+    {
+      INFO("Data packet is not completed.");
+       n = p.GetSize()-sizeof(struct PacketHead);
+    }
+
+  DEBUG("Total %d:%d data",n/sizeof(SpeedRecord),(n%sizeof(SpeedRecord))?0:(n%sizeof(SpeedRecord))-sizeof(struct RecordTime));
+
   int nStart = pData->table.BaseData.BaseAddr;
   int nEnd = pData->table.BaseData.EndAddr;
   int nCur = nStart;
-  DEBUG("start address:%d",nStart);
+  DEBUG("start address:0x%08X",nStart);
   RecordData_start* rec_start = (RecordData_start*)(cache+nStart);
   RecordData_end* rec_end;
 
+  while (n>sizeof(struct RecordTime))
+   {
+    if ((nCur+sizeof(RecordData_start)+sizeof(RecordData_end)+8)>=nEnd) return 1;
+    rec_start = (RecordData_start*)(cache+nCur);
+    setStartTime(rec_start, pRec);
+    nCur+=sizeof(RecordData_start);
+
+    DEBUG("start at %d-%d-%d %d:%d",BCD_CHAR(pRec->startTime.bcdYear),
+          BCD_CHAR(pRec->startTime.bcdMonth),
+          BCD_CHAR(pRec->startTime.bcdDay),
+          BCD_CHAR(pRec->startTime.bcdHour),
+          BCD_CHAR(pRec->startTime.bcdMinute));
+
+     int nNum = 0;
+
+     if (n >= sizeof(SpeedRecord))
+        {
+          nNum = 60;
+          n -= sizeof(SpeedRecord);
+        }
+      else
+        {
+          nNum = n - sizeof(struct RecordTime);
+          n = 0;
+        }
+
+     int seconds=expandSpeedRecord(cache,nCur,nEnd,pRec,nNum);
+
+      rec_end = (RecordData_end*) (cache + nCur);
+      memcpy(rec_end,rec_start,sizeof(RecordData_start));
+      incTime(rec_end->dt,seconds/60,seconds%60);
+      rec_end->dt.type = 0xAFAF;
+      nCur+=sizeof(RecordData_end)+8;
+      pRec+=1;
+
+      DEBUG("end at %d-%d-%d %d:%d",BCD_CHAR(rec_end->dt.year),
+           BCD_CHAR(rec_end->dt.month),
+           BCD_CHAR(rec_end->dt.day),
+           BCD_CHAR(rec_end->dt.hour),
+           BCD_CHAR(rec_end->dt.minute));
+    };
+
+  return 1;
+}
+
+int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* pRec,int nNum)
+{
+  int ii,m;
+  for (ii = 0; ii < nNum; ii++)
+   {
+      for (m = 0; m < 60; m++)
+        {
+          if (((unsigned) (nCur + sizeof(RecordData_end) + 8)) >= ((unsigned) nEnd))
+            {
+              INFO("No space for data after %d:%d",ii,m);
+              break;
+            }
+          cache[nCur++] = pRec->speed[ii];
+          cache[nCur++] = 0;
+        }
+    }
+   return ii*60+m;
+}
+
+void USBDataFile::setStartTime(RecordData_start* rec_start,SpeedRecord* pRec)
+{
+  if ((!rec_start) || (!pRec)) return;
   rec_start->dt.type = 0xFEFE;
   rec_start->dt.year = pRec->startTime.bcdYear;
   rec_start->dt.month = pRec->startTime.bcdMonth;
@@ -77,47 +151,9 @@ int USBDataFile::AddSpeedData(Packet &p)
   rec_start->dt.hour = pRec->startTime.bcdHour;
   rec_start->dt.minute = pRec->startTime.bcdMinute;
   rec_start->dt.second = 0;
-
-  DEBUG("start at %d-%d-%d %d:%d",BCD_CHAR(pRec->startTime.bcdYear),
-      BCD_CHAR(pRec->startTime.bcdMonth),
-      BCD_CHAR(pRec->startTime.bcdDay),
-      BCD_CHAR(pRec->startTime.bcdHour),
-      BCD_CHAR(pRec->startTime.bcdMinute));
-
-  for (int i = 0; i < n; i++)
-    {
-      if ((data+i) >= (p.GetData()  + p.GetSize()))
-        break;
-
-      for (int ii = 0; ii < 60; ii++)
-        {
-          if ((nCur + sizeof(rec_end))>= nEnd)
-            {
-              INFO("Data exceed at %d:%d",i,ii);
-              n=i;
-              break;
-            }
-          cache[nStart + sizeof(RecordData_start) + i * 120 + 2*ii] = data[i];
-          cache[nStart + sizeof(RecordData_start) + i * 120 + 2*ii + 1] = 0;
-          nCur = nStart + sizeof(RecordData_start) + i * 120 + 2*ii + 2;
-        }
-    }
-
-  DEBUG("data fill ok");
-  rec_end = (RecordData_end*)(cache+ nCur);
-
-  memcpy(rec_end,rec_start,sizeof(RecordData_start));
-  incTime(rec_end->dt,n);
-  rec_end->dt.type = 0xAFAF;
-  DEBUG("end at %d-%d-%d %d:%d",BCD_CHAR(rec_end->dt.year),
-       BCD_CHAR(rec_end->dt.month),
-       BCD_CHAR(rec_end->dt.day),
-       BCD_CHAR(rec_end->dt.hour),
-       BCD_CHAR(rec_end->dt.minute));
-  return 0;
 }
 
-void USBDataFile::incTime(Record_CLOCK& t, int nMinute)
+void USBDataFile::incTime(Record_CLOCK& t, int nMinute,int nSecond)
 {
     time_t tv;
     struct tm tmTime={0};
@@ -131,7 +167,7 @@ void USBDataFile::incTime(Record_CLOCK& t, int nMinute)
     DEBUG("set time as %s",asctime(&tmTime));
     tv = mktime(&tmTime);
     DEBUG("before inc time is %s",ctime(&tv));
-    tv += nMinute*60;
+    tv += nMinute*60+nSecond;
     gmtime_r(&tv,&tmTime);
     DEBUG("after inc time is %s",ctime(&tv));
     t.year = CHAR_BCD(tmTime.tm_year + 1900 - 2000);

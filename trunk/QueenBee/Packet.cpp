@@ -72,7 +72,7 @@ int Packet::GetAllPara(USBDataFile::StructPara& para)
   return 0;
 }
 
-struct Packet::AccidentData* Packet::GetAccidentData(int& num)
+struct AccidentData* Packet::GetAccidentData(int& num)
 {
 	struct PacketHead *Head = (struct PacketHead *)GetData();
 	num = 0;
@@ -85,14 +85,14 @@ struct Packet::AccidentData* Packet::GetAccidentData(int& num)
 	return NULL;
 }
 
-struct Packet::SpeedRecord* Packet::GetSpeedData(int& num)
+struct SpeedRecord* Packet::GetSpeedData(int& num)
 {
         struct PacketHead *Head = (struct PacketHead *)GetData();
         num = 0;
         if (Head->cCmdWord == GET_360Hour_Speed || Head->cCmdWord == GET_2Day_Speed)
         {
                 int n = ((Head->Len[0]<< 8)&0xFF00) | (Head->Len[1]);
-                num = n - sizeof(struct SpeedRecord) + 1;
+                num = n;
                 return (struct SpeedRecord*)(Head+1);
         }
         return NULL;

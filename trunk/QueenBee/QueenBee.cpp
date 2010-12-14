@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 
   USBDataFile file;
   USBDataFile::StructPara para;
-  struct Packet::SpeedRecord* pSpeed;
+  struct SpeedRecord* pSpeed;
   int nRec;
   string strName;
 
