@@ -92,7 +92,7 @@ int USBDataFile::AddSpeedData(Packet &p)
 
      int nNum = 0;
 
-     if (n >= sizeof(SpeedRecord))
+     if (n >= (int)sizeof(SpeedRecord))
         {
           nNum = 60;
           n -= sizeof(SpeedRecord);
