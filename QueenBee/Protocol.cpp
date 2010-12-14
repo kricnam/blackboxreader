@@ -76,7 +76,7 @@ int Protocol::ReadAccident_Data(RS232Port & port,Packet& packet)
 	if (n>0)
 	{
 		int n;
-		struct Packet::AccidentData *Data = packet.GetAccidentData(n);
+		struct AccidentData *Data = packet.GetAccidentData(n);
 //		if (Data)
 //		{
 //			printf("%d%d-%d%d-%d%d %d%d:%d%d:%d%d %d %02hhX\n",

@@ -4,8 +4,6 @@
  *  Created on: 2010-4-29
  *      Author: mxx
  */
-class Packet;
-
 
 #ifndef USBDATAFILE_H_
 #define USBDATAFILE_H_
@@ -58,6 +56,12 @@ typedef unsigned short u_short;
 #ifndef u_int
 typedef unsigned int u_int;
 #endif
+
+//#include "Packet.h"
+class Packet;
+struct SpeedRecord;
+
+
 class USBDataFile {
 public:
 	USBDataFile();
@@ -197,8 +201,10 @@ public:
 	int AddSpeedData(Packet &p);
 	void Save(const char* szPath);
 protected:
-	void incTime(Record_CLOCK& t, int nMinute);
-	 USBFile *pData;
+	void incTime(Record_CLOCK& t, int nMinute,int nSecond);
+	void setStartTime(RecordData_start* rec_start,SpeedRecord* pRec);
+	int expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* pRec,int nNum);
+	USBFile *pData;
 
 };
 
