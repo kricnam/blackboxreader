@@ -158,35 +158,35 @@ public:
                 u_char minute;
                 u_char second;
 
-        } Record_CLOCK;
+        } __attribute__ ((packed)) Record_CLOCK;
         typedef struct
         {
                 u_int  DriverCode;//驾驶员代码——4(88)
                 u_char  DriverLisenseCode[20];//驾驶证号码——20(108)
-        } DRIVER;
+        } __attribute__ ((packed)) DRIVER;
         typedef struct{
                 Record_CLOCK  dt;
-        }OTDR_start;
+        } __attribute__ ((packed))OTDR_start;
         typedef struct{
                 Record_CLOCK  dt;
                 u_int  TotalDistance;
                 u_int MinuteNb;
                 DRIVER driver;
-        }OTDR_end;
+        } __attribute__ ((packed))OTDR_end;
         typedef struct{
                 OTDR_start start;
                 OTDR_end end;
-        }OTDR;
+        } __attribute__ ((packed))OTDR;
         typedef struct
         {//行驶记录
                 Record_CLOCK dt;
-        }RecordData_start;
+        } __attribute__ ((packed)) RecordData_start;
         typedef struct
         {//行驶记录
                 Record_CLOCK dt;
                 u_int DistancePulse;
                 u_int DriverCode;
-        }RecordData_end;
+        } __attribute__ ((packed)) RecordData_end;
 	typedef struct
 	{
 		StructPara para;

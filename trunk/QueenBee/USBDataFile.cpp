@@ -108,7 +108,7 @@ int USBDataFile::AddSpeedData(Packet &p)
       rec_end = (RecordData_end*) (cache + nCur);
       memcpy(rec_end,rec_start,sizeof(RecordData_start));
       incTime(rec_end->dt,seconds/60,seconds%60);
-      rec_end->dt.type = 0xAFAF;
+      rec_end->dt.type = 0xAEAE;
       nCur+=sizeof(RecordData_end)+8;
       pRec+=1;
 
