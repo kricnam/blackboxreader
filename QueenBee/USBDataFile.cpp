@@ -55,7 +55,7 @@ void USBDataFile::InitPara(StructPara& para)
 
 int USBDataFile::AddSpeedData(Packet &p)
 {
-  int n=0;
+  unsigned int n=0;
   if (!p.GetSize()) return 0;
   SpeedRecord* pRec = p.GetSpeedData(n);
   if (!pRec) return 0;
@@ -79,7 +79,7 @@ int USBDataFile::AddSpeedData(Packet &p)
 
   while (n>sizeof(struct RecordTime))
    {
-    if ((nCur+sizeof(RecordData_start)+sizeof(RecordData_end)+8)>=nEnd) return 1;
+    if ((nCur+sizeof(RecordData_start)+sizeof(RecordData_end))>=nEnd) return 1;
     rec_start = (RecordData_start*)(cache+nCur);
     setStartTime(rec_start, pRec);
     nCur+=sizeof(RecordData_start);
@@ -109,7 +109,8 @@ int USBDataFile::AddSpeedData(Packet &p)
       memcpy(rec_end,rec_start,sizeof(RecordData_start));
       incTime(rec_end->dt,seconds/60,seconds%60);
       rec_end->dt.type = 0xAEAE;
-      nCur+=sizeof(RecordData_end)+8;
+      memset(rec_end->tail,0,sizeof(rec_end->tail));
+      nCur+=sizeof(RecordData_end);
       pRec+=1;
 
       DEBUG("end at %d-%d-%d %d:%d",BCD_CHAR(rec_end->dt.year),
@@ -127,6 +128,11 @@ int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* p
   int ii,m;
   for (ii = 0; ii < nNum; ii++)
    {
+       if (pRec->speed[ii]==0)
+         {
+           incTime(rec_start,1,0);
+           continue;
+         }
       for (m = 0; m < 60; m++)
         {
           if (((unsigned) (nCur + sizeof(RecordData_end) + 8)) >= ((unsigned) nEnd))
