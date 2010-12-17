@@ -65,7 +65,7 @@ int main(int argc, char** argv)
    char szName[sizeof(para.AutoCode)+1]={0};
 
    strncpy(szName,(const char*)para.AutoCode,sizeof(para.AutoCode));
-   for(int i=0;i<sizeof(szName);i++)
+   for(unsigned int i=0;i<sizeof(szName);i++)
     {
        if (szName[i]==0xFF)
          {

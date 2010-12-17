@@ -85,13 +85,13 @@ struct AccidentData* Packet::GetAccidentData(int& num)
 	return NULL;
 }
 
-struct SpeedRecord* Packet::GetSpeedData(int& num)
+struct SpeedRecord* Packet::GetSpeedData(unsigned int& num)
 {
         struct PacketHead *Head = (struct PacketHead *)GetData();
         num = 0;
         if (Head->cCmdWord == GET_360Hour_Speed || Head->cCmdWord == GET_2Day_Speed)
         {
-                int n = ((Head->Len[0]<< 8)&0xFF00) | (Head->Len[1]);
+                unsigned int n = ((Head->Len[0]<< 8)&0xFF00) | (Head->Len[1]);
                 num = n;
                 return (struct SpeedRecord*)(Head+1);
         }

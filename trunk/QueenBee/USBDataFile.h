@@ -186,6 +186,7 @@ public:
                 Record_CLOCK dt;
                 u_int DistancePulse;
                 u_int DriverCode;
+                 char tail[8];
         } __attribute__ ((packed)) RecordData_end;
 	typedef struct
 	{

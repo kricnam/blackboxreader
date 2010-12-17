@@ -127,7 +127,7 @@ public:
 	int GetDriverCode(void);
 	string GetLicenseID(void);
 	AccidentData*  GetAccidentData(int& num);
-	struct SpeedRecord* GetSpeedData(int& num);
+	struct SpeedRecord* GetSpeedData(unsigned int& num);
 	int GetAllPara(USBDataFile::StructPara& para);
 	void Dump();
 protected:
