@@ -80,7 +80,8 @@ int main(int argc, char** argv)
   file.Init();
 
   INFO("read speed");
-  protocol.Read360HourSpeed(port,packet);
+  //protocol.Read360HourSpeed(port,packet);
+  protocol.Read2DaySpeed(port,packet);
   file.AddSpeedData(packet);
 
 
