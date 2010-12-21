@@ -62,13 +62,13 @@ int USBDataFile::AddSpeedData(Packet &p)
 
   char* cache = (char*)pData;
 
-  if ((n+sizeof(struct PacketHead)) < p.GetSize())
+  if ((n+sizeof(struct PacketHead)) < (unsigned)p.GetSize())
     {
       INFO("Data packet is not completed.");
        n = p.GetSize()-sizeof(struct PacketHead);
     }
 
-  DEBUG("Total %d:%d data",n/sizeof(SpeedRecord),(n%sizeof(SpeedRecord))?0:(n%sizeof(SpeedRecord))-sizeof(struct RecordTime));
+  DEBUG("Total %d:%d data",n/sizeof(SpeedRecord),((n%sizeof(SpeedRecord))==0)?0:(n%sizeof(SpeedRecord))-sizeof(struct RecordTime));
 
   int nStart = pData->table.BaseData.BaseAddr;
   int nEnd = pData->table.BaseData.EndAddr;
@@ -77,7 +77,8 @@ int USBDataFile::AddSpeedData(Packet &p)
 
   while (n>sizeof(struct RecordTime))
    {
-    if ((nCur+sizeof(RecordData_start)+sizeof(RecordData_end))>=nEnd) return 1;
+    if ((nCur+(int)sizeof(RecordData_start)+(int)sizeof(RecordData_end))>=nEnd)
+    	break;
 
      int nNum = 0;
 
@@ -106,7 +107,7 @@ int USBDataFile::findStart(SpeedRecord* pRec,int&start,int nNum)
 	if (n==nNum) {start = n;return 0;}
 	start = n;
 	n = 0;
-	while(pRec->speed[start+n] && ((start+n)<nNum)) {n++;};
+	while(((start+n)<nNum) && pRec->speed[start+n] ) {n++;};
 	return n;
 }
 
@@ -121,6 +122,7 @@ int USBDataFile::fillData(char* cache,int& nCur,int nEnd,char* data,int nNum)
 			if (((unsigned) (nCur + sizeof(RecordData_end) )) >= ((unsigned) nEnd))
 			{
 			       INFO("No space for data after %d:%d",i,n);
+			       nNum = i;
 			       break;
 			}
 			cache[nCur++]=data[i];
@@ -140,28 +142,32 @@ int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* p
   int nSecond;
   while((n = findStart(pRec,start,nNum)))
   {
+	  if ((nCur+1+(int)sizeof(RecordData_start)+(int)sizeof(RecordData_end))>=nEnd)
+	    	break;
+	  DEBUG("Runing form %d minute, total %d minute",start,n);
 	  rec_start = (RecordData_start* )(cache+nCur);
 	  setStartTime(rec_start,pRec);
 	  incTime(rec_start->dt,start,0);
 	  nCur+=sizeof(RecordData_start);
-	    DEBUG("start at %d-%d-%d %d:%d",rec_start->dt.year,
-	    		rec_start->dt.month,
-	    		rec_start->dt.day,
-	    		rec_start->dt.hour,
-	    		rec_start->dt.minute);
+	  DEBUG("start at %d-%d-%d %d:%d",BCD_CHAR(rec_start->dt.year),
+	    		BCD_CHAR(rec_start->dt.month),
+	    		BCD_CHAR(rec_start->dt.day),
+	    		BCD_CHAR(rec_start->dt.hour),
+	    		BCD_CHAR(rec_start->dt.minute));
 
 	  nSecond = fillData(cache,nCur,nEnd,(char*)&(pRec->speed[start]),n);
 
 	  rec_end = (RecordData_end*) (cache + nCur);
 	  setEndTime(rec_end,pRec);
 	  incTime(rec_end->dt,start+(nSecond/60),nSecond%60);
-	    DEBUG("end at %d-%d-%d %d:%d:%d",rec_end->dt.year,
-	    		rec_end->dt.month,
-	    		rec_end->dt.day,
-	    		rec_end->dt.hour,
-	    		rec_end->dt.minute,rec_end->dt.second);
+	  DEBUG("end at %d-%d-%d %d:%d:%d",BCD_CHAR(rec_end->dt.year),
+	    		BCD_CHAR(rec_end->dt.month),
+	    		BCD_CHAR(rec_end->dt.day),
+	    		BCD_CHAR(rec_end->dt.hour),
+	    		BCD_CHAR(rec_end->dt.minute),BCD_CHAR(rec_end->dt.second));
 
 	  nCur+=sizeof(RecordData_end);
+	  start+=n;
   };
 
    return 0;
