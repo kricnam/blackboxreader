@@ -53,6 +53,31 @@ void USBDataFile::InitPara(StructPara& para)
     pData->para = para;
 }
 
+int USBDataFile::AddAccidentData(Packet &p)
+{
+   unsigned int n;
+   if (!p.GetSize()) return 0;
+   struct AccidentData * pRec = p.GetAccidentData(n);
+   if (!pRec) return 0;
+
+   char* cache = (char*)pData;
+   int nStart = pData->table.DoubtPointData.BaseAddr;
+   int nEnd = pData->table.DoubtPointData.EndAddr;
+   int nCur = nStart;
+   DEBUG("start address:0x%08X",nStart);
+
+   for(unsigned int i=0;i<n;i++)
+   {
+	   if ((unsigned)(nCur+sizeof(pData->para.DriverCode)+sizeof(struct AccidentData))> (unsigned)nEnd)
+		   break;
+	   memcpy(cache+nCur,&(pData->para.DriverCode),sizeof(pData->para.DriverCode));
+	   nCur+=sizeof(pData->para.DriverCode);
+	   memcpy(cache+nCur,&pRec[n],sizeof(struct AccidentData));
+	   nCur+=sizeof(struct AccidentData);
+   }
+   return 1;
+}
+
 int USBDataFile::AddSpeedData(Packet &p)
 {
   unsigned int n=0;

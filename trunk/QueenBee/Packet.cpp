@@ -72,7 +72,7 @@ int Packet::GetAllPara(USBDataFile::StructPara& para)
   return 0;
 }
 
-struct AccidentData* Packet::GetAccidentData(int& num)
+struct AccidentData* Packet::GetAccidentData(unsigned int& num)
 {
 	struct PacketHead *Head = (struct PacketHead *)GetData();
 	num = 0;

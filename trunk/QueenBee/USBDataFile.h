@@ -201,6 +201,7 @@ public:
 	void Init();
 	void InitPara(StructPara& para);
 	int AddSpeedData(Packet &p);
+	int AddAccidentData(Packet &p);
 	void Save(const char* szPath);
 protected:
 	void incTime(Record_CLOCK& t, int nMinute,int nSecond);
