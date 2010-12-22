@@ -105,7 +105,7 @@ int Protocol::Read2DayMileage(RS232Port & port,Packet& packet)
 }
 int Protocol::Read2DaySpeed(RS232Port & port,Packet& packet)
 {
-	return Read(Packet::GET_2Day_Speed,2000,port,packet);
+	return Read(Packet::GET_2Day_Speed,10000,port,packet);
 }
 int Protocol::Read2DayOverDrive(RS232Port & port,Packet& packet)
 {
