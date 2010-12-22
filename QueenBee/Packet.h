@@ -20,6 +20,11 @@ struct PacketHead
         unsigned char dummy;
 }  __attribute__ ((packed));
 
+typedef struct
+{
+    unsigned char Speed;
+    unsigned char SwitchState;
+} __attribute__ ((packed)) BeforeStopState;
 
 struct AccidentData {
         unsigned char bcdYear;
@@ -28,8 +33,7 @@ struct AccidentData {
         unsigned char bcdHour;
         unsigned char bcdMinute;
         unsigned char bcdSecond;
-        unsigned char Speed;
-        unsigned char SwitchState;
+        BeforeStopState State[100];
 }  __attribute__ ((packed));
 
 struct RealTime {
@@ -126,7 +130,7 @@ public:
 	void ReceiveFrameFrom(RS232Port & port,int wait_ms=10000);
 	int GetDriverCode(void);
 	string GetLicenseID(void);
-	AccidentData*  GetAccidentData(int& num);
+	struct AccidentData*  GetAccidentData(unsigned int& num);
 	struct SpeedRecord* GetSpeedData(unsigned int& num);
 	int GetAllPara(USBDataFile::StructPara& para);
 	void Dump();

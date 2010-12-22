@@ -72,32 +72,8 @@ int Protocol::ReadVehicleVIN_Number_Class(RS232Port & port,Packet& packet)
 }
 int Protocol::ReadAccident_Data(RS232Port & port,Packet& packet)
 {
-	int n=Read(Packet::GET_Accident_Data,2000,port,packet);
-	if (n>0)
-	{
-		int n;
-		struct AccidentData *Data = packet.GetAccidentData(n);
-//		if (Data)
-//		{
-//			printf("%d%d-%d%d-%d%d %d%d:%d%d:%d%d %d %02hhX\n",
-//					(Data[0].bcdYear&0xF0)>>4,
-//					(Data[0].bcdYear&0x0F),
-//					(Data[0].bcdMonth&0xF0)>>4,
-//					(Data[0].bcdMonth&0x0F),
-//					(Data[0].bcdDay&0xF0)>>4,
-//					(Data[0].bcdDay&0x0F),
-//					(Data[0].bcdHour&0xF0)>>4,
-//					(Data[0].bcdHour&0xF),
-//					(Data[0].bcdMinute&0xF0)>>4,
-//					(Data[0].bcdMinute&0xF),
-//					(Data[0].bcdSecond&0xf0)>>4,
-//					(Data[0].bcdSecond&0xf),
-//					Data[0].Speed,
-//					Data[0].SwitchState
-//					);
-//		}
-	}
-	return 0;
+	int n=Read(Packet::GET_Accident_Data,10000,port,packet);
+	return n;
 }
 int Protocol::Read2DayMileage(RS232Port & port,Packet& packet)
 {
@@ -114,7 +90,7 @@ int Protocol::Read2DayOverDrive(RS232Port & port,Packet& packet)
 
 int Protocol::ReadAllPara(RS232Port & port,Packet& packet)
 {
-    return Read(Packet::GET_ALL_PARA,5000,port,packet);
+    return Read(Packet::GET_ALL_PARA,10000,port,packet);
 }
 
 
