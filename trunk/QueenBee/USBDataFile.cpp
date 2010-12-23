@@ -72,7 +72,7 @@ int USBDataFile::AddAccidentData(Packet &p)
 		   break;
 	   memcpy(cache+nCur,&(pData->para.DriverCode),sizeof(pData->para.DriverCode));
 	   nCur+=sizeof(pData->para.DriverCode);
-	   memcpy(cache+nCur,&pRec[n],sizeof(struct AccidentData));
+	   memcpy(cache+nCur,&pRec[i],sizeof(struct AccidentData));
 	   nCur+=sizeof(struct AccidentData);
    }
    return 1;
@@ -87,11 +87,11 @@ int USBDataFile::AddSpeedData(Packet &p)
 
   char* cache = (char*)pData;
 
-  if ((n+sizeof(struct PacketHead)) < (unsigned)p.GetSize())
-    {
-      INFO("Data packet is not completed.");
-       n = p.GetSize()-sizeof(struct PacketHead);
-    }
+  if ((n+sizeof(struct PacketHead))+1 > (unsigned)p.GetSize())
+   {
+      INFO("Data packet is not completed, n=%d, size=%d",n,p.GetSize());
+      n = p.GetSize()-sizeof(struct PacketHead)-1;
+   }
 
   DEBUG("Total %d:%d data",n/sizeof(SpeedRecord),((n%sizeof(SpeedRecord))==0)?0:(n%sizeof(SpeedRecord))-sizeof(struct RecordTime));
 
@@ -169,7 +169,7 @@ int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* p
   {
 	  if ((nCur+1+(int)sizeof(RecordData_start)+(int)sizeof(RecordData_end))>=nEnd)
 	    	break;
-	  DEBUG("Runing form %d minute, total %d minute",start,n);
+	  DEBUG("Runing from minute %d, total %d minute",start,n);
 	  rec_start = (RecordData_start* )(cache+nCur);
 	  setStartTime(rec_start,pRec);
 	  incTime(rec_start->dt,start,0);
