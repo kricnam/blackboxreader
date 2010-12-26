@@ -8,21 +8,24 @@ CPP_SRCS += \
 ../Packet.cpp \
 ../Protocol.cpp \
 ../QueenBee.cpp \
-../RS232Port.cpp 
+../RS232Port.cpp \
+../USBDataFile.cpp 
 
 OBJS += \
 ./DebugLog.o \
 ./Packet.o \
 ./Protocol.o \
 ./QueenBee.o \
-./RS232Port.o 
+./RS232Port.o \
+./USBDataFile.o 
 
 CPP_DEPS += \
 ./DebugLog.d \
 ./Packet.d \
 ./Protocol.d \
 ./QueenBee.d \
-./RS232Port.d 
+./RS232Port.d \
+./USBDataFile.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
