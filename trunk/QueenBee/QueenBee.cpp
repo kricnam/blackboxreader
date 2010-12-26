@@ -15,8 +15,50 @@
 #include "Packet.h"
 #include "USBDataFile.h"
 using namespace std;
+
+void initLED(void)
+{
+	system("echo 45 > /sys/class/gpio/export");
+	system("echo 46 > /sys/class/gpio/export");
+	system("echo high > /sys/class/gpio/gpio45/direction");
+	system("echo high > /sys/class/gpio/gpio46/direction");
+}
+
+void turnOnLEDGreen(void)
+{
+	system("echo low > /sys/class/gpio/gpio45/direction");
+}
+
+void turnOnLEDRed(void)
+{
+	system("echo low > /sys/class/gpio/gpio46/direction");
+}
+
+void turnOffLEDGreen(void)
+{
+	system("echo high > /sys/class/gpio/gpio45/direction");
+}
+
+void turnOffLEDRed(void)
+{
+	system("echo high > /sys/class/gpio/gpio46/direction");
+}
+
+void blinkRed(void)
+{
+	for(int i = 0;i<3;i++)
+	{
+	turnOffLEDRed();
+	sleep(1);
+	turnOnLEDRed();
+	sleep(1);
+	}
+	turnOffLEDRed();
+}
+
 int main(int argc, char** argv)
 {
+	initLED();
   RS232Port port;
   Packet packet;
   Protocol protocol;
@@ -34,12 +76,14 @@ int main(int argc, char** argv)
   memset(&para,0,sizeof(para));
 
   INFO("read para part");
+  turnOnLEDRed();
   protocol.ReadAllPara(port,packet);
   if (!packet.GetAllPara(para))
-   {
+  {
     INFO("Can not read data from remote");
+  blinkRed();
     return -1;
-    }
+  }
 
    char szName[sizeof(para.AutoCode)+1]={0};
 
@@ -57,14 +101,18 @@ int main(int argc, char** argv)
 
   file.InitPara(para);
   file.Init();
-
+  turnOffLEDRed();
+  sleep(1);
   INFO("read data");
+  turnOnLEDRed();
   protocol.Read2DaySpeed(port,packet);
   file.AddSpeedData(packet);
   INFO("read accident data");
   protocol.ReadAccident_Data(port,packet);
   file.AddAccidentData(packet);
+  turnOffLEDRed();
 
   file.Save(strName.c_str());
+  turnOnLEDGreen();
   return 0;
 }
