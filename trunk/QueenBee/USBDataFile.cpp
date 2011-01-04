@@ -99,7 +99,8 @@ int USBDataFile::AddSpeedData(Packet &p)
   int nEnd = pData->table.BaseData.EndAddr;
   int nCur = nStart;
   DEBUG("start address:0x%08X",nStart);
-
+  RecordData_start start;
+  int nRunSec = 0;
   while (n>sizeof(struct RecordTime))
    {
     if ((nCur+(int)sizeof(RecordData_start)+(int)sizeof(RecordData_end))>=nEnd)
@@ -118,14 +119,14 @@ int USBDataFile::AddSpeedData(Packet &p)
           n = 0;
         }
 
-     int nSecond = expandSpeedRecord(cache,nCur,nEnd,pRec,nNum);
-     if (nSecond)
+     nRunSec = expandSpeedRecord(cache,nCur,nEnd,pRec,nNum,nRunSec,start);
      pRec+=1;
 
     };
 
   return 1;
 }
+
 int USBDataFile::findStart(SpeedRecord* pRec,int&start,int nNum)
 {
 	int n = start;
@@ -158,14 +159,36 @@ int USBDataFile::fillData(char* cache,int& nCur,int nEnd,char* data,int nNum)
 	return i*60+n;
 }
 
-int USBDataFile::setStartTime(char* cache,int& nCur,Record_CLOCK* pTime)
+USBDataFile::RecordData_start* USBDataFile::setStartTime(char* cache,int& nCur,RecordTime* pTime)
 {
-	  rec_start = (RecordData_start* )(cache+nCur);
-	  setStartTime(rec_start,pRec);
-	  incTime(rec_start->dt,start,0);
+	  RecordData_start* rec_start = (RecordData_start* )(cache+nCur);
+	  rec_start->dt.type = 0xFEFE;
+	  rec_start->dt.year = pTime->bcdYear;
+	  rec_start->dt.month = pTime->bcdMonth;
+	  rec_start->dt.day =  pTime->bcdDay;
+	  rec_start->dt.hour = pTime->bcdHour;
+	  rec_start->dt.minute = pTime->bcdMinute;
+	  rec_start->dt.second = 0;
+	  nCur+=sizeof(RecordData_start);
+	  return rec_start;
 }
 
-int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* pRec,int nNum)
+USBDataFile::RecordData_end* USBDataFile::setEndTime(char* cache,int& nCur,Record_CLOCK& start)
+{
+  RecordData_end* rec_end = (RecordData_end* )(cache+nCur);
+  rec_end->dt.type = 0xAEAE;
+  rec_end->dt.year = start.year;
+  rec_end->dt.month = start.month;
+  rec_end->dt.day =  start.day;
+  rec_end->dt.hour = start.hour;
+  rec_end->dt.minute = start.minute;
+  rec_end->dt.second = start.second;
+  memcpy(rec_end->tail,&(pData->para.DriverCode),sizeof(rec_end->tail));
+  nCur+=sizeof(RecordData_end);
+  return rec_end;
+}
+
+int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* pRec,int nNum,int nRunSecond,RecordData_start& lastStart)
 {
   RecordData_start* rec_start;
   RecordData_end* rec_end;
@@ -178,10 +201,25 @@ int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* p
 	  if ((nCur+1+(int)sizeof(RecordData_start)+(int)sizeof(RecordData_end))>=nEnd)
 	    	break;
 	  DEBUG("Runing from minute %d, total %d minute",start,n);
-	  rec_start = (RecordData_start* )(cache+nCur);
-	  setStartTime(rec_start,pRec);
-	  incTime(rec_start->dt,start,0);
-	  nCur+=sizeof(RecordData_start);
+	  if (!nRunSecond)//0
+	  {
+		  rec_start = setStartTime(cache,nCur,&(pRec->startTime));
+		  incTime(rec_start->dt,start,0);
+	  }
+	  else
+	  {
+		  if (start)//stoped at first minute
+		  {
+			  rec_end = setEndTime(cache,nCur,lastStart.dt);
+			  incTime(rec_end->dt,nRunSecond/60-1,nRunSecond%60);
+			  rec_start = setStartTime(cache,nCur,&(pRec->startTime));
+			  incTime(rec_start->dt,start,0);
+			  nRunSecond = 0;
+		  }
+		  else
+			  rec_start = &lastStart;
+	  }
+
 	  DEBUG("start at %d-%d-%d %d:%d",BCD_CHAR(rec_start->dt.year),
 	    		BCD_CHAR(rec_start->dt.month),
 	    		BCD_CHAR(rec_start->dt.day),
@@ -191,45 +229,19 @@ int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* p
 	  nSecond = fillData(cache,nCur,nEnd,(char*)&(pRec->speed[start]),n);
 	  if (start+n>= nNum)
 		  return nSecond;
-	  rec_end = (RecordData_end*) (cache + nCur);
-	  setEndTime(rec_end,pRec);
-	  incTime(rec_end->dt,start+(nSecond/60)-1,nSecond%60);
+
+	  setEndTime(cache,nCur,rec_start->dt);
+	  incTime(rec_end->dt,start+((nRunSecond+nSecond)/60)-1,(nRunSecond+nSecond)%60);
 	  DEBUG("end at %d-%d-%d %d:%d:%d",BCD_CHAR(rec_end->dt.year),
 	    		BCD_CHAR(rec_end->dt.month),
 	    		BCD_CHAR(rec_end->dt.day),
 	    		BCD_CHAR(rec_end->dt.hour),
 	    		BCD_CHAR(rec_end->dt.minute),BCD_CHAR(rec_end->dt.second));
 
-	  nCur+=sizeof(RecordData_end);
 	  start+=n;
   };
 
    return 0;
-}
-
-void USBDataFile::setStartTime(RecordData_start* rec_start,SpeedRecord* pRec)
-{
-  if ((!rec_start) || (!pRec)) return;
-  rec_start->dt.type = 0xFEFE;
-  rec_start->dt.year = pRec->startTime.bcdYear;
-  rec_start->dt.month = pRec->startTime.bcdMonth;
-  rec_start->dt.day =  pRec->startTime.bcdDay;
-  rec_start->dt.hour = pRec->startTime.bcdHour;
-  rec_start->dt.minute = pRec->startTime.bcdMinute;
-  rec_start->dt.second = 0;
-}
-
-void USBDataFile::setEndTime(RecordData_end* rec_end,SpeedRecord* pRec)
-{
-  if ((!rec_end) || (!pRec)) return;
-  rec_end->dt.type = 0xAEAE;
-  rec_end->dt.year = pRec->startTime.bcdYear;
-  rec_end->dt.month = pRec->startTime.bcdMonth;
-  rec_end->dt.day =  pRec->startTime.bcdDay;
-  rec_end->dt.hour = pRec->startTime.bcdHour;
-  rec_end->dt.minute = pRec->startTime.bcdMinute;
-  rec_end->dt.second = 0;
-  memset(rec_end->tail,0,sizeof(rec_end->tail));
 }
 
 void USBDataFile::incTime(Record_CLOCK& t, int nMinute,int nSecond)

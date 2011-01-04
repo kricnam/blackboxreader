@@ -60,7 +60,7 @@ typedef unsigned int u_int;
 //#include "Packet.h"
 class Packet;
 struct SpeedRecord;
-
+struct RecordTime;
 
 class USBDataFile {
 public:
@@ -159,6 +159,7 @@ public:
                 u_char second;
 
         } __attribute__ ((packed)) Record_CLOCK;
+
         typedef struct
         {
                 u_int  DriverCode;//驾驶员代码——4(88)
@@ -205,9 +206,9 @@ public:
 	void Save(const char* szPath);
 protected:
 	void incTime(Record_CLOCK& t, int nMinute,int nSecond);
-	void setStartTime(RecordData_start* rec_start,SpeedRecord* pRec);
-	void setEndTime(RecordData_end* rec_end,SpeedRecord* pRec);
-	int expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* pRec,int nNum);
+	RecordData_start* setStartTime(char* cache,int& nCur,struct RecordTime* pTime);
+	RecordData_end* setEndTime(char* cache,int& nCur,Record_CLOCK& start);
+	int expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* pRec,int nNum,int nRunSecond,RecordData_start& lastStart);
 	int fillData(char* cache,int& nCur,int nEnd,char* data,int nNum);
 	int findStart(SpeedRecord* pRec,int&start,int nNum);
 	USBFile *pData;
