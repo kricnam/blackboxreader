@@ -161,6 +161,12 @@ int USBDataFile::fillData(char* cache,int& nCur,int nEnd,char* data,int nNum)
 
 USBDataFile::RecordData_start* USBDataFile::setStartTime(char* cache,int& nCur,RecordTime* pTime)
 {
+
+  DEBUG("%d-%d-%d %d:%d",BCD_CHAR(pTime->dt.year),
+                BCD_CHAR(pTime->dt.month),
+                BCD_CHAR(pTime->dt.day),
+                BCD_CHAR(pTime->dt.hour),
+                BCD_CHAR(pTime->dt.minute));
 	  RecordData_start* rec_start = (RecordData_start* )(cache+nCur);
 	  rec_start->dt.type = 0xFEFE;
 	  rec_start->dt.year = pTime->bcdYear;
@@ -185,6 +191,12 @@ USBDataFile::RecordData_end* USBDataFile::setEndTime(char* cache,int& nCur,Recor
   rec_end->dt.second = start.second;
   memcpy(rec_end->tail,&(pData->para.DriverCode),sizeof(rec_end->tail));
   nCur+=sizeof(RecordData_end);
+  DEBUG("%d-%d-%d %d:%d:%d",BCD_CHAR(rec_end->dt.year),
+                  BCD_CHAR(rec_end->dt.month),
+                  BCD_CHAR(rec_end->dt.day),
+                  BCD_CHAR(rec_end->dt.hour),
+                  BCD_CHAR(rec_end->dt.minute),BCD_CHAR(rec_end->dt.second));
+
   return rec_end;
 }
 
@@ -203,6 +215,7 @@ int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* p
 	  DEBUG("Runing from minute %d, total %d minute",start,n);
 	  if (!nRunSecond)//0
 	  {
+                DEBUG("no previous running");
 		  rec_start = setStartTime(cache,nCur,&(pRec->startTime));
 		  incTime(rec_start->dt,start,0);
 	  }
@@ -220,23 +233,12 @@ int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* p
 			  rec_start = &lastStart;
 	  }
 
-	  DEBUG("start at %d-%d-%d %d:%d",BCD_CHAR(rec_start->dt.year),
-	    		BCD_CHAR(rec_start->dt.month),
-	    		BCD_CHAR(rec_start->dt.day),
-	    		BCD_CHAR(rec_start->dt.hour),
-	    		BCD_CHAR(rec_start->dt.minute));
-
 	  nSecond = fillData(cache,nCur,nEnd,(char*)&(pRec->speed[start]),n);
 	  if (start+n>= nNum)
 		  return nSecond;
 
-	  setEndTime(cache,nCur,rec_start->dt);
+	  rec_end = setEndTime(cache,nCur,rec_start->dt);
 	  incTime(rec_end->dt,start+((nRunSecond+nSecond)/60)-1,(nRunSecond+nSecond)%60);
-	  DEBUG("end at %d-%d-%d %d:%d:%d",BCD_CHAR(rec_end->dt.year),
-	    		BCD_CHAR(rec_end->dt.month),
-	    		BCD_CHAR(rec_end->dt.day),
-	    		BCD_CHAR(rec_end->dt.hour),
-	    		BCD_CHAR(rec_end->dt.minute),BCD_CHAR(rec_end->dt.second));
 
 	  start+=n;
   };
@@ -249,24 +251,29 @@ void USBDataFile::incTime(Record_CLOCK& t, int nMinute,int nSecond)
     time_t tv;
     struct tm tmTime={0};
     tmTime.tm_year = 2000 + BCD_CHAR(t.year) - 1900;
-    DEBUG("year %d",tmTime.tm_year);
     tmTime.tm_mon = BCD_CHAR(t.month) - 1;
     tmTime.tm_mday = BCD_CHAR(t.day) ;
     tmTime.tm_hour = BCD_CHAR(t.hour);
     tmTime.tm_min = BCD_CHAR(t.minute);
     tmTime.tm_sec = BCD_CHAR(t.second);
-    DEBUG("set time as %s",asctime(&tmTime));
+
     tv = mktime(&tmTime);
-    DEBUG("before inc time is %s",ctime(&tv));
+
     tv += nMinute*60+nSecond;
     gmtime_r(&tv,&tmTime);
-    DEBUG("after inc time is %s",ctime(&tv));
+
     t.year = CHAR_BCD(tmTime.tm_year + 1900 - 2000);
     t.month = CHAR_BCD(tmTime.tm_mon + 1);
     t.day  = CHAR_BCD(tmTime.tm_mday);
     t.hour = CHAR_BCD(tmTime.tm_hour);
     t.minute = CHAR_BCD(tmTime.tm_min);
     t.second = CHAR_BCD(tmTime.tm_sec);
+    DEBUG("After: %d-%d-%d %d:%d:%d",BCD_CHAR(t.year),
+                      BCD_CHAR(t.month),
+                      BCD_CHAR(t.day),
+                      BCD_CHAR(t.hour),
+                      BCD_CHAR(t.minute),BCD_CHAR(t.second));
+
 }
 
 void USBDataFile::Save(const char* szPath)
