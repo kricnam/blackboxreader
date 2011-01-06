@@ -162,11 +162,11 @@ int USBDataFile::fillData(char* cache,int& nCur,int nEnd,char* data,int nNum)
 USBDataFile::RecordData_start* USBDataFile::setStartTime(char* cache,int& nCur,RecordTime* pTime)
 {
 
-  DEBUG("%d-%d-%d %d:%d",BCD_CHAR(pTime->dt.year),
-                BCD_CHAR(pTime->dt.month),
-                BCD_CHAR(pTime->dt.day),
-                BCD_CHAR(pTime->dt.hour),
-                BCD_CHAR(pTime->dt.minute));
+  DEBUG("%d-%d-%d %d:%d",BCD_CHAR(pTime->bcdYear),
+                BCD_CHAR(pTime->bcdMonth),
+                BCD_CHAR(pTime->bcdDay),
+                BCD_CHAR(pTime->bcdHour),
+                BCD_CHAR(pTime->bcdMinute));
 	  RecordData_start* rec_start = (RecordData_start* )(cache+nCur);
 	  rec_start->dt.type = 0xFEFE;
 	  rec_start->dt.year = pTime->bcdYear;
