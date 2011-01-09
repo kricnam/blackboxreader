@@ -187,7 +187,6 @@ public:
                 Record_CLOCK dt;
                 u_int DistancePulse;
                 u_int DriverCode;
-                char tail[8];
         } __attribute__ ((packed)) RecordData_end;
 
 	typedef struct
@@ -208,10 +207,12 @@ protected:
 	void incTime(Record_CLOCK& t, int nMinute,int nSecond);
 	RecordData_start* setStartTime(char* cache,int& nCur,struct RecordTime* pTime);
 	RecordData_end* setEndTime(char* cache,int& nCur,Record_CLOCK& start);
+	bool timeContinue(SpeedRecord* pRec,RecordData_start& rec_start, int nSeconds);
 	int expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* pRec,int nNum,int nRunSecond,RecordData_start& lastStart);
 	int fillData(char* cache,int& nCur,int nEnd,char* data,int nNum);
 	int findStart(SpeedRecord* pRec,int&start,int nNum);
 	USBFile *pData;
+	int nOdeMeter;
 
 };
 
