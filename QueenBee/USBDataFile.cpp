@@ -100,7 +100,7 @@ int USBDataFile::AddSpeedData(Packet &p)
   int nEnd = pData->table.BaseData.EndAddr;
   int nCur = nStart;
   DEBUG("start address:0x%08X",nStart);
-  RecordData_start start;
+  RecordData_start start={0};
   int nRunSec = 0;
   while (n>sizeof(struct RecordTime))
    {
@@ -123,10 +123,11 @@ int USBDataFile::AddSpeedData(Packet &p)
      nRunSec = expandSpeedRecord(cache,nCur,nEnd,pRec,nNum,nRunSec,start);
      pRec+=1;
 
+     if (nRunSec==0) continue;
      if (nRunSec && timeContinue(pRec,start,nRunSec)) continue;
 
      RecordData_end* rec_end = setEndTime(cache,nCur,start.dt);
-     incTime(rec_end->dt,((nRunSec)/60)-1,(nRunSec)%60);
+     incTime(rec_end->dt,((nRunSec/60)==0)?0:(nRunSec/60)-1,(nRunSec)%60);
 	 nRunSec = 0;
 
     };
@@ -165,6 +166,7 @@ int USBDataFile::fillData(char* cache,int& nCur,int nEnd,char* data,int nNum)
 	int n=0;
 	int i=0;
 	double distince = 0;
+	int nSec = 0;
 	for(i=0;i<nNum;i++)
 	{
 		distince += data[i]/60.0;
@@ -179,10 +181,11 @@ int USBDataFile::fillData(char* cache,int& nCur,int nEnd,char* data,int nNum)
 			}
 			cache[nCur++]=data[i];
 			cache[nCur++]=0;
+			nSec++;
 		};
 	};
 	nOdeMeter += (int)distince;
-	return i*60+n;
+	return nSec;
 }
 
 USBDataFile::RecordData_start* USBDataFile::setStartTime(char* cache,int& nCur,RecordTime* pTime)
@@ -216,7 +219,7 @@ USBDataFile::RecordData_end* USBDataFile::setEndTime(char* cache,int& nCur,Recor
   rec_end->dt.minute = start.minute;
   rec_end->dt.second = start.second;
   rec_end->DriverCode = pData->para.DriverCode;
-  rec_end->DistancePulse = nOdeMeter;
+  rec_end->DistancePulse = 8*nOdeMeter*pData->para.CHCO ;
   nOdeMeter = 0;
   nCur+=sizeof(RecordData_end);
   DEBUG("%d-%d-%d %d:%d:%d",BCD_CHAR(rec_end->dt.year),
@@ -252,7 +255,7 @@ int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* p
 		  if (start)//stoped at first minute
 		  {
 			  rec_end = setEndTime(cache,nCur,lastStart.dt);
-			  incTime(rec_end->dt,(nRunSecond/60)-1,nRunSecond%60);
+			  incTime(rec_end->dt,(nRunSecond/60)?(nRunSecond/60)-1:0,nRunSecond%60);
 			  rec_start = setStartTime(cache,nCur,&(pRec->startTime));
 			  incTime(rec_start->dt,start,0);
 			  nRunSecond = 0;
@@ -272,12 +275,12 @@ int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* p
 	  }
 
 	  rec_end = setEndTime(cache,nCur,rec_start->dt);
-	  incTime(rec_end->dt,start+((nRunSecond+nSecond)/60)-1,(nRunSecond+nSecond)%60);
+	  incTime(rec_end->dt,((nRunSecond+nSecond)/60)-1,(nRunSecond+nSecond)%60);
 
 	  start+=n;
   };
 
-   return 0;
+  return nRunSecond;
 }
 
 void USBDataFile::incTime(Record_CLOCK& t, int nMinute,int nSecond)
