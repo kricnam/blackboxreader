@@ -100,7 +100,7 @@ int USBDataFile::AddSpeedData(Packet &p)
   int nEnd = pData->table.BaseData.EndAddr;
   int nCur = nStart;
   DEBUG("start address:0x%08X",nStart);
-  RecordData_start start={0};
+  RecordData_start start={{0}};
   int nRunSec = 0;
   while (n>sizeof(struct RecordTime))
    {
@@ -275,7 +275,7 @@ int USBDataFile::expandSpeedRecord(char* cache,int& nCur,int nEnd,SpeedRecord* p
 	  }
 
 	  rec_end = setEndTime(cache,nCur,rec_start->dt);
-	  incTime(rec_end->dt,((nRunSecond+nSecond)/60)-1,(nRunSecond+nSecond)%60);
+	  incTime(rec_end->dt,((nRunSecond+nSecond)/60==0)?0:((nRunSecond+nSecond)/60)-1,(nRunSecond+nSecond)%60);
 
 	  start+=n;
   };
