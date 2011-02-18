@@ -212,7 +212,7 @@ protected:
 	int fillData(char* cache,int& nCur,int nEnd,char* data,int nNum);
 	int findStart(SpeedRecord* pRec,int&start,int nNum);
 	USBFile *pData;
-	int nOdeMeter;
+	double nOdeMeter;
 
 };
 

@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 #include "USBDataFile.h"
 #include "DebugLog.h"
 #include "Packet.h"
@@ -184,7 +185,7 @@ int USBDataFile::fillData(char* cache,int& nCur,int nEnd,char* data,int nNum)
 			nSec++;
 		};
 	};
-	nOdeMeter += (int)distince;
+	nOdeMeter += distince;
 	return nSec;
 }
 
@@ -219,7 +220,7 @@ USBDataFile::RecordData_end* USBDataFile::setEndTime(char* cache,int& nCur,Recor
   rec_end->dt.minute = start.minute;
   rec_end->dt.second = start.second;
   rec_end->DriverCode = pData->para.DriverCode;
-  rec_end->DistancePulse = 8*nOdeMeter*pData->para.CHCO ;
+  rec_end->DistancePulse =(u_int)round(8*nOdeMeter*pData->para.CHCO) ;
   nOdeMeter = 0;
   nCur+=sizeof(RecordData_end);
   DEBUG("%d-%d-%d %d:%d:%d",BCD_CHAR(rec_end->dt.year),
