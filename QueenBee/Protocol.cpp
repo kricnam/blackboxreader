@@ -72,7 +72,7 @@ int Protocol::ReadVehicleVIN_Number_Class(RS232Port & port,Packet& packet)
 }
 int Protocol::ReadAccident_Data(RS232Port & port,Packet& packet)
 {
-	int n=Read(Packet::GET_Accident_Data,10000,port,packet);
+	int n=Read(Packet::GET_Accident_Data,20000,port,packet);
 	return n;
 }
 int Protocol::Read2DayMileage(RS232Port & port,Packet& packet)

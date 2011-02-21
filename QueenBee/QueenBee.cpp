@@ -77,13 +77,13 @@ int main(int argc, char** argv)
 
   INFO("read para part");
   turnOnLEDRed();
-  protocol.ReadAllPara(port,packet);
+  protocol.ReadAllPara(port, packet);
   if (!packet.GetAllPara(para))
-  {
-    INFO("Can not read data from remote");
-  blinkRed();
-    return -1;
-  }
+    {
+      INFO("Can not read data from remote");
+      blinkRed();
+      return -1;
+    }
 
    char szName[sizeof(para.AutoCode)+1]={0};
 
@@ -103,16 +103,41 @@ int main(int argc, char** argv)
   file.Init();
   turnOffLEDRed();
   sleep(1);
+  int retry = 10;
   INFO("read data");
+
   turnOnLEDRed();
-  protocol.Read2DaySpeed(port,packet);
-  file.AddSpeedData(packet);
-  INFO("read accident data");
-  protocol.ReadAccident_Data(port,packet);
-  file.AddAccidentData(packet);
+  do {
+    protocol.Read2DaySpeed(port,packet);
+    if (file.AddSpeedData(packet)) break;
+  } while(--retry);
   turnOffLEDRed();
+
+  if (!retry) goto onerror;
+  sleep(1);
+  turnOnLEDRed();
+  retry=10;
+  INFO("read accident data");
+  do
+    {
+      protocol.ReadAccident_Data(port, packet);
+      if (file.AddAccidentData(packet))
+        break;
+      sleep(1);
+    }
+  while (--retry);
+  turnOffLEDRed();
+
+  if (!retry) goto onerror;
 
   file.Save(strName.c_str());
   turnOnLEDGreen();
   return 0;
+
+onerror:
+INFO("Can not read data from remote");
+  blinkRed();
+  return -1;
+
+
 }
