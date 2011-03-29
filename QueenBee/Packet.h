@@ -102,6 +102,7 @@ class Packet
 public:
 	enum CmdWord
 	{
+              CMD_OVER=0,
 		GET_DriverID_LicenceID = 0x01,
 		GET_RealTime,
 		GET_360Hour_Mileage,
