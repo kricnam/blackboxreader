@@ -93,7 +93,11 @@ int Protocol::ReadAllPara(RS232Port & port,Packet& packet)
     return Read(Packet::GET_ALL_PARA,10000,port,packet);
 }
 
-
+void Protocol::Over(RS232Port & port)
+{
+  char cmd = Packet::CMD_OVER;
+  port.Write(&cmd,1);
+}
 
 
 

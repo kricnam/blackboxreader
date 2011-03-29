@@ -16,7 +16,7 @@ public:
 	virtual ~Protocol();
 	int ReadDriverIDLicenceID(RS232Port & port,Packet& packet);
 	int ReadRealTime(RS232Port & port,Packet& packet);
-    int Read360HourMileage(RS232Port & port,Packet& packet);
+       int Read360HourMileage(RS232Port & port,Packet& packet);
 	int ReadVehicleFeature(RS232Port & port,Packet& packet);
 	int Read360HourSpeed(RS232Port & port,Packet& packet);
 	int ReadVehicleVIN_Number_Class(RS232Port & port,Packet& packet);
@@ -25,6 +25,7 @@ public:
 	int Read2DaySpeed(RS232Port & port,Packet& packet);
 	int Read2DayOverDrive(RS232Port & port,Packet& packet);
 	int ReadAllPara(RS232Port & port,Packet& packet);
+	void Over(RS232Port & port);
 	void SetOTA(bool b) {bOTA = b;};
 protected:
 	int Read(Packet::CmdWord cmd,int wait_ms,RS232Port & port,Packet& packet);
