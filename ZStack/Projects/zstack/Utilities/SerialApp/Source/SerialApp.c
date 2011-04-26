@@ -22,7 +22,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
+  PROVIDED ï¿½AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, 
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE, 
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -77,7 +77,6 @@
 /*********************************************************************
  * MACROS
  */
-
 /* See the important comment by the otaBuf declaration below concerning the
  * mandatory use of this macro vice directly invoking osal_mem_free().
  */
@@ -231,7 +230,7 @@ uint8 SerialApp_TaskID;    // Task ID for internal task/event processing.
  */
 
 static uint8 SerialApp_MsgID;
-
+static uint8 sbBinded = 0;
 static afAddrType_t SerialApp_DstAddr;
 static uint8 SerialApp_SeqTx;
 /* This local global is used to hold the last outgoing OTA data for retries
@@ -271,6 +270,13 @@ static void rxCB( uint8 port, uint8 event );
 void ReqBind(void);
 void ReqMatchDesc(void);
 void CommandToBox(uint8 cmd);
+void reset(void);
+
+void reset (void)
+{
+ ((void ( *) (void)) 0x0000) ();
+}
+
 /*********************************************************************
  * @fn      SerialApp_Init
  *
@@ -331,6 +337,13 @@ void SerialApp_Init( uint8 task_id )
 void CommandToBox(uint8 cmd)
 {
     uint8 data[7];//format {0xAA, 0x75, 0x14, 0x00, 0x00 ,0x00, 0xCB};
+    if (cmd==0)
+    {
+    	unsigned char i;
+    	for(i=0;i<255;i++)
+    		Onboard_wait(60000);
+    	reset();
+    }
     data[0]=0xAA;
     data[1]=0x75;
     data[6]=data[0]^data[1];
@@ -507,6 +520,7 @@ UINT16 SerialApp_ProcessEvent( uint8 task_id, UINT16 events )
   }
 #endif
   
+  if (sbBinded == 0) ReqMatchDesc();
 
   return ( 0 );  // Discard unknown events.
 }
@@ -529,6 +543,7 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
       {
         // Light LED
         HalLedSet( HAL_LED_1, HAL_LED_MODE_ON );
+        sbBinded = 1;
         
       }
 #if defined(BLINK_LEDS)
@@ -554,6 +569,7 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
             
             // Light LED
             HalLedSet( HAL_LED_1, HAL_LED_MODE_ON );
+            sbBinded = 1;
           }
           osal_mem_free( pRsp );
         }
@@ -706,7 +722,13 @@ static void SerialApp_SendData( uint8 *buf, uint8 len )
                           SERIALAPP_CLUSTERID_CMD,
                           otaLen, otaBuf,
                           &SerialApp_MsgID, 0, AF_DEFAULT_RADIUS );
+  
   HalLedSet(HAL_LED_2,HAL_LED_MODE_OFF);
+  if (buf[1]==0)
+  {
+    reset();
+  }
+
   FREE_OTABUF();
 }
 #else
