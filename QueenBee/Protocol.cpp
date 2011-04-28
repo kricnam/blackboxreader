@@ -99,5 +99,11 @@ void Protocol::Over(RS232Port & port)
   port.Write(&cmd,1);
 }
 
+void Protocol::Reset(RS232Port & port)
+{
+  char cmd = Packet::CMD_RESET;
+  port.Write(&cmd,1);
+}
+
 
 

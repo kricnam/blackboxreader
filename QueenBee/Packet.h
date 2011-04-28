@@ -119,7 +119,8 @@ public:
 		SET_Time = 0xC2,
 		SET_Vehicle_Feature = 0xC3,
 		GET_CMD_ERROR = 0xFA,
-		SET_CMD_ERROR = 0xFB
+		SET_CMD_ERROR = 0xFB,
+		CMD_RESET = 0xFF
 	};
 
 

@@ -76,6 +76,10 @@ int main(int argc, char** argv)
   memset(&para,0,sizeof(para));
 
   INFO("read para part");
+  protocol.Reset(port);
+
+  sleep(5);
+
   turnOnLEDRed();
   protocol.ReadAllPara(port, packet);
   if (!packet.GetAllPara(para))
@@ -138,6 +142,4 @@ onerror:
 INFO("Can not read data from remote");
   blinkRed();
   return -1;
-
-
 }
