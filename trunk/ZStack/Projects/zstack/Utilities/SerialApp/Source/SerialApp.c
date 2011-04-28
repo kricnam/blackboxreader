@@ -716,6 +716,12 @@ static void SerialApp_SendData( uint8 *buf, uint8 len )
 
   otaBuf = buf;
   otaLen = len+1;
+  
+  if (buf[1]==0xff)
+  {
+    reset();
+  }
+
 
   stat = AF_DataRequest( &SerialApp_DstAddr,
                          (endPointDesc_t *)&SerialApp_epDesc,
