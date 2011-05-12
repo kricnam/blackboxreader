@@ -281,8 +281,10 @@ void reset (void)
 
 void sleep(void)
 {
-  if (sbBinded)
+  if (HAL_STATE_LED1())
   {
+      HAL_TURN_OFF_LED1();
+      HAL_TURN_OFF_LED3();
       HAL_TURN_ON_LED2();
       for(uint8 n=0;n<255;n++)
       for(uint8 i=0;i<255;i++)
@@ -346,7 +348,7 @@ void SerialApp_Init( uint8 task_id )
   
   ZDO_RegisterForZDOMsg( SerialApp_TaskID, End_Device_Bind_rsp );
   ZDO_RegisterForZDOMsg( SerialApp_TaskID, Match_Desc_rsp );
-  osal_start_timerEx(task_id,SERIALAPP_MSG_AUTOMATCH,3000);
+  //osal_start_timerEx(task_id,SERIALAPP_MSG_AUTOMATCH,3000);
 }
 #ifndef ZDO_COORDINATOR
 void CommandToBox(uint8 cmd)
@@ -747,10 +749,7 @@ static void SerialApp_SendData( uint8 *buf, uint8 len )
                           &SerialApp_MsgID, 0, AF_DEFAULT_RADIUS );
   
   HalLedSet(HAL_LED_2,HAL_LED_MODE_OFF);
-  if (buf[1]==0)
-  {
-    reset();
-  }
+ 
 
   FREE_OTABUF();
 }

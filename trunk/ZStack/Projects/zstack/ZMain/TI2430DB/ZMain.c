@@ -154,7 +154,9 @@ ZSEG int main( void )
 {
   // Turn off interrupts
   osal_int_disable( INTS_ALL );
-
+#ifndef ZDO_COORDINATOR
+  sleep();
+#endif
   // Initialize HAL
   HAL_BOARD_INIT();
 
