@@ -346,6 +346,7 @@ void SerialApp_Init( uint8 task_id )
   
   ZDO_RegisterForZDOMsg( SerialApp_TaskID, End_Device_Bind_rsp );
   ZDO_RegisterForZDOMsg( SerialApp_TaskID, Match_Desc_rsp );
+  osal_start_timerEx(task_id,SERIALAPP_MSG_AUTOMATCH,3000);
 }
 #ifndef ZDO_COORDINATOR
 void CommandToBox(uint8 cmd)
@@ -531,7 +532,11 @@ UINT16 SerialApp_ProcessEvent( uint8 task_id, UINT16 events )
   }
 #endif
   
-  if (sbBinded == 0) ReqMatchDesc();
+  if (events & SERIALAPP_MSG_AUTOMATCH)
+  {
+    if (sbBinded == 0) ReqMatchDesc();
+    return (events ^ SERIALAPP_MSG_AUTOMATCH);
+  }
 
   return ( 0 );  // Discard unknown events.
 }
@@ -555,7 +560,7 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
         // Light LED
         HalLedSet( HAL_LED_1, HAL_LED_MODE_ON );
         sbBinded = 1;
-        
+        osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);        
       }
 #if defined(BLINK_LEDS)
       else
@@ -581,6 +586,7 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
             // Light LED
             HalLedSet( HAL_LED_1, HAL_LED_MODE_ON );
             sbBinded = 1;
+            osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);
           }
           osal_mem_free( pRsp );
         }
