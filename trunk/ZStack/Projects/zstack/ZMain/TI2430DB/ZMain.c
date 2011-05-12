@@ -144,6 +144,7 @@ static ZSEG void zmain_vdd_check( void );
 static ZSEG void zmain_lcd_init( void );
 #endif
 
+extern void sleep(void);
 /*********************************************************************
  * @fn      main
  * @brief   First function called after startup.
@@ -159,7 +160,6 @@ ZSEG int main( void )
 
   // Make sure supply voltage is high enough to run
   zmain_vdd_check();
-
   // Initialize stack memory
   zmain_ram_init();
 
