@@ -339,10 +339,7 @@ void CommandToBox(uint8 cmd)
     uint8 data[7];//format {0xAA, 0x75, 0x14, 0x00, 0x00 ,0x00, 0xCB};
     if (cmd==0)
     {
-    	unsigned char i;
-    	for(i=0;i<255;i++)
-    		Onboard_wait(60000);
-    	reset();
+      reset();
     }
     data[0]=0xAA;
     data[1]=0x75;
