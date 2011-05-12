@@ -230,7 +230,7 @@ uint8 SerialApp_TaskID;    // Task ID for internal task/event processing.
  */
 
 static uint8 SerialApp_MsgID;
-static uint8 sbBinded = 0;
+extern uint8 sbBinded;
 static afAddrType_t SerialApp_DstAddr;
 static uint8 SerialApp_SeqTx;
 /* This local global is used to hold the last outgoing OTA data for retries
@@ -266,17 +266,31 @@ static void rxCB_Loopback( uint8 port, uint8 event );
 static void rxCB( uint8 port, uint8 event );
 #endif
 
+static uint8 sbBinded = 0;
 
 void ReqBind(void);
 void ReqMatchDesc(void);
 void CommandToBox(uint8 cmd);
 void reset(void);
+void sleep(void);
 
 void reset (void)
 {
  ((void ( *) (void)) 0x0000) ();
 }
 
+void sleep(void)
+{
+  if (sbBinded)
+  {
+      HAL_TURN_ON_LED2();
+      for(uint8 n=0;n<255;n++)
+      for(uint8 i=0;i<255;i++)
+        MicroWait(50000);
+      HAL_TURN_OFF_LED2();
+      sbBinded = 0;
+  }
+}
 /*********************************************************************
  * @fn      SerialApp_Init
  *
