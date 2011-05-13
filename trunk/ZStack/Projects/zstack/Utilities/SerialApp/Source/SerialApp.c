@@ -276,6 +276,11 @@ void sleep(void);
 
 void reset (void)
 {
+  zAddrType_t dstAddr;
+  dstAddr.addrMode = Addr16Bit;
+  dstAddr.addr.shortAddr = SerialApp_DstAddr.addr.shortAddr;
+  SerialApp_DstAddr.addrMode = (afAddrMode_t)AddrNotPresent;
+  bindRemoveDev(&dstAddr);
  ((void ( *) (void)) 0x0000) ();
 }
 
