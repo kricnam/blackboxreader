@@ -1,0 +1,5 @@
+#summary 指示灯说明
+
+接入网络， led3亮（靠近USB口）
+led3,led2亮，成功匹配
+led2亮，休眠
