@@ -266,7 +266,7 @@ static void rxCB_Loopback( uint8 port, uint8 event );
 static void rxCB( uint8 port, uint8 event );
 #endif
 
-static uint8 sbBinded = 0;
+//static uint8 sbBinded = 0;
 
 void ReqBind(void);
 void ReqMatchDesc(void);
@@ -286,7 +286,7 @@ void reset (void)
 
 void sleep(void)
 {
-  if (HAL_STATE_LED1())
+  if (HAL_STATE_LED2())
   {
       HAL_TURN_OFF_LED1();
       HAL_TURN_OFF_LED3();
@@ -295,7 +295,7 @@ void sleep(void)
       for(uint8 i=0;i<255;i++)
         MicroWait(50000);
       HAL_TURN_OFF_LED2();
-      sbBinded = 0;
+      //sbBinded = 0;
   }
 }
 /*********************************************************************
@@ -353,7 +353,7 @@ void SerialApp_Init( uint8 task_id )
   
   ZDO_RegisterForZDOMsg( SerialApp_TaskID, End_Device_Bind_rsp );
   ZDO_RegisterForZDOMsg( SerialApp_TaskID, Match_Desc_rsp );
-  //osal_start_timerEx(task_id,SERIALAPP_MSG_AUTOMATCH,3000);
+  osal_start_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH,2000);
 }
 #ifndef ZDO_COORDINATOR
 void CommandToBox(uint8 cmd)
@@ -463,7 +463,7 @@ UINT16 SerialApp_ProcessEvent( uint8 task_id, UINT16 events )
   
         case ZDO_STATE_CHANGE:
           if (SerialApp_DstAddr.addrMode == afAddrNotPresent)
-            ReqMatchDesc();
+             ReqMatchDesc();
           break;
         default:
           break;
@@ -541,7 +541,9 @@ UINT16 SerialApp_ProcessEvent( uint8 task_id, UINT16 events )
   
   if (events & SERIALAPP_MSG_AUTOMATCH)
   {
-    if (sbBinded == 0) ReqMatchDesc();
+    if (SerialApp_DstAddr.addrMode == afAddrNotPresent)
+            ReqMatchDesc();
+    osal_start_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH,2000);
     return (events ^ SERIALAPP_MSG_AUTOMATCH);
   }
 
@@ -566,14 +568,17 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
       {
         // Light LED
         HalLedSet( HAL_LED_1, HAL_LED_MODE_ON );
-        sbBinded = 1;
-        osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);        
+        //sbBinded = 1;
+        //osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);
+        //ReqMatchDesc();
+        //osal_start_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH,2000);        
       }
 #if defined(BLINK_LEDS)
       else
       {
         // Flash LED to show failure
         HalLedSet ( HAL_LED_1, HAL_LED_MODE_FLASH );
+        //osal_start_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH,2000);
       }
 #endif
       break;
@@ -591,8 +596,7 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
             SerialApp_DstAddr.endPoint = pRsp->epList[0];
             
             // Light LED
-            HalLedSet( HAL_LED_1, HAL_LED_MODE_ON );
-            sbBinded = 1;
+            HalLedSet( HAL_LED_2, HAL_LED_MODE_ON );
             osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);
           }
           osal_mem_free( pRsp );
