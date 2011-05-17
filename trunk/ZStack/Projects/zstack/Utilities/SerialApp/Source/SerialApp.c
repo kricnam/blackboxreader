@@ -599,6 +599,9 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
             // Light LED
             HalLedSet( HAL_LED_2, HAL_LED_MODE_ON );
             osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);
+#if defined(ZDO_COORDINATOR)
+            HalUARTWrite(SERIAL_APP_PORT,"OK\n",3);
+#endif 
           }
           osal_mem_free( pRsp );
         }
