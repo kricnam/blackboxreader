@@ -6,7 +6,8 @@
  */
 
 #include "Protocol.h"
-#include "stdio.h"
+#include <stdio.h>
+#include <time.h>
 
 Protocol::Protocol()
 {
@@ -99,10 +100,29 @@ void Protocol::Over(RS232Port & port)
   port.Write(&cmd,1);
 }
 
-void Protocol::Reset(RS232Port & port)
+int Protocol::Reset(RS232Port & port)
 {
   char cmd = Packet::CMD_RESET;
+  char buf[4]={0};
   port.Write(&cmd,1);
+  int n,left=3 ;
+  time_t start,now;
+  time(&start);
+  now =  start;
+  string strRead;
+  while ((now - start) < 20)
+	{
+		do
+		{
+			n = port.Read(buf + (3 - left), left);
+			left -= n;
+		} while (left);
+		strRead += buf;
+		if (strRead.find("OK") != string::npos)
+			return 1;
+		time(&now);
+	};
+	return 0;
 }
 
 
