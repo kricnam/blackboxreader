@@ -588,7 +588,8 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
         ZDO_ActiveEndpointRsp_t *pRsp = ZDO_ParseEPListRsp( inMsg );
         if ( pRsp )
         {
-          if ( pRsp->status == ZSuccess && pRsp->cnt )
+          if ( pRsp->status == ZSuccess && pRsp->cnt && 
+              SerialApp_DstAddr.addrMode == afAddrNotPresent)
           {
             SerialApp_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
             SerialApp_DstAddr.addr.shortAddr = pRsp->nwkAddr;
