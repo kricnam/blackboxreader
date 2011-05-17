@@ -26,7 +26,7 @@ public:
 	int Read2DayOverDrive(RS232Port & port,Packet& packet);
 	int ReadAllPara(RS232Port & port,Packet& packet);
 	void Over(RS232Port & port);
-	void Reset(RS232Port & port);
+	int Reset(RS232Port & port);
 	void SetOTA(bool b) {bOTA = b;};
 protected:
 	int Read(Packet::CmdWord cmd,int wait_ms,RS232Port & port,Packet& packet);

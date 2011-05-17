@@ -76,9 +76,12 @@ int main(int argc, char** argv)
   memset(&para,0,sizeof(para));
 
   INFO("read para part");
-  protocol.Reset(port);
-
-  sleep(5);
+  if (protocol.Reset(port)<1)
+  {
+      INFO("Reset fail,try again");
+      blinkRed();
+      return -1;
+  }
 
   turnOnLEDRed();
   protocol.ReadAllPara(port, packet);
