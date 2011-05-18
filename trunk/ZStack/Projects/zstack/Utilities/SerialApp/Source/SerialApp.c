@@ -230,7 +230,7 @@ uint8 SerialApp_TaskID;    // Task ID for internal task/event processing.
  */
 
 static uint8 SerialApp_MsgID;
-extern uint8 sbBinded;
+
 static afAddrType_t SerialApp_DstAddr;
 static uint8 SerialApp_SeqTx;
 /* This local global is used to hold the last outgoing OTA data for retries
@@ -283,7 +283,7 @@ void reset (void)
   bindRemoveDev(&dstAddr);
  ((void ( *) (void)) 0x0000) ();
 }
-
+#ifndef ZDO_COORDINATOR
 void sleep(void)
 {
   if (HAL_STATE_LED2())
@@ -291,13 +291,14 @@ void sleep(void)
       HAL_TURN_OFF_LED1();
       HAL_TURN_OFF_LED3();
       HAL_TURN_ON_LED2();
-      for(uint8 n=0;n<255;n++)
-      for(uint8 i=0;i<255;i++)
+      for(uint8 n=0;n<30;n++)
+      for(uint8 i=0;i<200;i++)
         MicroWait(50000);
       HAL_TURN_OFF_LED2();
       //sbBinded = 0;
   }
 }
+#endif
 /*********************************************************************
  * @fn      SerialApp_Init
  *
@@ -588,14 +589,18 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
         ZDO_ActiveEndpointRsp_t *pRsp = ZDO_ParseEPListRsp( inMsg );
         if ( pRsp )
         {
-          if ( pRsp->status == ZSuccess && pRsp->cnt && 
-              SerialApp_DstAddr.addrMode == afAddrNotPresent)
+          if ( pRsp->status == ZSuccess && pRsp->cnt  
+               && SerialApp_DstAddr.addrMode == afAddrNotPresent
+                )
           {
             SerialApp_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
+#if defined(ZDO_COORDINATOR)          
             SerialApp_DstAddr.addr.shortAddr = pRsp->nwkAddr;
+#else
+            SerialApp_DstAddr.addr.shortAddr = NWK_BROADCAST_SHORTADDR_DEVZCZR;
+#endif            
             // Take the first endpoint, Can be changed to search through endpoints
             SerialApp_DstAddr.endPoint = pRsp->epList[0];
-            
             // Light LED
             HalLedSet( HAL_LED_2, HAL_LED_MODE_ON );
             osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);
