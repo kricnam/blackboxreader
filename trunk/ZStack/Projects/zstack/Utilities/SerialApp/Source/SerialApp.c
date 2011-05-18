@@ -582,7 +582,7 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
       }
 #endif
       break;
-      
+
     case Match_Desc_rsp:
       {
         ZDO_ActiveEndpointRsp_t *pRsp = ZDO_ParseEPListRsp( inMsg );
@@ -700,6 +700,7 @@ void SerialApp_ProcessMSGCmd( afIncomingMSGPacket_t *pkt )
       // Store the address for the timeout retry.
       osal_memcpy(&SerialApp_RspDstAddr, &(pkt->srcAddr), sizeof( afAddrType_t ));
     }
+    HalLedSet(HAL_LED_2,HAL_LED_MODE_ON);
     break;
 
   // A response to a received serial data block.
@@ -711,6 +712,7 @@ void SerialApp_ProcessMSGCmd( afIncomingMSGPacket_t *pkt )
       // Remove timeout waiting for response from other device.
       osal_stop_timerEx( SerialApp_TaskID, SERIALAPP_MSG_RTRY_EVT );
       FREE_OTABUF();
+      HalLedSet(HAL_LED_2,HAL_LED_MODE_ON);
     }
     else
     {
