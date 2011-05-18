@@ -143,8 +143,9 @@ static ZSEG void zmain_vdd_check( void );
 #ifdef LCD_SUPPORTED
 static ZSEG void zmain_lcd_init( void );
 #endif
-
+#ifndef ZDO_COORDINATOR
 extern void sleep(void);
+#endif
 /*********************************************************************
  * @fn      main
  * @brief   First function called after startup.
