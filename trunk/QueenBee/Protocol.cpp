@@ -112,12 +112,8 @@ int Protocol::Reset(RS232Port & port)
   string strRead;
   while ((now - start) < 20)
 	{
-		do
-		{
-			n = port.Read(buf + (3 - left), left);
-			left -= n;
-		} while (left);
-		strRead += buf;
+		n = port.Read(buf , 1);
+		if(n>0) strRead += buf[0];
 		if (strRead.find("OK") != string::npos)
 			return 1;
 		time(&now);
