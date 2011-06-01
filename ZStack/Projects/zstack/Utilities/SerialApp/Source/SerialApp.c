@@ -543,8 +543,14 @@ UINT16 SerialApp_ProcessEvent( uint8 task_id, UINT16 events )
   if (events & SERIALAPP_MSG_AUTOMATCH)
   {
     if (SerialApp_DstAddr.addrMode == afAddrNotPresent)
-            ReqMatchDesc();
-    osal_start_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH,2000);
+    {
+        ReqMatchDesc();
+        osal_start_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH,4000);
+    }
+    else
+    {
+        osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);
+    }
     return (events ^ SERIALAPP_MSG_AUTOMATCH);
   }
 
@@ -569,17 +575,14 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
       {
         // Light LED
         HalLedSet( HAL_LED_1, HAL_LED_MODE_ON );
-        //sbBinded = 1;
-        //osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);
-        //ReqMatchDesc();
-        //osal_start_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH,2000);        
+        osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);
+             
       }
 #if defined(BLINK_LEDS)
       else
       {
         // Flash LED to show failure
         HalLedSet ( HAL_LED_1, HAL_LED_MODE_FLASH );
-        //osal_start_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH,2000);
       }
 #endif
       break;
@@ -593,6 +596,7 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
                && SerialApp_DstAddr.addrMode == afAddrNotPresent
                 )
           {
+            osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);
             SerialApp_DstAddr.addrMode = (afAddrMode_t)Addr16Bit;
 #if defined(ZDO_COORDINATOR)          
             SerialApp_DstAddr.addr.shortAddr = pRsp->nwkAddr;
@@ -603,7 +607,7 @@ static void SerialApp_ProcessZDOMsgs( zdoIncomingMsg_t *inMsg )
             SerialApp_DstAddr.endPoint = pRsp->epList[0];
             // Light LED
             HalLedSet( HAL_LED_2, HAL_LED_MODE_ON );
-            osal_stop_timerEx(SerialApp_TaskID,SERIALAPP_MSG_AUTOMATCH);
+            
 #if defined(ZDO_COORDINATOR)
             HalUARTWrite(SERIAL_APP_PORT,"OK\n",3);
 #endif 
